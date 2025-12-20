@@ -16,7 +16,7 @@ export function Boton({ onPress, disabled = false, texto }: props) {
                     className='rounded-3xl justify-center items-center w-60 h-16'
                     style={{
                         backgroundColor: pressed ? '#15803D' : '#16A34A',
-                        transform: [{ scale: pressed ? 0.97 : 1 }],
+                        transform: [{ scale: pressed ? 0.95 : 1 }],
                     }}>
                     <Text className="text-3xl font-semibold text-white">
                         {texto}

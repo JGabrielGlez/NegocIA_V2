@@ -1,11 +1,14 @@
 import { Boton } from "@/components/Button";
+import { useRouter } from "expo-router";
 import { Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
+  const router = useRouter();
   const redireccionar = (): void => {
+    router.replace("/(auth)/iniciar-sesion");
   };
-  
+
   return (
     <SafeAreaView className="flex-1 justify-center items-center">
       <View className="flex-1 justify-center items-center">
@@ -26,7 +29,7 @@ export default function Index() {
           <Image
             source={require('../assets/images/presentacion.png')}
             className="justify-center items-center"
-            resizeMode="stretch"
+            resizeMode="contain"
           />
         </View>
         <Boton onPress={redireccionar} texto="Empezar" />
