@@ -1,25 +1,28 @@
-import { Pressable, Text , View} from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 type props = {
     onPress: () => void,
     disabled?: boolean,
-    texto:string
+    texto: string
 }
 
-export function Boton({onPress, disabled = false, texto }: props) {
+export function Boton({ onPress, disabled = false, texto }: props) {
     return (
-        <View>
-            <Pressable
-            className=
-            "rounded-xl justify-center items-center w-full h-16 bg-slate-950"
+        <Pressable
             onPress={onPress}
             disabled={disabled}>
-            <Text
-                className="text-5xl font-semibold"
-            >
-                {texto}
-            </Text>
+            {({ pressed }) => (
+                <View 
+                    className='rounded-3xl justify-center items-center w-60 h-16'
+                    style={{
+                        backgroundColor: pressed ? '#15803D' : '#16A34A',
+                        transform: [{ scale: pressed ? 0.97 : 1 }],
+                    }}>
+                    <Text className="text-3xl font-semibold text-white">
+                        {texto}
+                    </Text>
+                </View>
+            )}
         </Pressable>
-        </View>
     )
 }
