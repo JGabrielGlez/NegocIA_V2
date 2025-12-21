@@ -3,7 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-"start": "expo start ./app",
+    "start": "expo start ./app",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start ./app --android",
     "ios": "expo start ./app --ios",
@@ -43,6 +43,8 @@
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "~5.9.2"
   },
   "private": true
