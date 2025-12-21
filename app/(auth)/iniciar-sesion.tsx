@@ -1,6 +1,6 @@
+import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text, View } from "react-native"
-import Login from "../../components/loginForm"
+import Login from "../../components/loginForm";
 
 export default function iniciarSesion() {
     return (
@@ -17,10 +17,8 @@ export default function iniciarSesion() {
             </View>
             {/* Esta es la tarjeta donde se pondrá lo de iniciar sesion */}
             
-                <Login>
-                    
-            </Login> 
-            
+                <Login/>
+           
         </SafeAreaView>
     )
 }

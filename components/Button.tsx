@@ -18,7 +18,7 @@ export function Boton({ onPress, disabled = false, texto }: props) {
                         backgroundColor: pressed ? '#15803D' : '#16A34A',
                         transform: [{ scale: pressed ? 0.95 : 1 }],
                     }}>
-                    <Text className="text-3xl font-semibold text-white">
+                    <Text className="text-lg font-semibold text-white">
                         {texto}
                     </Text>
                 </View>
