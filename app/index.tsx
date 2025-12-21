@@ -10,7 +10,7 @@ export default function Index() {
   };
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center">
+    <SafeAreaView className="flex-1 justify-center items-center p-4">
       <View className="flex-1 justify-center items-center">
         <Text className="text-white font-extrabold text-9xl w-32 text-center bg-primaryPressed rounded-3xl shadow-around mb-6 mt-0">
           N
@@ -32,8 +32,9 @@ export default function Index() {
             resizeMode="contain"
           />
         </View>
-        <Boton onPress={redireccionar} texto="Empezar" />
+        
       </View>
+      <Boton onPress={redireccionar} texto="Empezar" />
     </SafeAreaView>
   );
 }

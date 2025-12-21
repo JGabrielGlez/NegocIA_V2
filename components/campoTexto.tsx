@@ -11,14 +11,14 @@ type props = {
 
 export default function CampoTexto({ etiqueta, sugerencia,onChangeText,valueCampo,esContrasena=false }: props) {
     return (
-        <View>
+        <View >
             {etiqueta!==undefined &&
-            <Text className="text-lg font-normal text-gray-400">{etiqueta}</Text>
+            <Text className="text-lg font-normal text-gray-400 pl-2">{etiqueta}</Text>
             }
             <TextInput
                 onChangeText={onChangeText}
                 value={valueCampo}
-                className="rounded-2xl border-gray-200 border-2 mb-3"
+                className="rounded-2xl border-gray-200 border-2 mb-3 pl-2"
                 placeholder={sugerencia}
                 secureTextEntry={esContrasena} />
         </View>

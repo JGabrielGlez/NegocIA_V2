@@ -9,11 +9,12 @@ type props = {
 export function Boton({ onPress, disabled = false, texto }: props) {
     return (
         <Pressable
+            className="w-full"
             onPress={onPress}
             disabled={disabled}>
             {({ pressed }) => (
                 <View 
-                    className='rounded-3xl justify-center items-center w-60 h-16'
+                    className='rounded-3xl justify-center items-center h-16'
                     style={{
                         backgroundColor: pressed ? '#15803D' : '#16A34A',
                         transform: [{ scale: pressed ? 0.95 : 1 }],
