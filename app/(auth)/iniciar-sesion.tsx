@@ -1,3 +1,6 @@
+import { Boton } from "@/components/Button";
+import Divisor from "@/components/divisor";
+import Login from "@/components/loginForm";
 import { Link, useRouter } from "expo-router";
 import {
     KeyboardAvoidingView,
@@ -7,9 +10,6 @@ import {
     View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Boton } from "../../components/Button";
-import Divisor from "../../components/divisor";
-import Login from "../../components/loginForm";
 
 export default function iniciarSesion() {
     const router = useRouter();
