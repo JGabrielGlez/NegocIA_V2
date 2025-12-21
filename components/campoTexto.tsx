@@ -18,7 +18,7 @@ export default function CampoTexto({ etiqueta, sugerencia,onChangeText,valueCamp
             <TextInput
                 onChangeText={onChangeText}
                 value={valueCampo}
-                className="rounded-2xl border-gray-200 border-2 mb-3 pl-2"
+                className="rounded-2xl border-gray-200 border-2 mb-2 pl-2"
                 placeholder={sugerencia}
                 secureTextEntry={esContrasena} />
         </View>
