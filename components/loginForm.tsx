@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { Text, View} from "react-native";
+import { Text, View } from "react-native";
 import { estilos } from '../constantes/estilos';
 import CampoTexto from "./campoTexto";
 
@@ -9,16 +9,16 @@ type props = {
 }
 
 export default function Login({ children }: props) {
-    
+
     const [correo, setCorreo] = useState("");
     const [password, setPassword] = useState("")
 
     return (
 
         <View
-            className="bg-white p-7 rounded-xl flex-[2] w-11/12 gap-3 mb-6"
+            className="bg-white p-7 rounded-xl flex-[2] w-11/12 gap-3 mb-6 overflow-hidden"
             style={estilos.sombraNormal}
-            >
+        >
             <Text
                 className="font-bold text-3xl text-center mb-3">Iniciar Sesión</Text>
             <CampoTexto
@@ -32,7 +32,7 @@ export default function Login({ children }: props) {
                 valueCampo={password}
                 onChangeText={setPassword}
                 esContrasena={true} />
-           
+
             {children}
         </View>
     );

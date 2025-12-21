@@ -11,7 +11,7 @@ type props = {
 
 export default function CampoTexto({ etiqueta, sugerencia,onChangeText,valueCampo,esContrasena=false }: props) {
     return (
-        <View >
+        <View>
             {etiqueta!==undefined &&
             <Text className="text-lg font-normal text-gray-400 pl-2">{etiqueta}</Text>
             }
