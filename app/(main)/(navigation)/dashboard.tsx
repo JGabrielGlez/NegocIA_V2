@@ -2,13 +2,7 @@ import { Boton } from "@/components/Button";
 import Cabecera from "@/components/cabecera";
 import TarjetaInfo from "@/components/tarjetaInfo";
 import Feather from "@expo/vector-icons/Feather";
-import {
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    Text,
-    View,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 // Iconos a usar Feather: message-... download user
 // EvilIcons gear
@@ -69,13 +63,8 @@ export default function dashboard() {
                     </View>
 
                     {/* Serán los botones de crear venta */}
-                    <View>
+                    <View className="mr-4 ml-4">
                         <Boton onPress={nuevaVentaBoton} texto="Nueva Venta" />
-                    </View>
-
-                    {/* Este será el footer de buscar los productos */}
-                    <View>
-                        <Text>fasdfads</Text>
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
