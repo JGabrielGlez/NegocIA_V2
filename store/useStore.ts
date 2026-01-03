@@ -63,17 +63,22 @@ export const useStore = create<AppState>((set, get) => ({
         return productos.find((p) => p.id === id);
     },
 
-    agregarVenta:(venta)=>set((state)=>({
-        ventas:[...state.ventas,venta];
-    })),
+    agregarVenta: (venta) =>
+        set((state) => ({
+            ventas: [...state.ventas, venta],
+        })),
 
-    calcularVentasHoy:() =>{
-        const {ventas}=get();
+    calcularVentasHoy: () => {
+        const { ventas } = get();
         const hoy = new Date().toLocaleDateString();
 
         return ventas
-            .filter(v=>new Date(v.fecha).toLocaleDateString()===hoy)
-            .reduce((sumatoria, valorVentaActual)=> sumatoria+valorVentaActual.total,0);
+            .filter((v) => new Date(v.fecha).toLocaleDateString() === hoy)
+            .reduce(
+                (sumatoria, valorVentaActual) =>
+                    sumatoria + valorVentaActual.total,
+                0,
+            );
     },
 
     obtenerTotalVentas() {
