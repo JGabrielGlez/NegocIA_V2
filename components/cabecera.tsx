@@ -2,10 +2,16 @@ import Feather from "@expo/vector-icons/Feather";
 import Octicons from "@expo/vector-icons/Octicons";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+
 
 export default function Cabecera() {
     const iconSize: number = 24;
     const onPress = (): void => {};
+    const onPressProductos= ():void=>{
+        // Esto me tiene que redirigir a la página de productos
+
+    }
 
     const MessageIcon = ({ onPress }: { onPress: () => void }) => {
         const [isPressed, setIsPressed] = useState(false);

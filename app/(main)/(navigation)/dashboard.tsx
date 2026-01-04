@@ -4,6 +4,7 @@ import TarjetaInfo from "@/components/tarjetaInfo";
 import Feather from "@expo/vector-icons/Feather";
 import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import  Buscador  from "@/components/buscador"
 // Iconos a usar Feather: message-... download user
 // EvilIcons gear
 
@@ -16,6 +17,7 @@ export default function dashboard() {
         );
     };
 
+    // Funcion por asignar
     const nuevaVentaBoton = () => {};
 
     return (
@@ -67,6 +69,9 @@ export default function dashboard() {
                         <Boton onPress={nuevaVentaBoton} texto="Nueva Venta" />
                     </View>
                 </ScrollView>
+
+                {/* área para probar nuevos componentes unicamente, borrar después, ya que no quiero estar cambiando de ventanas a cada rato */}
+                <Buscador/>
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
