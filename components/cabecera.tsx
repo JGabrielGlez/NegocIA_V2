@@ -1,117 +1,13 @@
 import Feather from "@expo/vector-icons/Feather";
 import Octicons from "@expo/vector-icons/Octicons";
-import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
-import { useRouter } from "expo-router";
-
+import { Text, View } from "react-native";
+import { IconoPresionable } from "./iconoPresionable";
 
 export default function Cabecera() {
     const iconSize: number = 24;
     const onPress = (): void => {};
-    const onPressProductos= ():void=>{
+    const onPressProductos = (): void => {
         // Esto me tiene que redirigir a la página de productos
-
-    }
-
-    const MessageIcon = ({ onPress }: { onPress: () => void }) => {
-        const [isPressed, setIsPressed] = useState(false);
-
-        return (
-            <Pressable
-                onPress={onPress}
-                onPressIn={() => setIsPressed(true)}
-                onPressOut={() => setIsPressed(false)}>
-                <View
-                    style={{
-                        overflow: "hidden",
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        backgroundColor: isPressed ? "#dbdbdb" : "transparent",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}>
-                    <Feather
-                        name="message-square"
-                        size={iconSize}
-                        color="black"
-                    />
-                </View>
-            </Pressable>
-        );
-    };
-
-    const UserIcon = ({ onPress }: { onPress: () => void }) => {
-        const [isPressed, setIsPressed] = useState(false);
-
-        return (
-            <Pressable
-                onPress={onPress}
-                onPressIn={() => setIsPressed(true)}
-                onPressOut={() => setIsPressed(false)}>
-                <View
-                    style={{
-                        overflow: "hidden",
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        backgroundColor: isPressed ? "#dbdbdb" : "transparent",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}>
-                    <Feather name="user" size={iconSize} color="black" />
-                </View>
-            </Pressable>
-        );
-    };
-
-    const SettingsIcon = ({ onPress }: { onPress: () => void }) => {
-        const [isPressed, setIsPressed] = useState(false);
-
-        return (
-            <Pressable
-                onPress={onPress}
-                onPressIn={() => setIsPressed(true)}
-                onPressOut={() => setIsPressed(false)}>
-                <View
-                    style={{
-                        overflow: "hidden",
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        backgroundColor: isPressed ? "#dbdbdb" : "transparent",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}>
-                    <Octicons name="gear" size={iconSize} color="black" />
-                </View>
-            </Pressable>
-        );
-    };
-
-    const ProductsIcon = ({ onPress }: { onPress: () => void }) => {
-        const [isPressed, setIsPressed] = useState(false);
-
-        return (
-            <Pressable
-                className="rounded-full"
-                onPress={onPress}
-                onPressIn={() => setIsPressed(true)}
-                onPressOut={() => setIsPressed(false)}>
-                <View
-                    style={{
-                        overflow: "hidden",
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        backgroundColor: isPressed ? "#dbdbdb" : "transparent",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}>
-                    <Feather name="box" size={iconSize} color="black" />
-                </View>
-            </Pressable>
-        );
     };
 
     return (
@@ -127,10 +23,21 @@ export default function Cabecera() {
             </View>
 
             <View className="flex-1 flex-row items-center justify-end">
-                <UserIcon onPress={onPress} />
-                <MessageIcon onPress={onPress} />
-                <ProductsIcon onPress={onPress} />
-                <SettingsIcon onPress={onPress} />
+                <IconoPresionable onPress={onPress}>
+                    <Feather name="user" size={iconSize} color="black" />
+                </IconoPresionable>
+
+                <IconoPresionable onPress={onPress}>
+                    <Feather
+                        name="message-square"
+                        size={iconSize}
+                        color="black"
+                    />
+                </IconoPresionable>
+
+                <IconoPresionable onPress={onPress}>
+                    <Octicons name="gear" size={iconSize} color="black" />
+                </IconoPresionable>
             </View>
         </View>
     );
