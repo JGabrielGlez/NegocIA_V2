@@ -4,6 +4,7 @@ import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { View, Text } from "react-native";
+import { IconoPresionable } from "./iconoPresionable";
 
 type props = {
     nombre: string;
@@ -40,7 +41,8 @@ export default function ItemProducto({ nombre, precio }: props) {
     };
 
     return (
-        <View className="flex-1 flex-row h-8 border-t-2 border-gray-200 ml-4 mr-4">
+        <View className="h-24 w-full">
+            <View className="flex-1 flex-row h-8 border-t-2 border-gray-200 ml-4 mr-4">
             {/* Esta va a ser la de la caja */}
             <View className="flex-[2] items-center overflow-hidden ">
                 <View className="m-auto items-center justify-center">
@@ -57,12 +59,17 @@ export default function ItemProducto({ nombre, precio }: props) {
             {/* Esta va a ser la de los iconos */}
             <View className="flex-[3]  flex-row items-center">
                 <View className="flex-1  aspect-square m-auto items-center justify-center">
-                    <IconoEditar/>
+                    <IconoPresionable onPress={()=>{}}>
+                        <IconoEditar/>
+                    </IconoPresionable>
                 </View>
                 <View className="flex-1  aspect-square">
-                    <IconoBorrar/>
+                    <IconoPresionable onPress={()=>{}}>
+                        <IconoBorrar/>
+                    </IconoPresionable>
                 </View>
             </View>
+        </View>
         </View>
     );
 }

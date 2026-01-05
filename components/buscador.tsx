@@ -1,6 +1,7 @@
-import { View, TextInput, Pressable } from "react-native";
-import Fontisto from "@expo/vector-icons/Fontisto";
 import Feather from "@expo/vector-icons/Feather";
+import Fontisto from "@expo/vector-icons/Fontisto";
+import { TextInput, View } from "react-native";
+import { IconoPresionable } from "./iconoPresionable";
 
 type props = {
     placeholder?: string;
@@ -11,7 +12,7 @@ export default function Buscador({ placeholder, filtrar = false }: props) {
     const IconoLupa = () => {
         return (
             <View>
-                <Fontisto name="zoom" size={28} color="gray" />
+                <Fontisto name="zoom" size={24} color="gray" />
             </View>
         );
     };
@@ -25,23 +26,23 @@ export default function Buscador({ placeholder, filtrar = false }: props) {
     };
 
     return (
-        <View className="h-0 flex-1 flex-row items-center justify-center border-b-2 border-t-2 border-gray-200 bg-white pl-4 pr-4">
-            <View className="m-0 flex-[6] flex-row items-start justify-center rounded-3xl border-2 border-gray-400 bg-white pl-2">
-                <View className="m-auto flex-1">
+        <View className="h-24 w-full flex-row items-center justify-center border-b-2 border-t-2 border-gray-200 bg-white pl-4 pr-4 ">
+            <View className="flex-row items-start justify-center rounded-3xl border-2 border-gray-400 bg-white pl-2 ml-4">
+                <View className="m-auto">
                     <IconoLupa />
                 </View>
-                <View className="flex-[4] items-start justify-center">
-                    <TextInput placeholder={placeholder}></TextInput>
+                <View className="ml-2 mr-4 w-3/4">
+                    <TextInput  placeholder={placeholder}></TextInput>
                 </View>
             </View>
             {/* TODO agregar el método para lo que es lo que hace al presionar, de momento quedará únicamente como adorno.*/}
-            
+
             {filtrar && (
-                <Pressable className="ml-4 h-1/2 flex-[1] items-center justify-center">
-                    <View className="flex-1 justify-center">
+                <View className="ml-4 mr-4">
+                    <IconoPresionable onPress={() => {}}>
                         <IconoFiltro />
-                    </View>
-                </Pressable>
+                    </IconoPresionable>
+                </View>
             )}
         </View>
     );
