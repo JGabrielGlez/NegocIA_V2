@@ -35,6 +35,10 @@ export default function Cabecera() {
                     />
                 </IconoPresionable>
 
+                <IconoPresionable onPress={() => {}}>
+                    <Feather name="box" size={iconSize} color="black" />
+                </IconoPresionable>
+
                 <IconoPresionable onPress={onPress}>
                     <Octicons name="gear" size={iconSize} color="black" />
                 </IconoPresionable>

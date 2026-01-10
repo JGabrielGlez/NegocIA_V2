@@ -4,7 +4,6 @@ import TarjetaInfo from "@/components/tarjetaInfo";
 import Feather from "@expo/vector-icons/Feather";
 import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ItemProducto from "@/components/itemProducto";
 // Iconos a usar Feather: message-... download user
 // EvilIcons gear
 
@@ -16,6 +15,8 @@ export default function dashboard() {
             </View>
         );
     };
+
+    
 
     // Funcion por asignar
     const nuevaVentaBoton = () => {};

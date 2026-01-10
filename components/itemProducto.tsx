@@ -3,7 +3,7 @@
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 import { IconoPresionable } from "./iconoPresionable";
 
 type props = {
@@ -14,7 +14,7 @@ type props = {
 export default function ItemProducto({ nombre, precio }: props) {
     const IconoCaja = () => {
         return (
-            <View className="justify-center rounded-xl p-3 bg-gray-300">
+            <View className="justify-center rounded-xl bg-gray-300 p-3">
                 <Feather name="box" size={40} color="gray" />
             </View>
         );
@@ -22,7 +22,7 @@ export default function ItemProducto({ nombre, precio }: props) {
 
     const IconoEditar = () => {
         return (
-            <View  className="rounded-xl w-full h-full justify-center items-center">
+            <View className="h-full w-full items-center justify-center rounded-xl">
                 <MaterialCommunityIcons
                     name="pencil-outline"
                     size={26}
@@ -34,7 +34,7 @@ export default function ItemProducto({ nombre, precio }: props) {
 
     const IconoBorrar = () => {
         return (
-            <View className="rounded-xl w-full h-full justify-center items-center">
+            <View className="h-full w-full items-center justify-center rounded-xl">
                 <Ionicons name="trash-outline" size={26} color="gray" />
             </View>
         );
@@ -42,34 +42,42 @@ export default function ItemProducto({ nombre, precio }: props) {
 
     return (
         <View className="h-24 w-full">
-            <View className="flex-1 flex-row h-8 border-t-2 border-gray-200 ml-4 mr-4">
-            {/* Esta va a ser la de la caja */}
-            <View className="flex-[2] items-center overflow-hidden ">
-                <View className="m-auto items-center justify-center">
-                    <IconoCaja/>
+            <View className="ml-4 mr-4 h-8 flex-1 flex-row border-t-2 border-gray-200">
+                {/* Esta va a ser la de la caja */}
+                <View className="flex-[2] items-center overflow-hidden">
+                    <View className="m-auto items-center justify-center">
+                        <IconoCaja />
+                    </View>
                 </View>
-            </View>
 
-            {/* Esta va a ser la de los textos */}
-            <View className="flex-[6]  justify-center ml-2">
-                <Text numberOfLines={1} className="font-black text-xl mb-2 text-wrap">Cocona bien helada</Text>
-                <Text numberOfLines={1} className="text-primary font-black text-base">$34.33</Text>
-            </View>
+                {/* Esta va a ser la de los textos */}
+                <View className="ml-2 flex-[6] justify-center">
+                    <Text
+                        numberOfLines={1}
+                        className="mb-2 text-wrap text-xl font-black">
+                        {nombre}
+                    </Text>
+                    <Text
+                        numberOfLines={1}
+                        className="text-base font-black text-primary">
+                        ${precio}
+                    </Text>
+                </View>
 
-            {/* Esta va a ser la de los iconos */}
-            <View className="flex-[3]  flex-row items-center">
-                <View className="flex-1  aspect-square m-auto items-center justify-center">
-                    <IconoPresionable onPress={()=>{}}>
-                        <IconoEditar/>
-                    </IconoPresionable>
-                </View>
-                <View className="flex-1  aspect-square">
-                    <IconoPresionable onPress={()=>{}}>
-                        <IconoBorrar/>
-                    </IconoPresionable>
+                {/* Esta va a ser la de los iconos */}
+                <View className="flex-[3] flex-row items-center">
+                    <View className="m-auto aspect-square flex-1 items-center justify-center">
+                        <IconoPresionable onPress={() => {}}>
+                            <IconoEditar />
+                        </IconoPresionable>
+                    </View>
+                    <View className="aspect-square flex-1">
+                        <IconoPresionable onPress={() => {}}>
+                            <IconoBorrar />
+                        </IconoPresionable>
+                    </View>
                 </View>
             </View>
-        </View>
         </View>
     );
 }
