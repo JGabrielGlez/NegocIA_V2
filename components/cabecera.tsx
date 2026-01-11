@@ -1,13 +1,16 @@
 import Feather from "@expo/vector-icons/Feather";
 import Octicons from "@expo/vector-icons/Octicons";
+import { router } from "expo-router";
 import { Text, View } from "react-native";
 import { IconoPresionable } from "./iconoPresionable";
 
 export default function Cabecera() {
     const iconSize: number = 24;
+
     const onPress = (): void => {};
     const onPressProductos = (): void => {
         // Esto me tiene que redirigir a la página de productos
+        router.push("/(main)/(navigation)/(ventas)/productos");
     };
 
     return (
@@ -31,11 +34,11 @@ export default function Cabecera() {
                     <Feather
                         name="message-square"
                         size={iconSize}
-                        color="black"
+                        color="black"   
                     />
                 </IconoPresionable>
 
-                <IconoPresionable onPress={() => {}}>
+                <IconoPresionable onPress={onPressProductos}>
                     <Feather name="box" size={iconSize} color="black" />
                 </IconoPresionable>
 

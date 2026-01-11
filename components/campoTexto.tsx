@@ -7,6 +7,7 @@ type props = {
     onChangeText?: (texto: string) => void;
     valueCampo?: string;
     esContrasena?: boolean;
+    esNumero?:boolean;
 };
 
 export default function CampoTexto({
@@ -15,11 +16,12 @@ export default function CampoTexto({
     onChangeText,
     valueCampo,
     esContrasena = false,
+    esNumero=false
 }: props) {
     return (
         <View>
             {etiqueta !== undefined && (
-                <Text className="pl-2 text-lg font-normal text-gray-400">
+                <Text className="pl-2 text-lg font-normal text-gray-600">
                     {etiqueta}
                 </Text>
             )}
@@ -29,6 +31,10 @@ export default function CampoTexto({
                 className="mb-2 rounded-2xl border-2 border-gray-200 pl-2"
                 placeholder={sugerencia}
                 secureTextEntry={esContrasena}
+                {...(esNumero &&{
+                    keyboardTyp:"decimal-pad",
+                    inputMode:"decimal"
+                })}
             />
         </View>
     );
