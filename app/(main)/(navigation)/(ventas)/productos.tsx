@@ -4,7 +4,7 @@ import CabeceraNavegacion from "@/components/cabeceraNavegacion";
 import CampoTexto from "@/components/campoTexto";
 import ItemProducto from "@/components/itemProducto";
 import BotonMasFlotante from "@/components/masFlotante";
-import { Key } from "lucide-react-native";
+import { useStore } from "@/store/useStore";
 import { useState } from "react";
 import {
     KeyboardAvoidingView,
@@ -20,9 +20,38 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 // También agregar el modal productos, para agregarlos
 export default function productos() {
+    // Estos son para los campos de texto visuales
     const [modalVisible, setModalVisible] = useState(false);
     const [nombreProducto, setNombreProducto] = useState("");
     const [precioProducto, setPrecioProducto] = useState("");
+
+    // Aquí va la logica de la store
+    // Traer todos los productos de esta
+    // Por defecto viene vacía
+    const productosDeStore = useStore((state) => state.productos);
+    const agregarProducto = useStore((state) => state.agregarProducto);
+    const eliminarProducto = useStore((state) => state.eliminarProducto);
+
+    // Método para el botón de guardar
+    const manejarGuardado = () => {
+        if (nombreProducto.trim() === "" || precioProducto === "") {
+            alert("Rellena todos los campos");
+            return;
+        }
+
+        // Si pasa ese ciclo significa que está todo correcto
+        // Guardamos en zustand
+        agregarProducto(nombreProducto, precioProducto);
+
+        // Ahora lo que se debe de hacer es vaciar todos los campos y posteriormente, renderizar el componente con los datos del elemento creado.
+        setPrecioProducto("");
+        setNombreProducto("");
+    };
+
+    const manejarEliminarProducto = (id: string) => {
+        eliminarProducto(id);
+    };
+
     const limpiarPrecio = (texto: string) => {
         // 1. Solo permitir números y un punto
 
@@ -60,14 +89,13 @@ export default function productos() {
             <Buscador filtrar={true} placeholder="Buscar productos..." />
 
             <ScrollView className="bg-white">
-                <ItemProducto nombre="Coca bien fría" precio={23} />
-                <ItemProducto nombre="Coca bien fría" precio={23} />
-                <ItemProducto nombre="Coca bien fría" precio={23} />
-                <ItemProducto nombre="Coca bien fría" precio={23} />
-                <ItemProducto nombre="Coca bien fría" precio={23} />
-                <ItemProducto nombre="Coca bien fría" precio={23} />
-                <ItemProducto nombre="Coca bien fría" precio={23} />
-                {/* ... otros items */}
+                {productosDeStore.map((item) => (
+                    <ItemProducto
+                        nombre={item.nombre}
+                        precio={item.precio}
+                        key={item.id}
+                    />
+                ))}
             </ScrollView>
 
             <BotonMasFlotante accion={() => setModalVisible(true)} />
@@ -101,7 +129,7 @@ export default function productos() {
                                 />
                                 <CampoTexto
                                     prefijo="$"
-                                    sugerencia="0.00" 
+                                    sugerencia="0.00"
                                     esNumero={true}
                                     etiqueta="Precio"
                                     valueCampo={precioProducto}
@@ -120,9 +148,7 @@ export default function productos() {
                                 </View>
                                 <View className="flex-1">
                                     <Boton
-                                        onPress={() => {
-                                            /* Aquí tu lógica de guardar */
-                                        }}
+                                        onPress={manejarGuardado}
                                         texto="Guardar"
                                     />
                                 </View>

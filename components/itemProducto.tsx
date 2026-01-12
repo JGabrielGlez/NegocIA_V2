@@ -9,9 +9,16 @@ import { IconoPresionable } from "./iconoPresionable";
 type props = {
     nombre: string;
     precio: number;
+    funcionEditar?: () => void;
+    funcionEliminar?: () => void;
 };
 
-export default function ItemProducto({ nombre, precio }: props) {
+export default function ItemProducto({
+    nombre,
+    precio,
+    funcionEditar,
+    funcionEliminar,
+}: props) {
     const IconoCaja = () => {
         return (
             <View className="justify-center rounded-xl bg-gray-300 p-3">
@@ -67,12 +74,18 @@ export default function ItemProducto({ nombre, precio }: props) {
                 {/* Esta va a ser la de los iconos */}
                 <View className="flex-[3] flex-row items-center">
                     <View className="m-auto aspect-square flex-1 items-center justify-center">
-                        <IconoPresionable onPress={() => {}}>
+                        <IconoPresionable
+                            onPress={() => {
+                                funcionEditar;
+                            }}>
                             <IconoEditar />
                         </IconoPresionable>
                     </View>
                     <View className="aspect-square flex-1">
-                        <IconoPresionable onPress={() => {}}>
+                        <IconoPresionable
+                            onPress={() => {
+                                funcionEliminar;
+                            }}>
                             <IconoBorrar />
                         </IconoPresionable>
                     </View>
