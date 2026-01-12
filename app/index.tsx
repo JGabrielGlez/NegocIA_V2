@@ -1,10 +1,14 @@
 import { Boton } from "@/components/Button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-
 export default function Index() {
+    // Esto es para borrar los datos de almacenamiento local
+
+    // TODO Eliminar esta línea cuando ya no esté en fase de desarrollo
+    AsyncStorage.clear().then(() => console.log("Todo listo Patrón"));
     const router = useRouter();
     const redireccionar = (): void => {
         router.replace("/(auth)/iniciar-sesion");
@@ -37,5 +41,4 @@ export default function Index() {
             <Boton onPress={redireccionar} texto="Empezar" />
         </SafeAreaView>
     );
-   
 }

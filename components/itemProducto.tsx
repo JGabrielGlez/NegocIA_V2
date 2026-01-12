@@ -76,7 +76,8 @@ export default function ItemProducto({
                     <View className="m-auto aspect-square flex-1 items-center justify-center">
                         <IconoPresionable
                             onPress={() => {
-                                funcionEditar;
+                                // Esto quiero decir que se ejecute la función si existe, no me funcionaba antes porque no puse los paréntesis, que hacen que la función se ejecute
+                                funcionEditar?.();
                             }}>
                             <IconoEditar />
                         </IconoPresionable>
@@ -84,7 +85,7 @@ export default function ItemProducto({
                     <View className="aspect-square flex-1">
                         <IconoPresionable
                             onPress={() => {
-                                funcionEliminar;
+                                funcionEliminar?.();
                             }}>
                             <IconoBorrar />
                         </IconoPresionable>

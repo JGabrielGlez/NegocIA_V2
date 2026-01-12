@@ -89,13 +89,20 @@ export default function productos() {
             <Buscador filtrar={true} placeholder="Buscar productos..." />
 
             <ScrollView className="bg-white">
-                {productosDeStore.map((item) => (
-                    <ItemProducto
-                        nombre={item.nombre}
-                        precio={item.precio}
-                        key={item.id}
-                    />
-                ))}
+                {productosDeStore.map(
+                    (item) => (
+                        (
+                            <ItemProducto
+                                nombre={item.nombre}
+                                precio={item.precio}
+                                key={item.id}
+                                funcionEliminar={() => {
+                                    manejarEliminarProducto(item.id);
+                                }}
+                            />
+                        )
+                    ),
+                )}
             </ScrollView>
 
             <BotonMasFlotante accion={() => setModalVisible(true)} />
