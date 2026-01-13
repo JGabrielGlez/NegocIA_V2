@@ -27,7 +27,7 @@ export default function nuevaVenta() {
                 <CabeceraNavegacion nombrePagina="Nueva Venta" />
                 <Buscador placeholder="Buscar producto..." filtrar={true} />
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                    <View className="flex-1 flex-row flex-wrap justify-evenly">
+                    <View className="flex-row flex-wrap justify-evenly">
                         {productosDeStore.map((item) => (
                             <TarjetaInfo
                                 esVenta={true}
@@ -47,7 +47,7 @@ export default function nuevaVenta() {
                             </TarjetaInfo>
                         ))}
                     </View>
-                    {/* En esta parte debo de poner la parte del cambio de la venta, lo que guarda los datos de la propia venta en sí. */}
+                    {/* En esta parte debo de poner la parte del cambio de la venta, lo que guarda los datos de la propia venta en */}
                 </ScrollView>
             </KeyboardAvoidingView>
         </SafeAreaView>
