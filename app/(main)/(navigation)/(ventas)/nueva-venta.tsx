@@ -4,13 +4,7 @@ import TarjetaInfo from "@/components/tarjetaInfo";
 import { estilos } from "@/constantes/estilos";
 import { useStore } from "@/store/useStore";
 import { Plus } from "lucide-react-native";
-import {
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // TODO  a la parte donde dice x productos, agregarle un modal o alguna ventana que me despliegue los productos seleccionados, ocupo pulir más el como se van a mostrar
@@ -21,15 +15,20 @@ export default function nuevaVenta() {
 
     return (
         <SafeAreaView className="flex-1">
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
+            <CabeceraNavegacion nombrePagina="Nueva Venta" />
+            <Buscador filtrar={true} placeholder="Buscar producto" />
+
+            <ScrollView
+                contentContainerStyle={{ flexGrow: 1, paddingBottom:80 }}
                 style={{ flex: 1 }}>
-                <CabeceraNavegacion nombrePagina="Nueva Venta" />
-                <Buscador placeholder="Buscar producto..." filtrar={true} />
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                    <View className="flex-row flex-wrap justify-evenly">
-                        {productosDeStore.map((item) => (
+                {/* Tengo que crear cada tarjeta, que recibirán un 
+            titulo, icono y las estadisticas quedarán pendientes */}
+                <View className="flex-1 flex-row flex-wrap justify-evenly">
+                    {productosDeStore.map((item) => (
+                        <View style={{ width: "40%", aspectRatio:1 }}>
                             <TarjetaInfo
+                                adaptable={true}
+                                key={item.id}
                                 esVenta={true}
                                 titulo={item.nombre}
                                 cuerpo={"$" + item.precio.toString()}>
@@ -37,19 +36,17 @@ export default function nuevaVenta() {
                                     <TouchableOpacity
                                         className="h-16 w-16 items-center justify-center rounded-full bg-primary"
                                         style={estilos.sombraNormal}
-                                        // Este debe de abrir la ventana modal para añadir los productos
                                         onPress={() => {
-                                            // En este debo agregar lo de nueva venta
+                                            // En este debo agregar lo de agregar prod al carrito
                                         }}>
                                         <Plus size={28} color="white" />
                                     </TouchableOpacity>
                                 }
                             </TarjetaInfo>
-                        ))}
-                    </View>
-                    {/* En esta parte debo de poner la parte del cambio de la venta, lo que guarda los datos de la propia venta en */}
-                </ScrollView>
-            </KeyboardAvoidingView>
+                        </View>
+                    ))}
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 }

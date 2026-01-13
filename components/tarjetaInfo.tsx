@@ -8,6 +8,7 @@ type props = {
     cuerpo: string;
     estadisticas?: string;
     esVenta?: boolean;
+    adaptable?:boolean;
 };
 
 export default function TarjetaInfo({
@@ -16,11 +17,14 @@ export default function TarjetaInfo({
     cuerpo,
     estadisticas,
     esVenta = false,
+    adaptable=false,
 }: props) {
     return (
         <View
-            className="mb-2 mt-2 aspect-square h-1/4 rounded-3xl bg-white p-2"
-            style={estilos.sombraNormal}>
+            className="mb-2 mt-2 h-1/4 aspect-square rounded-3xl bg-white p-2"
+            
+            // Si adaptable es falso, poner un height de 1/4, delc otnratio de un 100%
+            style={[estilos.sombraNormal, adaptable && {height:'100%'}]}>
             {/* Este es la cabecera del recuadro */}
             <View className="flex-2 m-2 h-1/3 flex-row">
                 <View className="flex-1 flex-row">
