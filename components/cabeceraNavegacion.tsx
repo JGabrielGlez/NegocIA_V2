@@ -4,6 +4,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { ReactNode } from "react";
 import { View, Text } from "react-native";
 import { IconoPresionable } from "./iconoPresionable";
+import { useRouter } from "expo-router";
 
 type props = {
     nombrePagina: string;
@@ -11,11 +12,12 @@ type props = {
 };
 
 export default function CabeceraNavegacion({ nombrePagina, children }: props) {
+    const router = useRouter();
     return (
         <View className="h-24 w-full bg-white border-gray-200">
             <View className="flex-1 flex-row items-center ml-4 mr-4">
                 <View className="flex-[2]">
-                    <IconoPresionable onPress={() => {}}>
+                    <IconoPresionable onPress={() => {router.back()}}>
                     <Feather name="arrow-left" size={36} color="black" />
                 </IconoPresionable>
                 </View>

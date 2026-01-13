@@ -7,6 +7,7 @@ type props = {
     titulo: string;
     cuerpo: string;
     estadisticas?: string;
+    esVenta?: boolean;
 };
 
 export default function TarjetaInfo({
@@ -14,6 +15,7 @@ export default function TarjetaInfo({
     titulo,
     cuerpo,
     estadisticas,
+    esVenta = false,
 }: props) {
     return (
         <View
@@ -26,14 +28,23 @@ export default function TarjetaInfo({
                         {titulo}
                     </Text>
                 </View>
-                <View className="aspect-square items-center justify-center rounded-full bg-primary/30">
-                    {children}
-                </View>
+                {!esVenta && (
+                    <View className="aspect-square items-center justify-center rounded-full bg-primary/30">
+                        {children}
+                    </View>
+                )}
             </View>
 
             {/* Este será el cuerpo del recuadro */}
-            <View className="m-2 flex-1">
-                <Text className="text-center text-2xl font-bold">{cuerpo}</Text>
+            <View className="m-2 flex-1 flex-row">
+                <Text className="flex-1 text-center text-2xl font-bold">
+                    {cuerpo}
+                </Text>
+                {esVenta && (
+                    <View className="aspect-square flex-1 items-center justify-center rounded-full bg-primary/30">
+                        {children}
+                    </View>
+                )}
             </View>
 
             {/* Este será el pie del recuadro, que quedará pendiente */}

@@ -4,10 +4,13 @@ import TarjetaInfo from "@/components/tarjetaInfo";
 import Feather from "@expo/vector-icons/Feather";
 import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 // Iconos a usar Feather: message-... download user
 // EvilIcons gear
 
 export default function dashboard() {
+    const router =  useRouter();
+
     const Icono = () => {
         return (
             <View>
@@ -19,7 +22,7 @@ export default function dashboard() {
     
 
     // Funcion por asignar
-    const nuevaVentaBoton = () => {};
+    const nuevaVentaBoton = () => {router.push("/(main)/(navigation)/(ventas)/nueva-venta")};
 
     return (
         <SafeAreaView className="flex-1">
