@@ -24,7 +24,7 @@ export default function TarjetaInfo({
             className="mb-2 mt-2 h-1/4 aspect-square rounded-3xl bg-white p-2"
             
             // Si adaptable es falso, poner un height de 1/4, delc otnratio de un 100%
-            style={[estilos.sombraNormal, adaptable && {height:'100%'}]}>
+            style={[estilos.sombraNormal, adaptable && {height:'100%', aspectRatio:1.}]}>
             {/* Este es la cabecera del recuadro */}
             <View className="flex-2 m-2 h-1/3 flex-row">
                 <View className="flex-1 flex-row">
