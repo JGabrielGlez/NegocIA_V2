@@ -29,6 +29,7 @@ export default function TarjetaInfo({
 <View style={esVenta && ({height:'50%'})} className="flex-row  items-start m-2 ">
     <View className="flex-1 mr-2 "> 
         <Text 
+            style={esVenta && ({color:'black', fontWeight:500})}
             numberOfLines={2} 
             ellipsizeMode="tail"
             className="text-lg font-semibold  text-red-800 leading-6"
@@ -46,7 +47,9 @@ export default function TarjetaInfo({
 
             {/* Este será el cuerpo del recuadro */}
             <View className="m-2 flex-1 flex-row ">
-                <Text className="flex-1  text-center text-xl font-bold">
+                <Text 
+                style={esVenta && ({color:'#16A34A', fontWeight:'bold', fontSize:20})}
+                className="flex-1  text-center text-xl font-bold">
                     {cuerpo}
                 </Text>
                 {esVenta && (

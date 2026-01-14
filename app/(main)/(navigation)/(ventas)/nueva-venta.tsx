@@ -1,10 +1,19 @@
 import Buscador from "@/components/buscador";
+import { Boton } from "@/components/Button";
 import CabeceraNavegacion from "@/components/cabeceraNavegacion";
+import CampoTexto from "@/components/campoTexto";
 import TarjetaInfo from "@/components/tarjetaInfo";
 import { estilos } from "@/constantes/estilos";
 import { useStore } from "@/store/useStore";
 import { Plus } from "lucide-react-native";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import {
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // TODO  a la parte donde dice x productos, agregarle un modal o alguna ventana que me despliegue los productos seleccionados, ocupo pulir más el como se van a mostrar
@@ -17,36 +26,82 @@ export default function nuevaVenta() {
         <SafeAreaView className="flex-1">
             <CabeceraNavegacion nombrePagina="Nueva Venta" />
             <Buscador filtrar={true} placeholder="Buscar producto" />
-
-            <ScrollView
-                contentContainerStyle={{ flexGrow: 1, paddingBottom:80 }}
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={{ flex: 1 }}>
-                {/* Tengo que crear cada tarjeta, que recibirán un 
+                <ScrollView
+                    contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
+                    style={{ flex: 1 }}>
+                    {/* Tengo que crear cada tarjeta, que recibirán un 
             titulo, icono y las estadisticas quedarán pendientes */}
-                <View className="flex-1 flex-row flex-wrap justify-evenly">
-                    {productosDeStore.map((item) => (
-                        <View key={'Venta-'+item.id} style={{ width: "45%", height:120,marginBottom:10 }}>
-                            <TarjetaInfo
-                                adaptable={true}
-                                key={item.id}
-                                esVenta={true}
-                                titulo={item.nombre}
-                                cuerpo={"$" + item.precio.toString()}>
-                                {
-                                    <TouchableOpacity
-                                        className="absolute bottom-12 h-14 w-14 items-center justify-center rounded-full bg-primary"
-                                        style={estilos.sombraNormal}
-                                        onPress={() => {
-                                            // En este debo agregar lo de agregar prod al carrito
-                                        }}>
-                                        <Plus size={28} color="white" />
-                                    </TouchableOpacity>
-                                }
-                            </TarjetaInfo>
-                        </View>
-                    ))}
+                    <View className="flex-1 flex-row flex-wrap justify-evenly">
+                        {productosDeStore.map((item) => (
+                            <View
+                                key={"Venta-" + item.id}
+                                style={{
+                                    width: "45%",
+                                    height: 120,
+                                    marginBottom: 10,
+                                }}>
+                                <TarjetaInfo
+                                    adaptable={true}
+                                    key={item.id}
+                                    esVenta={true}
+                                    titulo={item.nombre}
+                                    cuerpo={"$" + item.precio.toString()}>
+                                    {
+                                        <TouchableOpacity
+                                            className="absolute bottom-12 h-14 w-14 items-center justify-center rounded-full bg-primary"
+                                            style={estilos.sombraNormal}
+                                            onPress={() => {
+                                                // En este debo agregar lo de agregar prod al carrito
+                                            }}>
+                                            <Plus size={28} color="white" />
+                                        </TouchableOpacity>
+                                    }
+                                </TarjetaInfo>
+                            </View>
+                        ))}
+                    </View>
+
+                    {/* Este será el recuadro para dar el cambio y poner el boton de completar la venta
+                TODO más delante, agregar que a cada tarjeta, se vayan ordenando en seleccionadas y no seleccionadas, las que estén seleccionadas pasan a primeros lugares y en una esquina aparecerá un número indicando la cantidad de ese producto que se seleccionó; eso será lo único que pondré para no hacer otra ventana, aunque tengo que ver la forma de quitar un producto */}
+                    {/* TODO  El precio estará en medio de los dos botones, el de menos aparecerá una vez presionado el de más, y cada producto se irá ordenando, cada que se detecte un click en un producto distinto, para evitar problemas de que se quieren agregar 3 del mismo producto y este se mueva de lugar */}
+
+                    {/* Por ahora solo haré lo que es el diseño básico, de solo agregar */}
+                </ScrollView>
+
+                <View className="flex-1 justify-between bg-white pl-4 pr-4 pt-4">
+                    <Text className="pl-2 text-base font-normal text-gray-600">
+                        {" "}
+                        x productos
+                    </Text>
+                    <View className="flex-row justify-between">
+                        <Text className="pl-2 text-lg font-normal text-gray-600">
+                            Subtotal:
+                        </Text>
+                        <Text className="pl-2 text-lg font-normal text-gray-600">
+                            $342.32
+                        </Text>
+                    </View>
+                    <CampoTexto
+                        esNumero={true}
+                        etiqueta="Monto recibido"
+                        // Ese método debe de hacer la resta, si es menor, poner en color rojo, del contrario en verde
+                        onChangeText={() => {}}
+                        sugerencia=""
+                    />
+                    <View className="flex-row justify-between">
+                        <Text className="pl-2 text-lg font-normal text-gray-600">
+                            Cambio:
+                        </Text>
+                        <Text className="pl-2 text-lg font-extrabold text-primary">
+                            4232.23
+                        </Text>
+                    </View>
+                    <Boton onPress={() => {}} texto="Confirmar venta" />
                 </View>
-            </ScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     );
 }
