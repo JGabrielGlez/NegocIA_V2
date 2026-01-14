@@ -38,6 +38,11 @@ export const useStore = create<AppState>()(
                     { id: "asdasf", nombre: "Iced coffe", precio: 234 },
                     { id: "adfsdf", nombre: "Gansito", precio: 234 },
                     { id: "adasdf", nombre: "Tortuga", precio: 234 },
+                    { id: "adsdf", nombre: "Tortuga ninja rafaeasdfasdfasdfasdfaslo", precio: 234 },
+                    { id: "aasdf", nombre: "Tortuga ninja rafaelo", precio: 234 },
+                    { id: "dasdf", nombre: "Tortuga ninja rafaelo", precio: 234 },
+                    { id: "adasdfasdf", nombre: "Tortuga ninja rafaelo", precio: 234 },
+                    { id: "adasdasdff", nombre: "Tortuga ninja rafaelo", precio: 234 },
                 ],
                 ventas: [],
 

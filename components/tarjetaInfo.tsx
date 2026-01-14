@@ -21,31 +21,36 @@ export default function TarjetaInfo({
 }: props) {
     return (
         <View
-            className="mb-2 mt-2 h-1/4 aspect-square rounded-3xl bg-white p-2"
+            className="mb-2 mt-2 h-1/4  rounded-3xl bg-white p-2"
             
             // Si adaptable es falso, poner un height de 1/4, delc otnratio de un 100%
-            style={[estilos.sombraNormal, adaptable && {height:'100%', aspectRatio:1.}]}>
-            {/* Este es la cabecera del recuadro */}
-            <View className="flex-2 m-2 h-1/3 flex-row">
-                <View className="flex-1 flex-row">
-                    <Text className="whitespace-wrap text-lg font-semibold text-red-800">
-                        {titulo}
-                    </Text>
-                </View>
-                {!esVenta && (
-                    <View className="aspect-square items-center justify-center rounded-full bg-primary/30">
-                        {children}
-                    </View>
-                )}
-            </View>
+            style={[estilos.sombraNormal,!adaptable && {aspectRatio:1}, adaptable && {width:'100%',height:'100%'}]}>
+           {/* Este es la cabecera del recuadro */}
+<View style={esVenta && ({height:'50%'})} className="flex-row  items-start m-2 ">
+    <View className="flex-1 mr-2 "> 
+        <Text 
+            numberOfLines={2} 
+            ellipsizeMode="tail"
+            className="text-lg font-semibold  text-red-800 leading-6"
+        >
+            {titulo}
+        </Text>
+    </View>
+    
+    {!esVenta && (
+        <View className="h-10 w-10 items-center justify-center rounded-full bg-primary/30">
+            {children}
+        </View>
+    )}
+</View>
 
             {/* Este será el cuerpo del recuadro */}
-            <View className="m-2 flex-1 flex-row">
-                <Text className="flex-1 text-center text-2xl font-bold">
+            <View className="m-2 flex-1 flex-row ">
+                <Text className="flex-1  text-center text-xl font-bold">
                     {cuerpo}
                 </Text>
                 {esVenta && (
-                    <View className="aspect-square flex-1 items-center justify-center rounded-full bg-primary/30">
+                    <View className="aspect-square flex-1 items-center justify-center rounded-full">
                         {children}
                     </View>
                 )}

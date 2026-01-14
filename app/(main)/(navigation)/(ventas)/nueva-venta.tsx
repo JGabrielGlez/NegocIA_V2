@@ -25,7 +25,7 @@ export default function nuevaVenta() {
             titulo, icono y las estadisticas quedarán pendientes */}
                 <View className="flex-1 flex-row flex-wrap justify-evenly">
                     {productosDeStore.map((item) => (
-                        <View style={{ width: "40%", aspectRatio:1 }}>
+                        <View key={'Venta-'+item.id} style={{ width: "45%", height:120,marginBottom:10 }}>
                             <TarjetaInfo
                                 adaptable={true}
                                 key={item.id}
@@ -34,7 +34,7 @@ export default function nuevaVenta() {
                                 cuerpo={"$" + item.precio.toString()}>
                                 {
                                     <TouchableOpacity
-                                        className="h-16 w-16 items-center justify-center rounded-full bg-primary"
+                                        className="absolute bottom-12 h-14 w-14 items-center justify-center rounded-full bg-primary"
                                         style={estilos.sombraNormal}
                                         onPress={() => {
                                             // En este debo agregar lo de agregar prod al carrito
