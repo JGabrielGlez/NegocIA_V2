@@ -15,28 +15,24 @@ import {
     View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ItemVenta } from "@/store/types";
 
 // TODO  a la parte donde dice x productos, agregarle un modal o alguna ventana que me despliegue los productos seleccionados, ocupo pulir más el como se van a mostrar
 
 export default function nuevaVenta() {
     // En este punto ya tengo todos los productos cargados en memoria, solo falta mostrarlos
     const productosDeStore = useStore((state) => state.productos);
+    const cantidadDeProductosStore = useStore((state) =>
+        state.cantidadProductos(),
+    );
 
-
+    const vaciarCarritoStore = useStore((state) => state.vaciarCarrito);
+    const totalAPagarStore = useStore((state) => state.obtenerTotalCarrito());
+    const agregarAlCarrito = useStore((state) => state.agregarAlCarrito);
+    const carrito = useStore((state) => state.carrito);
     //------------ Constantes para la venta-------------------
-
-
-
 
     // El método de cada boton de agregar debe hacer lo siguiente:
     // --Crear un ItemVenta (interface), si el producto no existe dentro de todos los itemsVenta, agregarlo, del contrario, aumentarle 1 a su cantidad; obviamente el subtotal es cantidad por precio del producto
-
-
-    const agregarItemVenta = () =>{
-        // Primero debe buscar en el arreglo de ItemsVenta
-    }
-
 
     return (
         <SafeAreaView className="flex-1">
@@ -66,11 +62,15 @@ export default function nuevaVenta() {
                                     titulo={item.nombre}
                                     cuerpo={"$" + item.precio.toString()}>
                                     {
+                                        // TODO boton o algo para cancelar la venta por completo, creo que podría dividir la botonera para hacer eso
                                         <TouchableOpacity
                                             className="absolute bottom-12 h-14 w-14 items-center justify-center rounded-full bg-primary"
                                             style={estilos.sombraNormal}
                                             onPress={() => {
                                                 // En este debo agregar lo de agregar prod al carrito
+                                                {
+                                                    agregarAlCarrito(item.id);
+                                                }
                                             }}>
                                             <Plus size={28} color="white" />
                                         </TouchableOpacity>
@@ -90,14 +90,14 @@ export default function nuevaVenta() {
                 <View className="flex-1 justify-between bg-white pl-4 pr-4 pt-4">
                     <Text className="pl-2 text-base font-normal text-gray-600">
                         {" "}
-                        x productos
+                        {cantidadDeProductosStore} productos
                     </Text>
                     <View className="flex-row justify-between">
                         <Text className="pl-2 text-lg font-normal text-gray-600">
                             Subtotal:
                         </Text>
                         <Text className="pl-2 text-lg font-normal text-gray-600">
-                            $342.32
+                            ${totalAPagarStore.toFixed(2)}
                         </Text>
                     </View>
                     <CampoTexto
@@ -115,7 +115,21 @@ export default function nuevaVenta() {
                             4232.23
                         </Text>
                     </View>
-                    <Boton onPress={() => {}} texto="Confirmar venta" />
+                    <View className="flex-row flex-wrap justify-between">
+                        <View style={{ width: "30%" }}>
+                            {/* TODO   cambiar el boton de cancelar para que tenga otro color, en caso de verlo necesario.*/}
+                            <Boton
+                                onPress={() => {
+                                    vaciarCarritoStore();
+                                }}
+                                texto="Cancelar"
+                                colorDeFondo={true}
+                            />
+                        </View>
+                        <View style={{ width: "65%" }}>
+                            <Boton onPress={() => {}} texto="Confirmar venta" />
+                        </View>
+                    </View>
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView>

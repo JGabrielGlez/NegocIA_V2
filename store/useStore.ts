@@ -10,7 +10,10 @@ interface AppState {
     productos: Producto[];
     ventas: Venta[];
     carrito: ItemVenta[];
+
     obtenerTotalCarrito: () => number;
+    vaciarCarrito: () => void;
+    cantidadProductos: () => number;
 
     agregarAlCarrito: (idProducto: string) => void;
 
@@ -72,6 +75,17 @@ export const useStore = create<AppState>()(
                     },
                 ],
                 carrito: [],
+
+                vaciarCarrito: () =>
+                    set(() => ({
+                        carrito : [],
+                    })),
+
+                cantidadProductos: () =>
+                    get().carrito.reduce(
+                        (contador, productos) => contador + productos.cantidad,
+                        0,
+                    ),
 
                 agregarAlCarrito: (idProducto) =>
                     set((state) => {
