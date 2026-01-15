@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
-import { Producto, Venta } from "./types";
+import { ItemVenta, Producto, Venta } from "./types";
 // En este archivo se define qupe es lo que tiene la store de zustand, no se usa en otro lado
 
 interface AppState {
@@ -9,6 +9,12 @@ interface AppState {
     // Nota: como el archivo de types es un tipo declaration file, no es necesario hacer la importacion TS lo reconoce en automático
     productos: Producto[];
     ventas: Venta[];
+    carrito: ItemVenta[];
+
+    agregarAlCarrito: (idProducto: string) => void;
+
+    // TODO recibirá el string del id del producto y se reducirá su cantidad en 1, cuando llegue a 0, se elimina del carrito, eso checará siempre el método, que lo haré hasta el final
+    eliminarDelCarrito: (idProducto: string) => void;
 
     // CRUD básico
     agregarProducto: (nombre: string, precio: string) => void;
@@ -38,12 +44,82 @@ export const useStore = create<AppState>()(
                     { id: "asdasf", nombre: "Iced coffe", precio: 234 },
                     { id: "adfsdf", nombre: "Gansito", precio: 234 },
                     { id: "adasdf", nombre: "Tortuga", precio: 234 },
-                    { id: "adsdf", nombre: "Tortuga ninja rafaeasdfasdfasdfasdfaslo", precio: 234 },
-                    { id: "aasdf", nombre: "Tortuga ninja rafaelo", precio: 234 },
-                    { id: "dasdf", nombre: "Tortuga ninja rafaelo", precio: 234 },
-                    { id: "adasdfasdf", nombre: "Tortuga ninja rafaelo", precio: 234 },
-                    { id: "adasdasdff", nombre: "Tortuga ninja rafaelo", precio: 234 },
+                    {
+                        id: "adsdf",
+                        nombre: "Tortuga ninja rafaeasdfasdfasdfasdfaslo",
+                        precio: 234,
+                    },
+                    {
+                        id: "aasdf",
+                        nombre: "Tortuga ninja rafaelo",
+                        precio: 234,
+                    },
+                    {
+                        id: "dasdf",
+                        nombre: "Tortuga ninja rafaelo",
+                        precio: 234,
+                    },
+                    {
+                        id: "adasdfasdf",
+                        nombre: "Tortuga ninja rafaelo",
+                        precio: 234,
+                    },
+                    {
+                        id: "adasdasdff",
+                        nombre: "Tortuga ninja rafaelo",
+                        precio: 234,
+                    },
                 ],
+                carrito: [],
+
+                agregarAlCarrito: (idProducto) =>
+                    set((state) => {
+                        // Busco el producto dentro del carrito
+                        const existe = state.carrito.find(
+                            (productoBuscado: ItemVenta) =>
+                                productoBuscado.producto.id === idProducto,
+                        );
+
+                        // Ya tengo la manera de validar si existe, en caso de que no, se agrega ese item venta , en caso contrario, se aumenta su cantidad
+                        if (existe === undefined) {
+                            // Voy a buscar dentro del arreglo de productos, para traerme ese objeto en específico
+                            const productoSeleccionado = state.productos.find(
+                                (prod: Producto) => prod.id === idProducto,
+                            )!;
+
+                            const nuevoItemVenta = {
+                                producto: productoSeleccionado,
+                                cantidad: 1,
+                                subtotal: productoSeleccionado.precio,
+                            };
+
+                            // Ya tengo lo que es el producto, ahora me falta agregarlo al carrito
+                            return {
+                                // Ya tengo lo que es el producto, ahora me falta agregarlo al carrito
+                                carrito: [...state.carrito, nuevoItemVenta],
+                            };
+                        }
+
+                        // Este es el caso en el que ya exista dentro del carrito, por lo que debo de aumentarle a ese item su cantidad y
+                        return {
+                            carrito: state.carrito.map((item) =>
+                                item.producto.id === idProducto
+                                    ? {
+                                          ...item,
+                                          cantidad: item.cantidad + 1,
+                                          subtotal:
+                                              (item.cantidad + 1) *
+                                              item.producto.precio,
+                                      }
+                                    : item,
+                            ),
+                        };
+                    }),
+
+                eliminarDelCarrito(id) {
+                    return 0;
+                },
+
                 ventas: [],
 
                 // Estos son todos los métodos

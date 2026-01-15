@@ -15,12 +15,28 @@ import {
     View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ItemVenta } from "@/store/types";
 
 // TODO  a la parte donde dice x productos, agregarle un modal o alguna ventana que me despliegue los productos seleccionados, ocupo pulir más el como se van a mostrar
 
 export default function nuevaVenta() {
     // En este punto ya tengo todos los productos cargados en memoria, solo falta mostrarlos
     const productosDeStore = useStore((state) => state.productos);
+
+
+    //------------ Constantes para la venta-------------------
+
+
+
+
+    // El método de cada boton de agregar debe hacer lo siguiente:
+    // --Crear un ItemVenta (interface), si el producto no existe dentro de todos los itemsVenta, agregarlo, del contrario, aumentarle 1 a su cantidad; obviamente el subtotal es cantidad por precio del producto
+
+
+    const agregarItemVenta = () =>{
+        // Primero debe buscar en el arreglo de ItemsVenta
+    }
+
 
     return (
         <SafeAreaView className="flex-1">
