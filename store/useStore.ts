@@ -10,6 +10,7 @@ interface AppState {
     productos: Producto[];
     ventas: Venta[];
     carrito: ItemVenta[];
+    obtenerTotalCarrito: () => number;
 
     agregarAlCarrito: (idProducto: string) => void;
 
@@ -120,6 +121,13 @@ export const useStore = create<AppState>()(
                     return 0;
                 },
 
+                obtenerTotalCarrito: () =>
+                    // Con esto se obtiene el estado actual del carrito
+                    get().carrito.reduce(
+                        (acumulador, itemActual) =>
+                            acumulador + itemActual.subtotal,
+                        0,
+                    ),
                 ventas: [],
 
                 // Estos son todos los métodos
