@@ -6,6 +6,7 @@ import TarjetaInfo from "@/components/tarjetaInfo";
 import { estilos } from "@/constantes/estilos";
 import { useStore } from "@/store/useStore";
 import { Plus } from "lucide-react-native";
+import { useState } from "react";
 import {
     KeyboardAvoidingView,
     Platform,
@@ -25,10 +26,44 @@ export default function nuevaVenta() {
         state.cantidadProductos(),
     );
 
+    const [cambio, setCambio] = useState(0);
+
     const vaciarCarritoStore = useStore((state) => state.vaciarCarrito);
     const totalAPagarStore = useStore((state) => state.obtenerTotalCarrito());
     const agregarAlCarrito = useStore((state) => state.agregarAlCarrito);
     const carrito = useStore((state) => state.carrito);
+
+    const [montoRecibido, setMontoRecibido] = useState("");
+
+    // FIXME Al presionar el campo de texto, deja un padding feo por debajo, de que no regresa a su estado original
+    const limpiarPrecio = (texto: string) => {
+        // 1. Solo permitir números y un punto
+
+        let limpio = texto.replace(/[^0-9.]/g, "");
+
+        // 2. Controlar que no existan múltiples puntos
+
+        const partes = limpio.split(".");
+
+        if (partes.length > 2) {
+            limpio = partes[0] + "." + partes.slice(1).join("");
+        }
+
+        // 3. Limitar a máximo dos decimales si existe un punto
+
+        if (limpio.includes(".")) {
+            const [entero, decimal] = limpio.split(".");
+
+            // .slice(0, 2) corta cualquier número extra después del segundo decimal
+
+            limpio = `${entero}.${decimal.slice(0, 2)}`;
+        }
+
+        return limpio;
+    };
+
+    const montoNumerico = parseFloat(limpiarPrecio(montoRecibido)) || 0;
+    const cambioActualizado = montoNumerico - totalAPagarStore;
     //------------ Constantes para la venta-------------------
 
     // El método de cada boton de agregar debe hacer lo siguiente:
@@ -103,8 +138,9 @@ export default function nuevaVenta() {
                     <CampoTexto
                         esNumero={true}
                         etiqueta="Monto recibido"
+                        valueCampo={montoRecibido}
                         // Ese método debe de hacer la resta, si es menor, poner en color rojo, del contrario en verde
-                        onChangeText={() => {}}
+                        onChangeText={(texto) => setMontoRecibido(texto)}
                         sugerencia=""
                     />
                     <View className="flex-row justify-between">
@@ -112,7 +148,7 @@ export default function nuevaVenta() {
                             Cambio:
                         </Text>
                         <Text className="pl-2 text-lg font-extrabold text-primary">
-                            4232.23
+                            {cambioActualizado.toFixed(2)}
                         </Text>
                     </View>
                     <View className="flex-row flex-wrap justify-between">
@@ -121,6 +157,7 @@ export default function nuevaVenta() {
                             <Boton
                                 onPress={() => {
                                     vaciarCarritoStore();
+                                    setMontoRecibido("");
                                 }}
                                 texto="Cancelar"
                                 colorDeFondo={true}

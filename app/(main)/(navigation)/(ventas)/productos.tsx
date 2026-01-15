@@ -83,6 +83,8 @@ export default function productos() {
         setPrecioProducto(valorValidado); // Faltaba actualizar el estado
     };
 
+    
+
     return (
         <SafeAreaView className="flex-1">
             <CabeceraNavegacion nombrePagina="Productos" />
