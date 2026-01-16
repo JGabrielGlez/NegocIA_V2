@@ -6,7 +6,7 @@ import TarjetaInfo from "@/components/tarjetaInfo";
 import { estilos } from "@/constantes/estilos";
 import { useStore } from "@/store/useStore";
 import { Plus } from "lucide-react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     KeyboardAvoidingView,
     Platform,
@@ -19,19 +19,24 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 // TODO  a la parte donde dice x productos, agregarle un modal o alguna ventana que me despliegue los productos seleccionados, ocupo pulir más el como se van a mostrar
 
+// TODO si no hay productos registrados, no es posible crear nueva venta, mandar ese mensaje al usuario y redirigir a la de productos
 export default function nuevaVenta() {
     // En este punto ya tengo todos los productos cargados en memoria, solo falta mostrarlos
     const productosDeStore = useStore((state) => state.productos);
+    const agregarVenta = useStore((state) => state.agregarVenta);
     const cantidadDeProductosStore = useStore((state) =>
         state.cantidadProductos(),
     );
 
-    const [cambio, setCambio] = useState(0);
+    const ventas = useStore((state) => state.ventas);
+
+    useEffect(() => {
+        console.log("El arreglo de ventas cambió:", ventas);
+    }, [ventas]); // Se dispara cada vez que el arreglo 'ventas' se actualiza
 
     const vaciarCarritoStore = useStore((state) => state.vaciarCarrito);
     const totalAPagarStore = useStore((state) => state.obtenerTotalCarrito());
     const agregarAlCarrito = useStore((state) => state.agregarAlCarrito);
-    const carrito = useStore((state) => state.carrito);
 
     const [montoRecibido, setMontoRecibido] = useState("");
 
@@ -164,7 +169,24 @@ export default function nuevaVenta() {
                             />
                         </View>
                         <View style={{ width: "65%" }}>
-                            <Boton onPress={() => {}} texto="Confirmar venta" />
+                            <Boton
+                                onPress={() => {
+                                    // FIXME   AGREGAR VALIDACION PARA QUE SOLO SE EJECUTE ESTO SI EL MONTO RECIBIDO ES MAYOR O IGUAL QUE EL TOTAL
+                                    if (
+                                        cambioActualizado >= totalAPagarStore &&
+                                        totalAPagarStore > 0
+                                    ) {
+                                        (agregarVenta(),
+                                            vaciarCarritoStore(),
+                                            setMontoRecibido(""));
+                                    } else {
+                                        alert(
+                                            "El monto recibido es menor al total a pagar",
+                                        );
+                                    }
+                                }}
+                                texto="Confirmar venta"
+                            />
                         </View>
                     </View>
                 </View>

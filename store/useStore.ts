@@ -30,7 +30,7 @@ interface AppState {
 
     //  ------------------- VENTAS ---------------------
     // Una vez se imprima una venta, y se cobre, esta no se puede modificar por ningún motivo
-    agregarVenta: (venta: Venta) => void;
+    agregarVenta: () => void;
 
     // ---------------- Utilidades -------------------
     calcularVentasHoy: () => number;
@@ -78,7 +78,7 @@ export const useStore = create<AppState>()(
 
                 vaciarCarrito: () =>
                     set(() => ({
-                        carrito : [],
+                        carrito: [],
                     })),
 
                 cantidadProductos: () =>
@@ -184,9 +184,17 @@ export const useStore = create<AppState>()(
                     return productos.find((p) => p.id === id);
                 },
 
-                agregarVenta: (venta) =>
+                agregarVenta: () =>
                     set((state) => ({
-                        ventas: [...state.ventas, venta],
+                        ventas: [
+                            ...state.ventas,
+                            {
+                                id: `${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+                                fecha: new Date(),
+                                items: state.carrito,
+                                total: get().obtenerTotalCarrito(),
+                           },
+                        ],
                     })),
 
                 calcularVentasHoy: () => {
