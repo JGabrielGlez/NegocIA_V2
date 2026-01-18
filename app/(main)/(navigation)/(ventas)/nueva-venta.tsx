@@ -23,10 +23,24 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function nuevaVenta() {
     // En este punto ya tengo todos los productos cargados en memoria, solo falta mostrarlos
     const productosDeStore = useStore((state) => state.productos);
+    const storeGeneral = useStore((state) => state);
     const agregarVenta = useStore((state) => state.agregarVenta);
     const cantidadDeProductosStore = useStore((state) =>
         state.cantidadProductos(),
     );
+
+    const valoresStore = (): void => {
+        // Usamos JSON.stringify para que en la consola se vea el contenido
+        // y no solo "[object Object]"
+        console.log(
+            "Este es el carrito:",
+            JSON.stringify(storeGeneral.carrito, null, 2),
+        );
+        console.log(
+            "Estas son las ventas:",
+            JSON.stringify(storeGeneral.ventas, null, 2),
+        );
+    };
 
     const ventas = useStore((state) => state.ventas);
 
@@ -163,6 +177,8 @@ export default function nuevaVenta() {
                                 onPress={() => {
                                     vaciarCarritoStore();
                                     setMontoRecibido("");
+                                    valoresStore();
+                                    // Pondré esto unicamente para checar todas las variables de la store, para ver si persisten
                                 }}
                                 texto="Cancelar"
                                 colorDeFondo={true}

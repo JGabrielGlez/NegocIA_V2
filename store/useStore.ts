@@ -217,7 +217,7 @@ export const useStore = create<AppState>()(
                     return 0;
                 },
             }),
-
+            
             // esto es para la persistencia
             {
                 name: "inventario-storage", // Nombre único para la base de datos local

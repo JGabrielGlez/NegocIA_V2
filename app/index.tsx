@@ -8,7 +8,7 @@ export default function Index() {
     // Esto es para borrar los datos de almacenamiento local
 
     // TODO Eliminar esta línea cuando ya no esté en fase de desarrollo
-    AsyncStorage.clear().then(() => console.log("Todo listo Patrón"));
+    // AsyncStorage.clear().then(() => console.log("Todo listo Patrón"));
     const router = useRouter();
     const redireccionar = (): void => {
         router.replace("/(auth)/iniciar-sesion");
