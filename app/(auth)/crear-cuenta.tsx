@@ -1,7 +1,10 @@
 import { Boton } from "@/components/Button";
 import Login from "@/components/loginForm";
 import { useRouter } from "expo-router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    sendEmailVerification,
+} from "firebase/auth";
 import { useState } from "react";
 import {
     Alert,
@@ -15,6 +18,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { auth } from "../../firebase/firebaseConfig.js";
 
 export default function crearCuenta() {
+    const mensajeError: Record<string, string> = {
+        "auth/invalid-email": "El correo no es válido.",
+        "auth/weak-password": "La contraseña debe tener al menos 6 caracteres.",
+        "auth/email-already-in-use": "Este correo ya está registrado.",
+        "auth/too-many-requests":
+            "Se ha bloqueado la cuenta temporalmente por inicios de sesión fallidos, intente más tarde",
+        "auth/user-not-found": "Esta cuenta no existe",
+    };
+
     const [correo, setCorreo] = useState("");
     const [password, setPassword] = useState("");
 
@@ -28,11 +40,11 @@ export default function crearCuenta() {
 
     function cuentaRegistradaExitosamente() {
         Alert.alert(
-            "Ya eres parte de NegocIA",
-            "Tu cuenta se ha creado exitosamente",
+            "Ya casi eres parte de NegocIA",
+            "Revisa tu bandeja de entrada del correo (posiblemente caiga en la bandeja de SPAM) que ingresaste para verificar tu cuenta.",
             [
                 {
-                    text: "Continuar",
+                    text: "Aceptar",
                     onPress: () => {
                         router.replace("/(auth)/iniciar-sesion");
                     },
@@ -49,19 +61,34 @@ export default function crearCuenta() {
                 email,
                 password,
             );
+
             const user = userCredential.user;
-            console.log("Usuario registrado:", user);
+            //obtengo el usuario para enviarle el correo, como antes estaba vacío, no envíaba correo pq no habia a dónde enviarlo
+            await sendEmailVerification(user);
 
             // Redirigir a lo que es el inicio de sesión
             cuentaRegistradaExitosamente();
         } catch (error: any) {
-            const errorMessage = error.message;
-            console.error("Error al registrarse:", errorMessage);
-            // Maneja los errores, por ejemplo, mostrando un mensaje al usuario
+            let errorCapturado = error.code;
+            let mensaje = "";
+            if (correo === "" || password === "")
+                mensaje = "Rellenar todos los campos";
+            else {
+                mensaje =
+                    mensajeError[errorCapturado] ||
+                    "Error desconocido " + errorCapturado;
+            }
+
+            Alert.alert("Atención", mensaje, [
+                {
+                    text: "Aceptar",
+                },
+            ]);
         }
     };
 
     return (
+        // TODO quitaré el crear cuenta y más delante lo haré mediante una cuenta de google, añadiendo también lo que es mediante cuenta de icloud o gameCenter; por lo que debo omitir el manejo de errores ya que es trabajo extra que no debo de hacer si implementaré eso.
         <SafeAreaView style={{ flex: 1 }}>
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}

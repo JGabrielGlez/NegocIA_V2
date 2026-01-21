@@ -4,6 +4,7 @@ import Login from "@/components/loginForm";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import {
+    Alert,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
@@ -11,15 +12,59 @@ import {
     View,
 } from "react-native";
 
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 export default function iniciarSesion() {
     const router = useRouter();
-
-    const onPress = (): void => {
-        router.replace("/dashboard");
+    const mensajeError: Record<string, string> = {
+        "auth/too-many-requests":
+            "Se ha bloqueado la cuenta temporalmente por inicios de sesión fallidos, intente más tarde",
+        "auth/invalid-email": "El correo no es válido.",
+        "auth/invalid-credential": "Correo o contraseña inválidos",
     };
 
     const [correo, setCorreo] = useState("");
     const [password, setPassword] = useState("");
+
+    const onPress = (): void => {
+        const auth = getAuth();
+
+        signInWithEmailAndPassword(auth, correo, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                user.reload();
+                // ...
+                // FIXME esto es una forma de que algún atacante adivine qué correos están registrados, por lo que debo pensar si dejar este mensaje o no.
+                if (!user.emailVerified) {
+                    Alert.alert(
+                        "Acción necesaria",
+                        "Es necesario verificar la dirección de correo electrónico",
+                        [
+                            {
+                                text: "Aceptar",
+                            },
+                        ],
+                    );
+                    return;
+                }
+                console.log(user);
+                router.replace("/dashboard");
+            })
+            .catch((error: any) => {
+                let mensaje = mensajeError[error.code];
+                console.log(error.code);
+
+                if (correo === "" || password === "")
+                    mensaje = "Rellenar todos los campos";
+
+                Alert.alert("Error al inciar sesión", mensaje, [
+                    {
+                        text: "Aceptar",
+                    },
+                ]);
+            });
+    };
 
     return (
         <KeyboardAvoidingView
