@@ -29,7 +29,8 @@ export default function iniciarSesion() {
     const [correo, setCorreo] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const onPress = async (): Promise<void> => {
+
+    const funcionBoton = async (): Promise<void> => {
         // Validación antes de llamar a Firebase
         if (correo === "" || password === "") {
             Alert.alert("Error", "Por favor, rellena todos los campos.");
@@ -67,17 +68,20 @@ export default function iniciarSesion() {
                 setIsLoading(false);
                 return;
             }
+            setIsLoading(false);
             // Si pasa hasta aquí es porque está todo bien
             router.replace("/dashboard");
         } catch (error: any) {
             const mensaje =
                 mensajeError[error.code] || "Error inesperado " + error.code;
             Alert.alert("Error al iniciar sesión", mensaje, [
-                { text: "Aceptar" },
+                {
+                    text: "Aceptar",
+                    onPress: () => {
+                        setIsLoading(false);
+                    },
+                },
             ]);
-        } finally {
-            // Siempre regresar al estado normal el boton
-            setIsLoading(false);
         }
     };
 
@@ -107,13 +111,15 @@ export default function iniciarSesion() {
                         </Link>
 
                         <Boton
-                            onPress={onPress}
+                            onPress={funcionBoton}
                             texto="Iniciar Sesión"
                             disabled={isLoading}
                         />
                         <Divisor />
                         <Boton
-                            onPress={onPress}
+                            onPress={() => {
+                                // TODO autenticación conn Google
+                            }}
                             colorDeFondo={true}
                             texto="Continuar con Google"
                         />

@@ -17,18 +17,21 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { auth } from "../../firebase/firebaseConfig.js";
 
+// FIXME quitar todos los espacios tanto al inicio como al final de lo que es el correo, para evitar confusiones con los usuarios, ya que al pegar un correo, se le agrega un espacio al final, cosa que la app marca como correo inválido
+
 export default function crearCuenta() {
     const mensajeError: Record<string, string> = {
         "auth/invalid-email": "El correo no es válido.",
         "auth/weak-password": "La contraseña debe tener al menos 6 caracteres.",
         "auth/email-already-in-use": "Este correo ya está registrado.",
         "auth/too-many-requests":
-            "Se ha bloqueado la cuenta temporalmente por inicios de sesión fallidos, intente más tarde",
+            "Se ha bloqueado la cuenta temporalmente por actividad sospechosa, intente más tarde",
         "auth/user-not-found": "Esta cuenta no existe",
     };
 
     const [correo, setCorreo] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const manejarSetCorreo = (texto: string) => {
         setCorreo(texto);
@@ -46,6 +49,7 @@ export default function crearCuenta() {
                 {
                     text: "Aceptar",
                     onPress: () => {
+                        setIsLoading(false);
                         router.replace("/(auth)/iniciar-sesion");
                     },
                 },
@@ -55,6 +59,8 @@ export default function crearCuenta() {
     }
 
     const signUp = async (email: string, password: string) => {
+        if (isLoading) return;
+        setIsLoading(true);
         try {
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
@@ -82,6 +88,9 @@ export default function crearCuenta() {
             Alert.alert("Atención", mensaje, [
                 {
                     text: "Aceptar",
+                    onPress: () => {
+                        setIsLoading(false);
+                    },
                 },
             ]);
         }
@@ -110,6 +119,7 @@ export default function crearCuenta() {
                             setPassword={setPassword}
                             crearCuenta={true}>
                             <Boton
+                                disabled={isLoading}
                                 onPress={() => {
                                     // Debe mandar toda la información de los botones que están dentro de login para mandarlos al método que manda los datos a Firebase
 
