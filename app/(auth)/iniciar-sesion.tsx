@@ -2,6 +2,11 @@ import { Boton } from "@/components/Button";
 import Divisor from "@/components/divisor";
 import Login from "@/components/loginForm";
 import { Link, useRouter } from "expo-router";
+import {
+    getAuth,
+    sendEmailVerification,
+    signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useState } from "react";
 import {
     Alert,
@@ -11,8 +16,6 @@ import {
     Text,
     View,
 } from "react-native";
-
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function iniciarSesion() {
     const router = useRouter();
@@ -25,45 +28,57 @@ export default function iniciarSesion() {
 
     const [correo, setCorreo] = useState("");
     const [password, setPassword] = useState("");
-
-    const onPress = (): void => {
+    const [isLoading, setIsLoading] = useState(false);
+    const onPress = async (): Promise<void> => {
+        // Validación antes de llamar a Firebase
+        if (correo === "" || password === "") {
+            Alert.alert("Error", "Por favor, rellena todos los campos.");
+            return;
+        }
+        // Una vez pasa, significa que hay algo escrito en ambos lados
+        // por lo que se prosigue a usar la auth y a bloquear el estado del boton
         const auth = getAuth();
+        setIsLoading(true);
 
-        signInWithEmailAndPassword(auth, correo, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                user.reload();
-                // ...
-                // FIXME esto es una forma de que algún atacante adivine qué correos están registrados, por lo que debo pensar si dejar este mensaje o no.
-                if (!user.emailVerified) {
-                    Alert.alert(
-                        "Acción necesaria",
-                        "Es necesario verificar la dirección de correo electrónico",
-                        [
-                            {
-                                text: "Aceptar",
-                            },
-                        ],
-                    );
-                    return;
-                }
-                console.log(user);
-                router.replace("/dashboard");
-            })
-            .catch((error: any) => {
-                let mensaje = mensajeError[error.code];
-                console.log(error.code);
+        // Aquí se empieza con la validación de todos los errores y con las funciones asíncronas
+        try {
+            const userCredential = await signInWithEmailAndPassword(
+                auth,
+                correo,
+                password,
+            );
+            const user = userCredential.user;
 
-                if (correo === "" || password === "")
-                    mensaje = "Rellenar todos los campos";
+            // Se actualiza la info del usuario, esto es para verificar el estado del correo que esté validado
+            await user.reload();
 
-                Alert.alert("Error al inciar sesión", mensaje, [
-                    {
-                        text: "Aceptar",
-                    },
-                ]);
-            });
+            if (!user.emailVerified) {
+                Alert.alert(
+                    "Acción necesaria",
+                    "Es necesario verificar la dirección de correo electrónico",
+                    [
+                        { text: "Aceptar" },
+                        {
+                            text: "Reenviar correo",
+                            onPress: () => sendEmailVerification(user),
+                        },
+                    ],
+                );
+                setIsLoading(false);
+                return;
+            }
+            // Si pasa hasta aquí es porque está todo bien
+            router.replace("/dashboard");
+        } catch (error: any) {
+            const mensaje =
+                mensajeError[error.code] || "Error inesperado " + error.code;
+            Alert.alert("Error al iniciar sesión", mensaje, [
+                { text: "Aceptar" },
+            ]);
+        } finally {
+            // Siempre regresar al estado normal el boton
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -91,7 +106,11 @@ export default function iniciarSesion() {
                             ¿Olvidaste tu contraseña?
                         </Link>
 
-                        <Boton onPress={onPress} texto="Iniciar Sesión" />
+                        <Boton
+                            onPress={onPress}
+                            texto="Iniciar Sesión"
+                            disabled={isLoading}
+                        />
                         <Divisor />
                         <Boton
                             onPress={onPress}
