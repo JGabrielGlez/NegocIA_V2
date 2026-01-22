@@ -17,6 +17,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+// FIXME quitarle el safeAreaview y dejarle mejor un padding, que al ponerle elmonto, se cambia muy mal
+
 // TODO  a la parte donde dice x productos, agregarle un modal o alguna ventana que me despliegue los productos seleccionados, ocupo pulir más el como se van a mostrar
 
 // TODO si no hay productos registrados, no es posible crear nueva venta, mandar ese mensaje al usuario y redirigir a la de productos
