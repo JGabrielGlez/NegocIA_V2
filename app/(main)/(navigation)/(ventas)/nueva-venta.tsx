@@ -188,8 +188,12 @@ export default function nuevaVenta() {
                             <Boton
                                 onPress={() => {
                                     // FIXME   AGREGAR VALIDACION PARA QUE SOLO SE EJECUTE ESTO SI EL MONTO RECIBIDO ES MAYOR O IGUAL QUE EL TOTAL
+                                    {
+                                        console.log(montoNumerico);
+                                        console.log(totalAPagarStore);
+                                    }
                                     if (
-                                        cambioActualizado >= totalAPagarStore &&
+                                        montoNumerico >= totalAPagarStore &&
                                         totalAPagarStore > 0
                                     ) {
                                         (agregarVenta(),
