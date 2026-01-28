@@ -31,9 +31,21 @@ export default function iniciarSesion() {
     const [isLoading, setIsLoading] = useState(false);
 
     const funcionBoton = async (): Promise<void> => {
+        if (isLoading) return;
+
+        setIsLoading(true);
+
         // Validación antes de llamar a Firebase
         if (correo === "" || password === "") {
-            Alert.alert("Error", "Por favor, rellena todos los campos.");
+            Alert.alert("Error", "Por favor, rellena todos los campos.", [
+                {
+                    text: "Aceptar",
+                    onPress: () => {
+                        setIsLoading(false);
+                    },
+                },
+            ]);
+
             return;
         }
         // Una vez pasa, significa que hay algo escrito en ambos lados
