@@ -1,15 +1,11 @@
 import { Boton } from "@/components/Button";
 import Divisor from "@/components/divisor";
 import Login from "@/components/loginForm";
+import { useAuthStore } from "@/store/useAuthStore";
 import { Link, useRouter } from "expo-router";
-import {
-    getAuth,
-    sendEmailVerification,
-    signInWithEmailAndPassword,
-} from "firebase/auth";
 import { useState } from "react";
+
 import {
-    Alert,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
@@ -20,10 +16,14 @@ import {
 export default function iniciarSesion() {
     const router = useRouter();
 
+    const [correo, setCorreo] = useState("");
+    const [password, setPassword] = useState("");
 
-    const funcionBoton = async (): Promise<void> => {
-       
-    };
+    // Funciones de la store de autenticación
+    const funcionBoton = useAuthStore().iniciarSesion;
+    const isLoading = useAuthStore().isLoading;
+    const setIsLoading = useAuthStore().setIsLoading;
+    
 
     return (
         <KeyboardAvoidingView
@@ -51,7 +51,11 @@ export default function iniciarSesion() {
                         </Link>
 
                         <Boton
-                            onPress={funcionBoton}
+                            onPress={() => {
+                                
+
+                                funcionBoton(correo,password,router);
+                            }}
                             texto="Iniciar Sesión"
                             disabled={isLoading}
                         />

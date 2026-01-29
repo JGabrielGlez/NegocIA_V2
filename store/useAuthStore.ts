@@ -42,7 +42,7 @@ export const useAuthStore = create<AuthState>()(
             usuario: null,
             isLoading: false,
             setIsLoading: (loading) => {
-                get().setAuthData({ isLoading: true });
+                get().setAuthData({ isLoading: loading });
             },
 
             setAuthData: (datos) => set(datos),
@@ -90,14 +90,22 @@ export const useAuthStore = create<AuthState>()(
                             "Acción necesaria",
                             "Es necesario verificar la dirección de correo electrónico",
                             [
-                                { text: "Aceptar" },
+                                {
+                                    text: "Aceptar",
+                                    onPress: () => {
+                                        get().setIsLoading(false);
+                                    },
+                                },
                                 {
                                     text: "Reenviar correo",
-                                    onPress: () => sendEmailVerification(user),
+                                    onPress: () => {
+                                        (sendEmailVerification(user),
+                                            get().setIsLoading(false));
+                                    },
                                 },
                             ],
                         );
-                        get().setIsLoading(false);
+
                         return;
                     }
                     get().setIsLoading(false);
