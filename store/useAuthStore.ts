@@ -4,6 +4,7 @@ import {
     getAuth,
     sendEmailVerification,
     signInWithEmailAndPassword,
+    signOut,
     User,
 } from "firebase/auth";
 import { Alert } from "react-native";
@@ -117,7 +118,15 @@ export const useAuthStore = create<AuthState>()(
                 }
             },
 
-            cerrarSesion: async () => {},
+            cerrarSesion: async () => {
+                const auth = getAuth();
+                try {
+                    await signOut(auth); //cierra sesión en el servidor
+                    get().setAuthData({ usuario: null }); //cierra sesión localmente
+                } catch (error: any) {
+                    console.log(error.code);
+                }
+            },
         }),
         {
             name: "sesion-storage",
