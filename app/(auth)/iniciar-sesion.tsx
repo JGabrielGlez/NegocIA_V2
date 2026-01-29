@@ -20,6 +20,7 @@ export default function iniciarSesion() {
     const [password, setPassword] = useState("");
 
     // Funciones de la store de autenticación
+    const usuario = useAuthStore((state) => state.usuario?.email);
     const funcionBoton = useAuthStore().iniciarSesion;
     const isLoading = useAuthStore().isLoading;
     const setIsLoading = useAuthStore().setIsLoading;
@@ -60,7 +61,8 @@ export default function iniciarSesion() {
                         <Divisor />
                         <Boton
                             onPress={() => {
-                                setIsLoading(false);
+                                
+
                                 // TODO autenticación conn Google
                             }}
                             colorDeFondo={true}

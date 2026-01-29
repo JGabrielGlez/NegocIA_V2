@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/store/useAuthStore";
 import Feather from "@expo/vector-icons/Feather";
 import Octicons from "@expo/vector-icons/Octicons";
 import { router } from "expo-router";
@@ -6,8 +7,16 @@ import { IconoPresionable } from "./iconoPresionable";
 
 export default function Cabecera() {
     const iconSize: number = 24;
+    const cerrarSesion = useAuthStore().cerrarSesion;
 
-    const onPress = (): void => {};
+    const onPress = async (): Promise<void> => {
+        // De momento será para cerrar la sesión
+        await cerrarSesion(router);
+        console.log("Cerrando sesión");
+
+        // 
+        console.log(useAuthStore.getState().usuario?.email);
+    };
     const onPressProductos = (): void => {
         // Esto me tiene que redirigir a la página de productos
         router.push("/(main)/(navigation)/(ventas)/productos");
@@ -34,7 +43,7 @@ export default function Cabecera() {
                     <Feather
                         name="message-square"
                         size={iconSize}
-                        color="black"   
+                        color="black"
                     />
                 </IconoPresionable>
 

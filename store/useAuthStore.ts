@@ -26,7 +26,7 @@ interface AuthState {
         password: string,
         router: Router,
     ) => Promise<void>;
-    cerrarSesion: () => Promise<void>;
+    cerrarSesion: (router: Router) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -100,12 +100,11 @@ export const useAuthStore = create<AuthState>()(
                                 },
                                 {
                                     text: "Reenviar correo",
-                                    onPress: async() => {
+                                    onPress: async () => {
                                         try {
                                             await sendEmailVerification(user);
                                         } catch (error: any) {
                                             console.log(error.message);
-                                            
                                         } finally {
                                             get().setIsLoading(false);
                                         }
@@ -134,11 +133,12 @@ export const useAuthStore = create<AuthState>()(
                 }
             },
 
-            cerrarSesion: async () => {
+            cerrarSesion: async (router: Router) => {
                 const auth = getAuth();
                 try {
                     await signOut(auth); //cierra sesión en el servidor
                     get().setAuthData({ usuario: null }); //cierra sesión localmente
+                    router.replace("/(auth)/iniciar-sesion");
                 } catch (error: any) {
                     console.log(error.code);
                 }
