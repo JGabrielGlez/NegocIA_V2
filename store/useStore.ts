@@ -224,5 +224,5 @@ export const useStore = create<AppState>()(
                 storage: createJSONStorage(() => AsyncStorage), // Configuramos para React Native
             },
         ),
-    ),
+    )  ,
 );
