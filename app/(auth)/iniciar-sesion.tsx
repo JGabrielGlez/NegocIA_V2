@@ -23,7 +23,6 @@ export default function iniciarSesion() {
     const funcionBoton = useAuthStore().iniciarSesion;
     const isLoading = useAuthStore().isLoading;
     const setIsLoading = useAuthStore().setIsLoading;
-    
 
     return (
         <KeyboardAvoidingView
@@ -52,9 +51,8 @@ export default function iniciarSesion() {
 
                         <Boton
                             onPress={() => {
-                                
-
-                                funcionBoton(correo,password,router);
+                                if (isLoading) return;
+                                funcionBoton(correo, password, router);
                             }}
                             texto="Iniciar Sesión"
                             disabled={isLoading}
@@ -62,6 +60,7 @@ export default function iniciarSesion() {
                         <Divisor />
                         <Boton
                             onPress={() => {
+                                setIsLoading(false);
                                 // TODO autenticación conn Google
                             }}
                             colorDeFondo={true}

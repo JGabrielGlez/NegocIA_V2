@@ -40,12 +40,15 @@ export const useAuthStore = create<AuthState>()(
             },
 
             usuario: null,
+
             isLoading: false,
+
             setIsLoading: (loading) => {
                 get().setAuthData({ isLoading: loading });
             },
 
             setAuthData: (datos) => set(datos),
+
             iniciarSesion: async (correo, password, router) => {
                 if (get().isLoading) return;
                 get().setIsLoading(true);
@@ -70,7 +73,6 @@ export const useAuthStore = create<AuthState>()(
                 // Una vez pasa, significa que hay algo escrito en ambos lados
                 // por lo que se prosigue a usar la auth y a bloquear el estado del boton
                 const auth = getAuth();
-                get().setIsLoading(true);
 
                 // Aquí se empieza con la validación de todos los errores y con las funciones asíncronas
                 try {
@@ -98,9 +100,15 @@ export const useAuthStore = create<AuthState>()(
                                 },
                                 {
                                     text: "Reenviar correo",
-                                    onPress: () => {
-                                        (sendEmailVerification(user),
-                                            get().setIsLoading(false));
+                                    onPress: async() => {
+                                        try {
+                                            await sendEmailVerification(user);
+                                        } catch (error: any) {
+                                            console.log(error.message);
+                                            
+                                        } finally {
+                                            get().setIsLoading(false);
+                                        }
                                     },
                                 },
                             ],
