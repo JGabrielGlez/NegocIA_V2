@@ -4,7 +4,7 @@ import Login from "@/components/loginForm";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
-
+// FIXME agregar los demás mensajes de cuando incias sesion o poner uno genérico 
 import {
     KeyboardAvoidingView,
     Platform,
@@ -61,7 +61,7 @@ export default function iniciarSesion() {
                         <Divisor />
                         <Boton
                             onPress={() => {
-                                
+                                setIsLoading(false);
 
                                 // TODO autenticación conn Google
                             }}
