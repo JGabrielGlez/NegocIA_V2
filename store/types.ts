@@ -32,7 +32,7 @@ export interface Usuario {
     id: string;
     correo: string;
     nombre: string;
-    negocio: string;
+    negocio?: string;
     plan: "GRATIS" | "PRO";
     consultasIA_mes: number;
 }

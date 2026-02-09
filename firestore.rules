@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 1. REGLA PARA USUARIOS
+    // El ID del documento debe ser el UID del usuario de Auth
+    match /usuarios/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // 2. REGLA PARA PRODUCTOS
+    match /productos/{productoId} {
+      // Para leer, actualizar o borrar, el campo usuarioId debe ser el tuyo
+      allow read, update, delete: if request.auth != null && resource.data.usuarioId == request.auth.uid;
+      // Para crear, debes estar logueado y asignar tu propio UID al campo usuarioId
+      allow create: if request.auth != null && request.resource.data.usuarioId == request.auth.uid;
+    }
+
+    // 3. REGLA PARA VENTAS
+    match /ventas/{ventaId} {
+      // Misma lógica: solo el dueño de la etiqueta usuarioId accede
+      allow read, update, delete: if request.auth != null && resource.data.usuarioId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.usuarioId == request.auth.uid;
+    }
+    
+    // BLOQUEO GLOBAL (Opcional pero recomendado)
+    // Bloquea cualquier otra colección que no hayamos definido arriba
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
