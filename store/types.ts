@@ -2,7 +2,7 @@
 
 // Lo que hace es definir como son los productos, se usa en la lista de productos, agregar producto, y buscar producto
 export interface Producto {
-    id: string;
+    id?: string;
     nombre: string;
     precio: number;
     categoria?: string; //será una función de la que me preocuparé más delante
@@ -19,7 +19,7 @@ export interface ItemVenta {
 
 // Esto lo que hace es registrar la transacción completa, se usará como el historial de ventas, reportes, cálculo de totales, captando su fecha
 export interface Venta {
-    id: string;
+    id?: string;
     fecha: Date;
     items: ItemVenta[];
     total: number;
@@ -29,10 +29,26 @@ export interface Venta {
 
 // Define la informacion del duelo, su perfil para verificar qué tipo de plan tiene, sus límites de IA
 export interface Usuario {
-    id: string;
+    id?: string; // le pongo opcional, ya que su id es generado por firebase una vez se envía
     correo: string;
     nombre: string;
     negocio?: string;
     plan: "GRATIS" | "PRO";
-    consultasIA_mes: number;
+    creditos: number;
 }
+
+
+export interface ProductoFirestore extends Producto {
+    usuarioId: string;
+    fechaAgregado?: any;
+}
+
+export interface VentaFirestore extends Venta {
+    usuarioID: string;
+}
+
+export const COLLECTIONS = {
+    PRODUCTOS: "productos",
+    USUARIOS: "usuarios",
+    VENTAS: "ventas",
+} as const;
