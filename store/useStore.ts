@@ -21,7 +21,7 @@ interface AppState {
     eliminarDelCarrito: (idProducto: string) => void;
 
     // CRUD básico
-    agregarProducto: (nombre: string, precio: number) => void;
+    agregarProducto: (prod: Producto) => void;
     eliminarProducto: (id: string) => void;
 
     // el partial sirve para actualizar solo x o x's cosas del objeto, sin necesidad de estar haciendo un nuevo método para cuando se quiera cambiar solo el nombre, precio, etc.
@@ -145,16 +145,9 @@ export const useStore = create<AppState>()(
                 ventas: [],
 
                 // Estos son todos los métodos
-                agregarProducto: (nombre, precio) =>
+                agregarProducto: (productoCompleto) =>
                     set((state) => ({
-                        productos: [
-                            ...state.productos,
-                            {
-                                id: `${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-                                nombre,
-                                precio,
-                            },
-                        ],
+                        productos: [...state.productos, productoCompleto],
                     })),
 
                 eliminarProducto: (id) =>

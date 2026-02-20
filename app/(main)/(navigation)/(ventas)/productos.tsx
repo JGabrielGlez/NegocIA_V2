@@ -4,6 +4,7 @@ import CabeceraNavegacion from "@/components/cabeceraNavegacion";
 import CampoTexto from "@/components/campoTexto";
 import ItemProducto from "@/components/itemProducto";
 import BotonMasFlotante from "@/components/masFlotante";
+import { databaseService } from "@/firebase/databaseService";
 import { Producto } from "@/store/types";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useStore } from "@/store/useStore";
@@ -33,34 +34,68 @@ export default function productos() {
     const productosDeStore = useStore((state) => state.productos);
     const agregarProducto = useStore((state) => state.agregarProducto);
     const eliminarProducto = useStore((state) => state.eliminarProducto);
-
+    const servicios = databaseService;
     // Esto es para insertar el id del usuario dentro de cada producto
     const usuario = useAuthStore((state) => state.usuario);
 
     // Método para el botón de guardar
     const manejarGuardado = async () => {
-        if (!usuario) return;
+        // 1. Validaciones iniciales
+        if (!usuario) {
+            alert("Sesión no válida");
+            return;
+        }
+
         if (nombreProducto.trim() === "" || precioProducto === "") {
             alert("Rellena todos los campos");
             return;
         }
+
         const precioProductoParsed = parseFloat(precioProducto);
-        const nuevoProducto: Producto = {
-            nombre: nombreProducto,
-            precio: precioProductoParsed,
-        };
+        if (isNaN(precioProductoParsed)) {
+            alert("El precio debe ser un número válido");
+            return;
+        }
 
-        // Si pasa ese ciclo significa que está todo correcto
-        // Guardamos en zustand
-        agregarProducto(nombreProducto, precioProductoParsed);
+        // 2. Iniciamos el proceso con seguridad
+        try {
+            // Podrías poner un setIsLoading(true) aquí
 
-        // Ahora lo que se debe de hacer es vaciar todos los campos y posteriormente, renderizar el componente con los datos del elemento creado.
-        setPrecioProducto("");
-        setNombreProducto("");
+            const nuevoProducto: Producto = {
+                nombre: nombreProducto.trim(),
+                precio: precioProductoParsed,
+                uid: usuario.uid, // Ya validamos arriba que usuario existe, no hace falta el ?
+            };
+
+            // 3. Llamada al servicio (AQUÍ se obtiene el ID)
+            // en esta parte se agrega a firestore
+            const idGenerado = await servicios.addProducto(nuevoProducto);
+
+            // 4. Guardamos en Zustand
+            // TIP: Es mejor pasar el ID generado para que tu ScrollView tenga su KEY única
+            agregarProducto({
+                ...nuevoProducto, // Trae nombre, precio y uid
+                id: idGenerado, // Le agregamos el ID de Firebase
+            });
+
+            // 5. Solo si todo lo anterior salió BIEN, limpiamos los campos
+            setPrecioProducto("");
+            setNombreProducto("");
+        } catch (error) {
+            // Si Firebase falla, el código salta aquí y NO se limpian los campos
+            // permitiendo al usuario intentar de nuevo sin borrar lo que escribió.
+            console.error("Error al guardar:", error);
+            alert("No se pudo guardar el producto. Revisa tu conexión.");
+        } finally {
+            // Podrías poner un setIsLoading(false) aquí
+        }
     };
+    const manejarEliminarProducto = async (id: string) => {
+        try {
+            // Debo eliminar de firestore
 
-    const manejarEliminarProducto = (nombre: string) => {
-        eliminarProducto(nombre);
+            eliminarProducto(id);
+        } catch (error: any) {}
     };
 
     const limpiarPrecio = (texto: string) => {
@@ -104,9 +139,10 @@ export default function productos() {
                     <ItemProducto
                         nombre={item.nombre}
                         precio={item.precio}
-                        key={item.uid}
+                        key={item.id}
                         funcionEliminar={() => {
-                            manejarEliminarProducto(item.nombre);
+                            // Como siempre traigo productos validados, dice con el ! que nunca será undefined ese atributo; ts al ver que en la definición lo puse como opcional se da cuenta que puede ser undefined
+                            manejarEliminarProducto(item.id!);
                         }}
                     />
                 ))}

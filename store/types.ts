@@ -2,7 +2,8 @@
 
 // Lo que hace es definir como son los productos, se usa en la lista de productos, agregar producto, y buscar producto
 export interface Producto {
-    uid?: string;//se genera en automático por firestore
+    id?: string;
+    uid?: string; //se genera en automático por firestore
     nombre: string; //este debe de ser único
     precio: number;
     categoria?: string; //será una función de la que me preocuparé más delante
