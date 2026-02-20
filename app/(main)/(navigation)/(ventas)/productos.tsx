@@ -4,6 +4,8 @@ import CabeceraNavegacion from "@/components/cabeceraNavegacion";
 import CampoTexto from "@/components/campoTexto";
 import ItemProducto from "@/components/itemProducto";
 import BotonMasFlotante from "@/components/masFlotante";
+import { Producto } from "@/store/types";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useStore } from "@/store/useStore";
 import { useState } from "react";
 import {
@@ -32,24 +34,33 @@ export default function productos() {
     const agregarProducto = useStore((state) => state.agregarProducto);
     const eliminarProducto = useStore((state) => state.eliminarProducto);
 
+    // Esto es para insertar el id del usuario dentro de cada producto
+    const usuario = useAuthStore((state) => state.usuario);
+
     // Método para el botón de guardar
-    const manejarGuardado = () => {
+    const manejarGuardado = async () => {
+        if (!usuario) return;
         if (nombreProducto.trim() === "" || precioProducto === "") {
             alert("Rellena todos los campos");
             return;
         }
+        const precioProductoParsed = parseFloat(precioProducto);
+        const nuevoProducto: Producto = {
+            nombre: nombreProducto,
+            precio: precioProductoParsed,
+        };
 
         // Si pasa ese ciclo significa que está todo correcto
         // Guardamos en zustand
-        agregarProducto(nombreProducto, precioProducto);
+        agregarProducto(nombreProducto, precioProductoParsed);
 
         // Ahora lo que se debe de hacer es vaciar todos los campos y posteriormente, renderizar el componente con los datos del elemento creado.
         setPrecioProducto("");
         setNombreProducto("");
     };
 
-    const manejarEliminarProducto = (id: string) => {
-        eliminarProducto(id);
+    const manejarEliminarProducto = (nombre: string) => {
+        eliminarProducto(nombre);
     };
 
     const limpiarPrecio = (texto: string) => {
@@ -83,28 +94,22 @@ export default function productos() {
         setPrecioProducto(valorValidado); // Faltaba actualizar el estado
     };
 
-    
-
     return (
         <SafeAreaView className="flex-1">
             <CabeceraNavegacion nombrePagina="Productos" />
             <Buscador filtrar={true} placeholder="Buscar productos..." />
 
             <ScrollView className="bg-white">
-                {productosDeStore.map(
-                    (item) => (
-                        (
-                            <ItemProducto
-                                nombre={item.nombre}
-                                precio={item.precio}
-                                key={item.id}
-                                funcionEliminar={() => {
-                                    manejarEliminarProducto(item.id);
-                                }}
-                            />
-                        )
-                    ),
-                )}
+                {productosDeStore.map((item) => (
+                    <ItemProducto
+                        nombre={item.nombre}
+                        precio={item.precio}
+                        key={item.uid}
+                        funcionEliminar={() => {
+                            manejarEliminarProducto(item.nombre);
+                        }}
+                    />
+                ))}
             </ScrollView>
 
             <BotonMasFlotante accion={() => setModalVisible(true)} />

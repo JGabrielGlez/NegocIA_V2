@@ -1,50 +1,23 @@
-import {
-    addDoc,
-    collection,
-    getDocs,
-    query,
-    serverTimestamp,
-    where,
-} from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import { COLLECTIONS, ProductoFirestore } from "../store/types";
+import { COLLECTIONS, Producto } from "../store/types";
 
-export const databaseServide = {
+export const databaseService = {
     // Añadir un producto a la colección, cabe mencionar que el producto ya debe de venir completo desde el momento en el que se manda para agregarlo a la colección.
-
-    // Consultar un objeto de la base de datos
-    async consultarProductos(userId: string): Promise<ProductoFirestore[]> {
+    addProducto: async (prod: Producto) => {
         try {
-            const prodRef = collection(db, COLLECTIONS.PRODUCTOS);
-            const q = query(prodRef, where("usuarioId", "==", userId)); //filtro de seguridad para solo traerme lo referido a la cuenta de cada usuario.
-
-            //    Ejecutar el query
-            const querySnapshot = await getDocs(q);
-
-            //    Mapear los datos obtenidos de la query
-            return querySnapshot.docs.map((producto) => ({
-                id: producto.id,
-                ...producto.data(),
-            })) as ProductoFirestore[];
-        } catch (error: any) {
-            console.log(error.code);
-            return [];
-        }
-    },
-
-    // Añadir un objeto a la colecion de producrtos
-    async agregarProducto(prod: ProductoFirestore) {
-        try {
-            // Add a new document in collection "cities"
-            // Add a new document with a generated id.
-            await addDoc(collection(db, COLLECTIONS.PRODUCTOS), {
+            // Firestore crea la colección productos al insertar el primer documento
+            const docRef = await addDoc(collection(db, COLLECTIONS.PRODUCTOS), {
                 ...prod,
-                fechaAgregado: serverTimestamp(),
+                // En esta parte le agrego este campo al producto insertado
+                createdAt: serverTimestamp(),
             });
 
-            // TODO al agregar un producto, debo hacer un request a la bd para tener localmeente su id
+            // Importante:Si tienes una lista de productos en pantalla y agregas uno nuevo, puedes usar ese ID para actualizar tu lista local (usando Zustand o un State) sin necesidad de recargar toda la página desde Firebase (ahorrando lecturas y dinero).
+            return docRef.id;
         } catch (error: any) {
-            console.log(error.code);
+            console.log("Error en databaseService.addProducto", error);
+            throw error;
         }
     },
 };

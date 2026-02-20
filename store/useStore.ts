@@ -21,7 +21,7 @@ interface AppState {
     eliminarDelCarrito: (idProducto: string) => void;
 
     // CRUD básico
-    agregarProducto: (nombre: string, precio: string) => void;
+    agregarProducto: (nombre: string, precio: number) => void;
     eliminarProducto: (id: string) => void;
 
     // el partial sirve para actualizar solo x o x's cosas del objeto, sin necesidad de estar haciendo un nuevo método para cuando se quiera cambiar solo el nombre, precio, etc.
@@ -92,14 +92,14 @@ export const useStore = create<AppState>()(
                         // Busco el producto dentro del carrito
                         const existe = state.carrito.find(
                             (productoBuscado: ItemVenta) =>
-                                productoBuscado.producto.id === idProducto,
+                                productoBuscado.producto.uid === idProducto,
                         );
 
                         // Ya tengo la manera de validar si existe, en caso de que no, se agrega ese item venta , en caso contrario, se aumenta su cantidad
                         if (existe === undefined) {
                             // Voy a buscar dentro del arreglo de productos, para traerme ese objeto en específico
                             const productoSeleccionado = state.productos.find(
-                                (prod: Producto) => prod.id === idProducto,
+                                (prod: Producto) => prod.uid === idProducto,
                             )!;
 
                             const nuevoItemVenta = {
@@ -118,7 +118,7 @@ export const useStore = create<AppState>()(
                         // Este es el caso en el que ya exista dentro del carrito, por lo que debo de aumentarle a ese item su cantidad y
                         return {
                             carrito: state.carrito.map((item) =>
-                                item.producto.id === idProducto
+                                item.producto.uid === idProducto
                                     ? {
                                           ...item,
                                           cantidad: item.cantidad + 1,
@@ -152,7 +152,7 @@ export const useStore = create<AppState>()(
                             {
                                 id: `${Date.now()}-${Math.floor(Math.random() * 1000)}`,
                                 nombre,
-                                precio: parseFloat(precio) || 0,
+                                precio,
                             },
                         ],
                     })),
@@ -160,13 +160,13 @@ export const useStore = create<AppState>()(
                 eliminarProducto: (id) =>
                     set((state) => ({
                         // <--- Agrega esto
-                        productos: state.productos.filter((p) => p.id !== id),
+                        productos: state.productos.filter((p) => p.uid !== id),
                     })),
 
                 actualizarProducto: (id, datos) =>
                     set((state) => ({
                         productos: state.productos.map((producto) =>
-                            producto.id === id
+                            producto.uid === id
                                 ? {
                                       ...producto,
                                       ...datos,
@@ -193,7 +193,7 @@ export const useStore = create<AppState>()(
                                 fecha: new Date(),
                                 items: state.carrito,
                                 total: get().obtenerTotalCarrito(),
-                           },
+                            },
                         ],
                     })),
 
@@ -217,12 +217,12 @@ export const useStore = create<AppState>()(
                     return 0;
                 },
             }),
-            
+
             // esto es para la persistencia
             {
                 name: "inventario-storage", // Nombre único para la base de datos local
                 storage: createJSONStorage(() => AsyncStorage), // Configuramos para React Native
             },
         ),
-    )  ,
+    ),
 );
