@@ -30,13 +30,13 @@ export default function Login({
             <CampoTexto
                 sugerencia="tu@correo.com"
                 etiqueta="Correo"
-                valueCampo={correo}
+                valueCampo="negocia@gmail.com" //descomentar cuando pase a produccion{correo}
                 onChangeText={setCorreo}
             />
             <CampoTexto
                 sugerencia="******"
                 etiqueta="Contraseña"
-                valueCampo={password}
+                valueCampo="123456" // descomentar cuando ya pase a produccion{password}
                 onChangeText={setPassword}
                 esContrasena={true}
             />
