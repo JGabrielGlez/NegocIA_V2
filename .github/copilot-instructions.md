@@ -148,6 +148,10 @@ interface UserProfile {
 - Backup automático en la nube (solo bajo demanda en PRO)
 - App iOS
 - Múltiples sucursales
+- Pantalla de Historial de Ventas — eliminada por decisión
+  de producto. El historial se consulta ÚNICAMENTE a través
+  del Asistente IA conversacional. Nunca sugerir ni crear
+  esta pantalla.
 
 ---
 
