@@ -1,4 +1,11 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+    addDoc,
+    collection,
+    getDocs,
+    query,
+    serverTimestamp,
+    where,
+} from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { COLLECTIONS, Producto } from "../store/types";
 
@@ -19,5 +26,24 @@ export const databaseService = {
             console.log("Error en databaseService.addProducto", error);
             throw error;
         }
+    },
+
+    getProductos: async (userId: string) => {
+        try {
+            // Se construye lo que es el query para la consulta
+            const q = query(
+                collection(db, COLLECTIONS.PRODUCTOS),
+                where("uid", "==", userId),
+            );
+
+            // Aquí se ejecuta el query
+            const querySnapShot = await getDocs(q);
+
+            // Mapear los objetos para obtener los productos 
+            const productosObtenidos = querySnapShot.docs.map(doc=>({
+                
+            }))
+
+        } catch (error: any) {}
     },
 };

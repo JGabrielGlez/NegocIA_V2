@@ -38,7 +38,12 @@ export default function productos() {
     // Esto es para insertar el id del usuario dentro de cada producto
     const usuario = useAuthStore((state) => state.usuario);
 
+
+
+
+
     // Método para el botón de guardar
+    // TODO tengo que agregar el refrescado de los productos, para que en cuanto se agrueguen 
     const manejarGuardado = async () => {
         // 1. Validaciones iniciales
         if (!usuario) {
@@ -90,6 +95,7 @@ export default function productos() {
             // Podrías poner un setIsLoading(false) aquí
         }
     };
+
     const manejarEliminarProducto = async (id: string) => {
         try {
             // Debo eliminar de firestore
