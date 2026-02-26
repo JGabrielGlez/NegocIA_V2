@@ -5,10 +5,13 @@ import CampoTexto from "@/components/campoTexto";
 import TarjetaInfo from "@/components/tarjetaInfo";
 import { estilos } from "@/constantes/estilos";
 import { useStore } from "@/store/useStore";
-import { Plus } from "lucide-react-native";
+import { Minus, Plus, ShoppingCart, Trash2, X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
+    Alert,
+    FlatList,
     KeyboardAvoidingView,
+    Modal,
     Platform,
     ScrollView,
     Text,
@@ -53,6 +56,24 @@ export default function nuevaVenta() {
     const vaciarCarritoStore = useStore((state) => state.vaciarCarrito);
     const totalAPagarStore = useStore((state) => state.obtenerTotalCarrito());
     const agregarAlCarrito = useStore((state) => state.agregarAlCarrito);
+    const eliminarDelCarrito = useStore((state) => state.eliminarDelCarrito);
+    const eliminarItemCompleto = useStore(
+        (state) => state.eliminarItemCompleto,
+    );
+    const carrito = useStore((state) => state.carrito);
+
+    // Estado para el modal del carrito
+    const [modalCarritoVisible, setModalCarritoVisible] = useState(false);
+
+    // Función helper para obtener la cantidad de un producto en el carrito
+    const obtenerCantidadEnCarrito = (idProducto: string): number => {
+        const item = carrito.find(
+            (item) =>
+                item.producto.uid === idProducto ||
+                item.producto.id === idProducto,
+        );
+        return item ? item.cantidad : 0;
+    };
 
     const [montoRecibido, setMontoRecibido] = useState("");
 
@@ -85,6 +106,26 @@ export default function nuevaVenta() {
 
     const montoNumerico = parseFloat(limpiarPrecio(montoRecibido)) || 0;
     const cambioActualizado = montoNumerico - totalAPagarStore;
+
+    // Función para confirmar eliminación de item completo
+    const confirmarEliminarItem = (
+        idProducto: string,
+        nombreProducto: string,
+    ) => {
+        Alert.alert(
+            "Eliminar producto",
+            `¿Eliminar "${nombreProducto}" del carrito?`,
+            [
+                { text: "Cancelar", style: "cancel" },
+                {
+                    text: "Eliminar",
+                    style: "destructive",
+                    onPress: () => eliminarItemCompleto(idProducto),
+                },
+            ],
+        );
+    };
+
     //------------ Constantes para la venta-------------------
 
     // El método de cada boton de agregar debe hacer lo siguiente:
@@ -103,37 +144,75 @@ export default function nuevaVenta() {
                     {/* Tengo que crear cada tarjeta, que recibirán un 
             titulo, icono y las estadisticas quedarán pendientes */}
                     <View className="flex-1 flex-row flex-wrap justify-evenly">
-                        {productosDeStore.map((item) => (
-                            <View
-                                key={"Venta-" + item.id}
-                                style={{
-                                    width: "45%",
-                                    height: 120,
-                                    marginBottom: 10,
-                                }}>
-                                <TarjetaInfo
-                                    adaptable={true}
-                                    key={item.id}
-                                    esVenta={true}
-                                    titulo={item.nombre}
-                                    cuerpo={"$" + item.precio.toString()}>
-                                    {
-                                        // TODO boton o algo para cancelar la venta por completo, creo que podría dividir la botonera para hacer eso
-                                        <TouchableOpacity
-                                            className="absolute bottom-12 h-14 w-14 items-center justify-center rounded-full bg-primary"
-                                            style={estilos.sombraNormal}
-                                            onPress={() => {
-                                                // En este debo agregar lo de agregar prod al carrito
-                                                {
-                                                    agregarAlCarrito(item.id);
-                                                }
-                                            }}>
-                                            <Plus size={28} color="white" />
-                                        </TouchableOpacity>
-                                    }
-                                </TarjetaInfo>
-                            </View>
-                        ))}
+                        {productosDeStore.map((item) => {
+                            const cantidadEnCarrito = obtenerCantidadEnCarrito(
+                                item.id || item.uid || "",
+                            );
+
+                            return (
+                                <View
+                                    key={"Venta-" + item.id}
+                                    style={{
+                                        width: "45%",
+                                        height: 120,
+                                        marginBottom: 10,
+                                    }}>
+                                    <TarjetaInfo
+                                        adaptable={true}
+                                        key={item.id}
+                                        esVenta={true}
+                                        titulo={item.nombre}
+                                        cuerpo={"$" + item.precio.toString()}>
+                                        {/* Badge circular rojo en esquina superior derecha */}
+                                        {cantidadEnCarrito > 0 && (
+                                            <View
+                                                className="absolute -right-2 -top-2 h-8 w-8 items-center justify-center rounded-full bg-red-500"
+                                                style={estilos.sombraNormal}>
+                                                <Text className="text-sm font-bold text-white">
+                                                    {cantidadEnCarrito}
+                                                </Text>
+                                            </View>
+                                        )}
+
+                                        {/* Botones + y - */}
+                                        <View className="absolute bottom-12 flex-row items-center gap-2">
+                                            {/* Botón [-] - solo visible si hay items en carrito */}
+                                            {cantidadEnCarrito > 0 && (
+                                                <TouchableOpacity
+                                                    className="h-14 w-14 items-center justify-center rounded-full bg-gray-500"
+                                                    style={estilos.sombraNormal}
+                                                    onPress={() => {
+                                                        eliminarDelCarrito(
+                                                            item.id ||
+                                                                item.uid ||
+                                                                "",
+                                                        );
+                                                    }}>
+                                                    <Minus
+                                                        size={28}
+                                                        color="white"
+                                                    />
+                                                </TouchableOpacity>
+                                            )}
+
+                                            {/* Botón [+] - siempre visible */}
+                                            <TouchableOpacity
+                                                className="h-14 w-14 items-center justify-center rounded-full bg-primary"
+                                                style={estilos.sombraNormal}
+                                                onPress={() => {
+                                                    agregarAlCarrito(
+                                                        item.id ||
+                                                            item.uid ||
+                                                            "",
+                                                    );
+                                                }}>
+                                                <Plus size={28} color="white" />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </TarjetaInfo>
+                                </View>
+                            );
+                        })}
                     </View>
 
                     {/* Este será el recuadro para dar el cambio y poner el boton de completar la venta
@@ -213,6 +292,134 @@ export default function nuevaVenta() {
                     </View>
                 </View>
             </KeyboardAvoidingView>
+
+            {/* Botón flotante de carrito */}
+            {carrito.length > 0 && (
+                <TouchableOpacity
+                    className="absolute bottom-24 right-6 h-16 w-16 items-center justify-center rounded-full bg-primary"
+                    style={estilos.sombraNormal}
+                    onPress={() => setModalCarritoVisible(true)}>
+                    <ShoppingCart size={28} color="white" />
+                    {/* Badge con cantidad de items */}
+                    <View className="absolute -right-2 -top-2 h-8 w-8 items-center justify-center rounded-full bg-red-500">
+                        <Text className="text-sm font-bold text-white">
+                            {cantidadDeProductosStore}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            )}
+
+            {/* Modal del Carrito (Bottom Sheet) */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalCarritoVisible}
+                onRequestClose={() => setModalCarritoVisible(false)}>
+                <View className="flex-1 justify-end bg-black/50">
+                    <View className="h-4/5 rounded-t-3xl bg-white">
+                        {/* Header del Modal */}
+                        <View className="flex-row items-center justify-between border-b border-gray-200 p-4">
+                            <Text className="text-2xl font-bold">
+                                Mi Carrito
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => setModalCarritoVisible(false)}>
+                                <X size={28} color="#666" />
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* Contenido del Modal */}
+                        {carrito.length === 0 ? (
+                            // Estado vacío
+                            <View className="flex-1 items-center justify-center px-6">
+                                <ShoppingCart size={64} color="#ccc" />
+                                <Text className="mt-4 text-center text-xl font-semibold text-gray-500">
+                                    Tu carrito está vacío
+                                </Text>
+                                <Text className="mt-2 text-center text-base text-gray-400">
+                                    Agrega productos para comenzar una venta
+                                </Text>
+                            </View>
+                        ) : (
+                            // Lista de items
+                            <>
+                                <FlatList
+                                    data={carrito}
+                                    keyExtractor={(item, index) =>
+                                        `${item.producto.id || item.producto.uid}-${index}`
+                                    }
+                                    contentContainerStyle={{ padding: 16 }}
+                                    ItemSeparatorComponent={() => (
+                                        <View className="h-3" />
+                                    )}
+                                    renderItem={({ item }) => (
+                                        <View
+                                            className="flex-row items-center justify-between rounded-2xl bg-gray-50 p-4"
+                                            style={estilos.sombraNormal}>
+                                            {/* Info del producto */}
+                                            <View className="flex-1">
+                                                <Text className="text-lg font-semibold">
+                                                    {item.producto.nombre}
+                                                </Text>
+                                                <Text className="text-base text-gray-600">
+                                                    $
+                                                    {item.producto.precio.toFixed(
+                                                        2,
+                                                    )}{" "}
+                                                    x {item.cantidad}
+                                                </Text>
+                                            </View>
+
+                                            {/* Subtotal y botón eliminar */}
+                                            <View className="items-end">
+                                                <Text className="mb-2 text-lg font-bold text-primary">
+                                                    ${item.subtotal.toFixed(2)}
+                                                </Text>
+                                                <TouchableOpacity
+                                                    onPress={() =>
+                                                        confirmarEliminarItem(
+                                                            item.producto.id ||
+                                                                item.producto
+                                                                    .uid ||
+                                                                "",
+                                                            item.producto
+                                                                .nombre,
+                                                        )
+                                                    }
+                                                    className="rounded-lg bg-red-500 p-2">
+                                                    <Trash2
+                                                        size={20}
+                                                        color="white"
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    )}
+                                />
+
+                                {/* Footer con Total y Botón */}
+                                <View className="border-t border-gray-200 p-4">
+                                    <View className="mb-4 flex-row items-center justify-between">
+                                        <Text className="text-xl font-semibold text-gray-700">
+                                            Total:
+                                        </Text>
+                                        <Text className="text-2xl font-bold text-primary">
+                                            ${totalAPagarStore.toFixed(2)}
+                                        </Text>
+                                    </View>
+                                    <Boton
+                                        onPress={() => {
+                                            setModalCarritoVisible(false);
+                                            // Scroll hacia abajo para ver el campo de monto
+                                        }}
+                                        texto="Completar Venta"
+                                    />
+                                </View>
+                            </>
+                        )}
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 }

@@ -20,6 +20,9 @@ interface AppState {
     // TODO recibirá el string del id del producto y se reducirá su cantidad en 1, cuando llegue a 0, se elimina del carrito, eso checará siempre el método, que lo haré hasta el final
     eliminarDelCarrito: (idProducto: string) => void;
 
+    // Elimina completamente un item del carrito sin importar la cantidad
+    eliminarItemCompleto: (idProducto: string) => void;
+
     // CRUD básico
     agregarProducto: (prod: Producto) => void;
     eliminarProducto: (id: string) => void;
@@ -131,9 +134,54 @@ export const useStore = create<AppState>()(
                         };
                     }),
 
-                eliminarDelCarrito(id) {
-                    return 0;
-                },
+                eliminarDelCarrito: (idProducto) =>
+                    set((state) => {
+                        // Buscar el item en el carrito
+                        const itemExistente = state.carrito.find(
+                            (item) => item.producto.uid === idProducto,
+                        );
+
+                        // Si no existe en el carrito, no hacer nada
+                        if (!itemExistente) {
+                            console.warn(
+                                "No se puede eliminar: producto no está en el carrito",
+                            );
+                            return state;
+                        }
+
+                        // Si la cantidad es 1, eliminar el item completamente
+                        if (itemExistente.cantidad === 1) {
+                            return {
+                                carrito: state.carrito.filter(
+                                    (item) => item.producto.uid !== idProducto,
+                                ),
+                            };
+                        }
+
+                        // Si la cantidad es mayor a 1, reducir en 1 y recalcular subtotal
+                        return {
+                            carrito: state.carrito.map((item) =>
+                                item.producto.uid === idProducto
+                                    ? {
+                                          ...item,
+                                          cantidad: item.cantidad - 1,
+                                          subtotal:
+                                              (item.cantidad - 1) *
+                                              item.producto.precio,
+                                      }
+                                    : item,
+                            ),
+                        };
+                    }),
+
+                eliminarItemCompleto: (idProducto) =>
+                    set((state) => ({
+                        carrito: state.carrito.filter(
+                            (item) =>
+                                item.producto.uid !== idProducto &&
+                                item.producto.id !== idProducto,
+                        ),
+                    })),
 
                 obtenerTotalCarrito: () =>
                     // Con esto se obtiene el estado actual del carrito
