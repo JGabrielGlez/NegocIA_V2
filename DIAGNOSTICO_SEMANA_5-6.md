@@ -129,7 +129,10 @@ _Desbloquea:_ Que Cloud Functions tenga datos reales para leer
 #### A.4 — Crear usuario en Firestore al registrarse
 
 - [ ] En `useAuthStore.ts`, después de crear cuenta con Firebase Auth, llamar a `databaseService.crearUsuario(uid, email)`
-- [ ] Documento debe incluir: `uid`, `correo`, `nombre` (vacío), `plan` ("GRATIS"), `estado` ("activo")
+- [ ] Documento debe incluir:
+    - `uid`, `correo`, `nombre` (vacío), `plan` ("GRATIS"), `estado` ("activo")
+    - `subscriptionStartDate`: Timestamp (fecha de registro para GRATIS)
+    - `nextResetDate`: Timestamp (subscriptionStartDate + 30 días)
 
 **Por qué aquí:** La IA necesita saber el plan del usuario y datos básicos
 
@@ -196,9 +199,9 @@ _Desbloquea:_ Protección contra abuso, billingconsi
 - [ ] Agregar documento `usuarios/{uid}/ai_usage/analytics` con:
     ```
     {
-      queriesUsedToday: 0,
-      queriesResetAt: Timestamp(2026-02-26T00:00:00Z),
-      totalQueriesUsedThisMonth: 0,
+      queriesUsedThisMonth: 0,
+      nextResetDate: Timestamp, // registro + 30 días (GRATIS) o compra + 30 días (PRO)
+      totalQueriesAllTime: 0,
       priceUpdatesUsedThisMonth: 0,
       lastQueryAt: Timestamp
     }
@@ -212,9 +215,14 @@ _Desbloquea:_ Protección contra abuso, billingconsi
 #### C.2 — Implementar limitsManager.ts
 
 - [ ] `checkIfCanQuery(userId, plan)` — retorna true/false
+    - Plan GRATIS: límite 3 consultas/mes (30 días)
+    - Plan PRO: límite 30 consultas/mes (30 días)
+    - Al verificar: comparar fecha actual contra nextResetDate
+    - Si ya pasó nextResetDate: resetear queriesUsedThisMonth a 0 y calcular nuevo nextResetDate = nextResetDate anterior + 30 días
+    - Si no ha pasado: verificar contra límite normalmente
 - [ ] `incrementQueryCount(userId)` — suma 1 al contador
-- [ ] `resetCounterIfNeeded(userId)` — reset automático a medianoche UTC
-- [ ] `getQueriesRemaining(userId)` — para UI (cuántas consultas quedan hoy)
+- [ ] `resetCounterIfNeeded(userId)` — verifica si nextResetDate ya pasó y resetea automáticamente
+- [ ] `getQueriesRemaining(userId)` — para UI (cuántas consultas quedan en este ciclo de 30 días)
 
 **Por qué aquí:** Lógica centralizada para límites
 

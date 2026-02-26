@@ -1,13 +1,13 @@
 # 📊 DIAGNÓSTICO COMPLETO DEL PROYECTO — AppNegocIA
 
 **Fecha:** 25 de febrero, 2026  
-**Estado General:** En desarrollo — 35-40% completado
+**Estado General:** En desarrollo — 55-60% completado
 
 ---
 
 ## 🎯 Resumen Ejecutivo
 
-El proyecto está en **SEMANA 3-4 de progreso**. Tiene foundations sólidas de autenticación y estado global, pero le faltan componentes críticos en IA, pagos y varias pantallas clave.
+El proyecto está en **Semanas 1-4 completadas, iniciando Semana 5-6**. Tiene foundations sólidas de autenticación, estado global y sincronización con Firestore. Listo para implementar Cloud Functions y sistema de IA.
 
 ---
 
@@ -48,7 +48,34 @@ El proyecto está en **SEMANA 3-4 de progreso**. Tiene foundations sólidas de a
 
 ---
 
-### **SEMANA 4 — Firebase + Autenticación** ⚠️ 85% COMPLETADO
+### **SEMANA 3 — Persistencia + Ventas Básicas** ✅ COMPLETO
+
+- ✅ AsyncStorage configurado
+- ✅ `useSaleStore` con estado de ventas
+- ✅ Carrito con funciones `agregarAlCarrito`, `vaciarCarrito`
+- ✅ `eliminarDelCarrito()` implementado correctamente
+- ✅ Pantalla Nueva Venta completa
+- ✅ Cálculo automático de total y cambio
+- ✅ Persistencia local de productos y carrito
+- ✅ Badges circulares rojos en cards de productos
+- ✅ Botones +/- en cada card
+- ✅ Modal bottom sheet del carrito con detalle de items
+- ✅ Swipe izquierdo para eliminar items del carrito
+- ✅ KeyboardAvoidingView corregido en nueva-venta.tsx
+- ✅ Fix padding input Monto Recibido
+- ✅ Validación de carrito vacío
+- ✅ Búsqueda y filtrado funcional en buscador.tsx
+- ✅ Refresco inmediato de lista al agregar producto
+
+**Archivos clave:**
+
+- `store/useStore.ts`
+- `app/(main)/(navigation)/(ventas)/nueva-venta.tsx`
+- `components/buscador.tsx`
+
+---
+
+### **SEMANA 4 — Firebase + Autenticación** ✅ COMPLETO
 
 - ✅ Firebase inicializado correctamente
 - ✅ Firebase Auth configurado
@@ -57,77 +84,38 @@ El proyecto está en **SEMANA 3-4 de progreso**. Tiene foundations sólidas de a
 - ✅ `useAuthStore` con login/logout
 - ✅ Sesión persistente (AsyncStorage)
 - ✅ Emuladores configurados (desarrollo local)
-- ⚠️ **Falta:** Protección de rutas clara en `app/_layout.tsx`
-- ⚠️ **Falta:** Botón de cerrar sesión en app
-- ⚠️ **Falta:** Google OAuth (marcado como TODO)
+- ✅ Protección de rutas en `app/_layout.tsx`
+- ✅ Botón cerrar sesión implementado
+- ✅ trim() de email en crear-cuenta.tsx
+- ✅ Mensajes de error descriptivos en iniciar-sesion.tsx
+- ✅ Eliminado AsyncStorage.clear() en index.tsx
+- ⚠️ **Pendiente (post-MVP):** Google OAuth
 
 **Archivos clave:**
 
 - `firebase/firebaseConfig.js`
 - `app/(auth)/iniciar-sesion.tsx`
 - `app/(auth)/crear-cuenta.tsx`
+- `app/_layout.tsx`
 
 ---
 
 ## 🔄 EN PROGRESO (INCOMPLETO)
 
-### **SEMANA 3 — Persistencia + Ventas Básicas** ⚠️ 70% COMPLETADO
+### **Pantalla de Productos** — Pendientes
 
-#### ✅ Lo que Sí Existe:
-
-- ✅ AsyncStorage configurado
-- ✅ `useSaleStore` con estado de ventas
-- ✅ Carrito con funciones `agregarAlCarrito`, `vaciarCarrito`
-- ✅ Pantalla Nueva Venta (estructura base)
-- ✅ Cálculo automático de total y cambio
-- ✅ Persistencia local de productos y carrito
-
-#### ❌ Lo que Falta:
-
-| Línea | Archivo                                            | Tipo        | Descripción                                                                                                           |
-| ----- | -------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------- |
-| 20    | `store/useStore.ts`                                | **TODO**    | `eliminarDelCarrito()` — actualmente es **STUB** (solo retorna 0). Debe reducir cantidad en 1 y eliminar si llega a 0 |
-| 22    | `app/(main)/(navigation)/(ventas)/nueva-venta.tsx` | **TODO**    | Modal para mostrar productos seleccionados en el carrito                                                              |
-| 24    | `app/(main)/(navigation)/(ventas)/nueva-venta.tsx` | **TODO**    | Validación: si no hay productos, mostrar mensaje y redirigir a pantalla de productos                                  |
-| —     | —                                                  | **MISSING** | **Pantalla de Historial de Ventas** — No existe archivo ni ruta. Necesaria para semana 3                              |
-| 20    | `app/(main)/(navigation)/(ventas)/nueva-venta.tsx` | **FIXME**   | SafeAreaView causa padding feo cuando se activa el teclado                                                            |
-| 59    | `app/(main)/(navigation)/(ventas)/nueva-venta.tsx` | **FIXME**   | Input de "Monto Recibido" deja padding feo al cerrarse                                                                |
+| Línea | Archivo                                          | Tipo     | Descripción                                                                        |
+| ----- | ------------------------------------------------ | -------- | ---------------------------------------------------------------------------------- |
+| 22    | `app/(main)/(navigation)/(ventas)/productos.tsx` | **TODO** | Iconos en categorías — agregar librería de iconos o que IA decida icono por nombre |
 
 ---
 
-### **SEMANA 4 — Autenticación (cont.)** — FIXMEs Importantes
+### **OAuth (Post-MVP)**
 
-| Línea | Archivo                         | Tipo      | Descripción                                                                                                   |
-| ----- | ------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------- |
-| 20    | `app/(auth)/crear-cuenta.tsx`   | **FIXME** | **Trim de espacios en email** — usuarios al pegar email con espacios finales, la app rechaza como inválido    |
-| 7     | `app/(auth)/iniciar-sesion.tsx` | **FIXME** | Mensajes de error genéricos o incompletos — crear mensajes más descriptivos                                   |
-| 66    | `app/(auth)/iniciar-sesion.tsx` | **TODO**  | **Autenticación con Google** — botón existe pero sin implementación                                           |
-| 100   | `app/(auth)/crear-cuenta.tsx`   | **TODO**  | Refactorizar sign-up para usar OAuth (Google, iCloud, GameCenter) — el email/password actual será reemplazado |
-
----
-
-### **Pantalla de Productos** — TODOs
-
-| Línea | Archivo                                          | Tipo     | Descripción                                                                         |
-| ----- | ------------------------------------------------ | -------- | ----------------------------------------------------------------------------------- |
-| 22    | `app/(main)/(navigation)/(ventas)/productos.tsx` | **TODO** | Iconos en categorías — agregar librería de iconos o que IA decida icono por nombre  |
-| 46    | `app/(main)/(navigation)/(ventas)/productos.tsx` | **TODO** | **Refrescar lista de productos** cuando se agrega uno nuevo (sin recargar pantalla) |
-
----
-
-### **Componentes** — TODOs y FIXMEs
-
-| Línea | Archivo                   | Tipo     | Descripción                                                             |
-| ----- | ------------------------- | -------- | ----------------------------------------------------------------------- |
-| 38    | `components/buscador.tsx` | **TODO** | Buscador es solo visual — agregar método de búsqueda/filtrado funcional |
-
----
-
-### **Limpieza de Código**
-
-| Línea | Archivo         | Tipo     | Descripción                                            |
-| ----- | --------------- | -------- | ------------------------------------------------------ |
-| 10-11 | `app/index.tsx` | **TODO** | Eliminar `AsyncStorage.clear()` (código de desarrollo) |
+| Línea | Archivo                         | Tipo     | Descripción                                                                                                   |
+| ----- | ------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| 66    | `app/(auth)/iniciar-sesion.tsx` | **TODO** | **Autenticación con Google** — botón existe pero sin implementación (post-MVP)                                |
+| 100   | `app/(auth)/crear-cuenta.tsx`   | **TODO** | Refactorizar sign-up para usar OAuth (Google, iCloud, GameCenter) — el email/password actual será reemplazado |
 
 ---
 
@@ -213,47 +201,46 @@ El proyecto está en **SEMANA 3-4 de progreso**. Tiene foundations sólidas de a
 
 ## 📋 Matriz de Prioridad — Qué Completar Primero
 
-### 🔴 **CRÍTICO (Semana 3-4, Bloquean Avance)**
+### 🔴 **CRÍTICO (Semana 5-6, En Progreso)**
 
-1. **Pantalla Historial de Ventas** — FALTA completamente (semana 3)
-2. **`eliminarDelCarrito()`** — actualmente es stub (semana 3)
-3. **Protección de rutas** — validar autenticación en `app/_layout.tsx` (semana 4)
-4. **Google OAuth** — IA sugerirá OAuth en lugar de email/password (semana 4)
+1. **Cloud Functions skeleton** — crear estructura básica
+2. **Pantalla Asistente IA** — `asistente-ia.tsx` (actualmente vacío)
+3. **Sistema de límites de usuario en Firestore** — contadores mensuales
+4. **Gemini API integration** — backend solamente
 
-### 🟠 **IMPORTANTE (Semana 3-4, Mejora UX)**
+### 🟠 **IMPORTANTE (Mejoras Post-Semana 4)**
 
-5. **FIXME: trim() de email** — usuarios pegan con espacios
-6. **FIXME: SafeAreaView y padding** — issues visuales en `nueva-venta.tsx`
-7. **TODO: Refrescar lista de productos** — sin recargar pantalla
-8. **TODO: Modal de carrito seleccionado** — mostrar items agregados
+5. **Iconos en categorías** — productos.tsx
+6. **Google OAuth** — post-MVP, reemplazará email/password
 
-### 🟡 **PARA SEMANA 5-6 (IA — POST-SEMANA-4)**
+### 🟡 **PARA SEMANA 7-8 (Monetización)**
 
-9. **Cloud Functions skeleton** — crear estructura básica
-10. **Pantalla Asistente IA** — `asistente-ia.tsx` (actualmente vacío)
-11. **Límites de usuario en Firestore**
+7. **RevenueCat + pagos** — suscripciones GRATIS/PRO
+8. **Pantalla de Planes (Paywall)** — comparación planes
+9. **Validación de suscripción backend** — Cloud Function
 
-### ⚪ **FUTURO (Fuera MVP)**
+### ⚪ **FUTURO (Semana 9-10)**
 
-- RevenueCat + pagos (semana 7-8)
-- Build y deploy (semana 9-10)
+- Build para producción (EAS)
+- Deploy a Google Play Store
+- Assets finales (icono, splash screen)
 - Configuración inicial con IA (post-MVP)
 
 ---
 
 ## 🚀 Recomendación
 
-**Estatus Actual:** El proyecto está **bien fundamentado pero necesita completar las semanas 3-4 completamente** antes de avanzar a IA y pagos.
+**Estatus Actual:** El proyecto está **bien fundamentado con Semanas 1-4 completadas**. Listo para iniciar Cloud Functions y sistema de IA.
 
-**Prioridad inmediata:**
+**Prioridad inmediata (Semana 5-6):**
 
-1. ✋ Crear pantalla de **Historial de Ventas**
-2. ✋ Completar `**eliminarDelCarrito()**` en `store/useStore.ts`
-3. ✋ Resolver **FIXMEs visuales** en `nueva-venta.tsx`
-4. ✋ Implementar **protección de rutas** en `app/_layout.tsx`
-5. ✋ Agregar **botón cerrar sesión**
+1. 🚀 Configurar **Cloud Functions** con Gemini API
+2. 🚀 Implementar **sistema de límites** en Firestore (contadores mensuales)
+3. 🚀 Crear **Pantalla Asistente IA** con chat conversacional
+4. 🚀 Sincronizar **productos y ventas** a Firestore
+5. 🚀 Testing end-to-end de funcionalidad IA
 
-Una vez eso esté listo, será momento de abordar las Cloud Functions y el asistente IA.
+Una vez eso esté listo, será momento de abordar RevenueCat y monetización.
 
 ---
 
@@ -270,3 +257,10 @@ Una vez eso esté listo, será momento de abordar las Cloud Functions y el asist
 - **Historial de Ventas:** Eliminado intencionalmente del MVP.
   La consulta de historial se hace exclusivamente a través
   del Asistente IA. No crear esta pantalla en ninguna versión.
+
+- **Límites de Consultas IA:**
+    - **Plan GRATIS:** 3 consultas cada 30 días
+    - **Plan PRO:** 30 consultas cada 30 días
+    - Reset cada 30 días desde fecha de registro (GRATIS) o fecha de compra (PRO)
+    - Contador: `queriesUsedThisMonth` en Firestore (`usuarios/{uid}/ai_usage/analytics`)
+    - Próximo reset: `nextResetDate` calculado como subscriptionStartDate + 30 días
