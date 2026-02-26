@@ -36,7 +36,16 @@ export const useAuthStore = create<AuthState>()(
                 "auth/too-many-requests":
                     "Se ha bloqueado la cuenta temporalmente por inicios de sesión fallidos, intente más tarde",
                 "auth/invalid-email": "El correo no es válido.",
-                "auth/invalid-credential": "Correo o contraseña inválidos",
+                "auth/invalid-credential":
+                    "Correo o contraseña incorrectos. Verifica tus datos e intenta de nuevo.",
+                "auth/user-not-found":
+                    "No existe una cuenta con ese correo. Revisa el email o crea una cuenta nueva.",
+                "auth/wrong-password":
+                    "La contraseña es incorrecta. Intenta de nuevo.",
+                "auth/network-request-failed":
+                    "No hay conexión a internet. Verifica tu red e intenta de nuevo.",
+                "auth/user-disabled":
+                    "Esta cuenta está deshabilitada. Contacta a soporte.",
             },
 
             usuario: null,

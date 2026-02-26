@@ -54,6 +54,10 @@ export default function Cabecera() {
                 <IconoPresionable onPress={onPress}>
                     <Octicons name="gear" size={iconSize} color="black" />
                 </IconoPresionable>
+
+                <IconoPresionable onPress={onPress}>
+                    <Feather name="log-out" size={iconSize} color="#ef4444" />
+                </IconoPresionable>
             </View>
         </View>
     );

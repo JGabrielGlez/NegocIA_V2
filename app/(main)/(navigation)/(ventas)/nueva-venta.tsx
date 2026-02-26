@@ -107,6 +107,10 @@ export default function nuevaVenta() {
     const montoNumerico = parseFloat(limpiarPrecio(montoRecibido)) || 0;
     const cambioActualizado = montoNumerico - totalAPagarStore;
 
+    const keyboardVerticalOffset = Platform.OS === "ios" ? 80 : 0;
+    const keyboardBehavior = Platform.OS === "ios" ? "padding" : undefined;
+    const keyboardEnabled = Platform.OS === "ios";
+
     // Función para confirmar eliminación de item completo
     const confirmarEliminarItem = (
         idProducto: string,
@@ -136,7 +140,9 @@ export default function nuevaVenta() {
             <CabeceraNavegacion nombrePagina="Nueva Venta" />
             <Buscador filtrar={true} placeholder="Buscar producto" />
             <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                behavior={keyboardBehavior}
+                keyboardVerticalOffset={keyboardVerticalOffset}
+                enabled={keyboardEnabled}
                 style={{ flex: 1 }}>
                 <ScrollView
                     contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}

@@ -55,16 +55,18 @@
 
 ### Tareas
 
-- [ ] **Día 6-7:** Configurar Zustand — crear `useProductStore`
+- [x] **Día 6-7:** Configurar Zustand — crear `useProductStore`
     - Estado: `products[]`, acciones: `addProduct`, `updateProduct`, `deleteProduct`
-- [ ] **Día 6-7:** Crear interfaces TypeScript para `Product`
-- [ ] **Día 8-9:** Pantalla Lista de Productos con FlatList
+- [x] **Día 6-7:** Crear interfaces TypeScript para `Product`
+- [x] **Día 8-9:** Pantalla Lista de Productos con FlatList
     - Mostrar nombre y precio de cada producto
     - Botón para agregar nuevo producto
     - Productos hardcodeados inicialmente (Coca Cola, Pan, etc.)
-- [ ] **Día 10:** Pantalla/Modal Agregar Producto
+- [x] **Día 10:** Pantalla/Modal Agregar Producto
     - Formulario: nombre + precio
     - Al guardar, aparece en la lista inmediatamente
+- [x] **Día 10:** Búsqueda y filtrado funcional en buscador.tsx
+- [x] **Día 10:** Refresco inmediato de lista al agregar producto
 
 ### Producto Final ✅
 
@@ -72,6 +74,8 @@
 - Pantalla que muestra lista de productos
 - Formulario para agregar producto funcional
 - Al agregar, aparece en la lista sin recargar
+- Búsqueda funcional de productos
+- Lista se actualiza inmediatamente al agregar
 
 ---
 
@@ -81,21 +85,27 @@
 
 ### Tareas
 
-- [ ] **Día 11-12:** Instalar y configurar MMKV
-- [ ] **Día 11-12:** Conectar MMKV al store de Zustand (middleware `persist`)
+- [x] **Día 11-12:** Instalar y configurar MMKV
+- [x] **Día 11-12:** Conectar MMKV al store de Zustand (middleware `persist`)
     - Productos persisten al cerrar/abrir la app
-- [ ] **Día 13:** Crear `useSaleStore` con Zustand
+- [x] **Día 13:** Crear `useSaleStore` con Zustand
     - Estado: `cart[]`, `currentSale`, `salesHistory[]`
     - Acciones: `addToCart`, `removeFromCart`, `completeSale`, `clearCart`
-- [ ] **Día 13-14:** Pantalla Nueva Venta
+- [x] **Día 13-14:** Pantalla Nueva Venta
     - Lista de productos disponibles (clickable)
     - Sección de carrito con items seleccionados
     - Cálculo automático de total
-- [ ] **Día 15:** Funcionalidad "Completar Venta"
+- [x] **Día 15:** Funcionalidad "Completar Venta"
     - Guarda la venta en el historial local
     - Limpia el carrito
     - Feedback visual de éxito
-- [ ] **Día 15:** Pantalla básica de Historial de Ventas
+- [x] **Día 15:** Implementar eliminarDelCarrito() en useStore.ts
+- [x] **Día 15:** Badge circular rojo con cantidad en cada card de producto
+- [x] **Día 15:** Botones [+] y [-] en cada card
+- [x] **Día 15:** Modal bottom sheet del carrito con detalle de items
+- [x] **Día 15:** Swipe izquierdo para eliminar item del carrito
+- [x] **Día 15:** Fix KeyboardAvoidingView en nueva-venta.tsx
+- [x] **Día 15:** Fix padding de input Monto Recibido al cerrar teclado
 
 ### Producto Final ✅
 
@@ -103,6 +113,8 @@
 - Pantalla de venta con carrito funcional
 - Cálculo de total automático
 - Historial de ventas guardado localmente
+- Gestión avanzada del carrito (badges, botones +/-, modal, swipe)
+- UI fija en nueva-venta.tsx sin salteos visuales
 
 ---
 
@@ -112,23 +124,26 @@
 
 ### Tareas
 
-- [ ] **Día 16:** Crear proyecto en Firebase Console
-- [ ] **Día 16:** Instalar y configurar `@react-native-firebase/*`
-- [ ] **Día 16:** Configurar Firebase Auth en el proyecto
-- [ ] **Día 17:** Pantalla de Login
+- [x] **Día 16:** Crear proyecto en Firebase Console
+- [x] **Día 16:** Instalar y configurar `@react-native-firebase/*`
+- [x] **Día 16:** Configurar Firebase Auth en el proyecto
+- [x] **Día 17:** Pantalla de Login
     - Campos: email + password
     - Validaciones básicas
     - Link a registro
     - Manejo de errores (credenciales incorrectas, etc.)
-- [ ] **Día 17:** Pantalla de Registro
+- [x] **Día 17:** Pantalla de Registro
     - Campos: email + password + confirmar password
     - Link a login
-- [ ] **Día 18:** Crear `useAuthStore` con Zustand
+- [x] **Día 18:** Crear `useAuthStore` con Zustand
     - Estado: `user`, `isAuthenticated`, `isPro`
     - Acciones: `login`, `register`, `logout`
-- [ ] **Día 18:** Protección de rutas (redirigir a login si no está autenticado)
-- [ ] **Día 18:** Sesión persistente (no pedir login cada vez)
-- [ ] **Día 18:** Botón "Cerrar sesión" en settings/perfil
+- [x] **Día 18:** Protección de rutas en \_layout.tsx
+- [x] **Día 18:** Sesión persistente (no pedir login cada vez)
+- [x] **Día 18:** Botón cerrar sesión
+- [x] **Día 18:** trim() automático de email en crear-cuenta.tsx
+- [x] **Día 18:** Mensajes de error descriptivos en iniciar-sesion.tsx
+- [x] **Día 18:** Eliminado AsyncStorage.clear() en index.tsx
 
 ### Producto Final ✅
 
@@ -137,6 +152,8 @@
 - Sesión persiste entre aperturas de la app
 - Rutas protegidas redirigen a login
 - Cerrar sesión funcional
+- Validaciones y errores mejorados
+- Email trimmed automáticamente
 
 ---
 
@@ -320,3 +337,4 @@ Al completar las 10 semanas deberías poder decir:
 - **Offline:** Toda la funcionalidad core (productos, ventas, historial) debe funcionar sin internet.
 - **IA en cliente:** Nunca hacer llamadas directas a Gemini desde la app. Siempre a través de Cloud Functions.
 - **Límites:** Verificar siempre los límites de uso en el servidor, no confiar solo en el estado local.
+- **Pantalla Historial de Ventas:** Eliminada por decisión de producto. El historial se consulta únicamente a través del Asistente IA conversacional. Nunca sugerir ni crear esta pantalla.

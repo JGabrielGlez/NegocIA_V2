@@ -27,6 +27,7 @@ export default function productos() {
     const [modalVisible, setModalVisible] = useState(false);
     const [nombreProducto, setNombreProducto] = useState("");
     const [precioProducto, setPrecioProducto] = useState("");
+    const [busqueda, setBusqueda] = useState("");
 
     // Aquí va la logica de la store
     // Traer todos los productos de esta
@@ -38,12 +39,12 @@ export default function productos() {
     // Esto es para insertar el id del usuario dentro de cada producto
     const usuario = useAuthStore((state) => state.usuario);
 
-
-
-
+    // Filtrar productos basándose en el texto de búsqueda
+    const productosFiltrados = productosDeStore.filter((producto) =>
+        producto.nombre.toLowerCase().includes(busqueda.toLowerCase()),
+    );
 
     // Método para el botón de guardar
-    // TODO tengo que agregar el refrescado de los productos, para que en cuanto se agrueguen 
     const manejarGuardado = async () => {
         // 1. Validaciones iniciales
         if (!usuario) {
@@ -138,10 +139,14 @@ export default function productos() {
     return (
         <SafeAreaView className="flex-1">
             <CabeceraNavegacion nombrePagina="Productos" />
-            <Buscador filtrar={true} placeholder="Buscar productos..." />
+            <Buscador
+                filtrar={true}
+                placeholder="Buscar productos..."
+                onSearch={setBusqueda}
+            />
 
             <ScrollView className="bg-white">
-                {productosDeStore.map((item) => (
+                {productosFiltrados.map((item) => (
                     <ItemProducto
                         nombre={item.nombre}
                         precio={item.precio}

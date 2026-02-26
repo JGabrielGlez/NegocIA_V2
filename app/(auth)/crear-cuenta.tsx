@@ -34,7 +34,7 @@ export default function crearCuenta() {
     const [isLoading, setIsLoading] = useState(false);
 
     const manejarSetCorreo = (texto: string) => {
-        setCorreo(texto);
+        setCorreo(texto.trim());
         console.log(correo);
         console.log(password);
     };
