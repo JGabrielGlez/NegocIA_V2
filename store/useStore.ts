@@ -198,18 +198,60 @@ export const useStore = create<AppState>()(
                 ventasPendientes: [],
 
                 // Estos son todos los métodos
-                agregarProducto: (productoCompleto) =>
+                agregarProducto: (productoCompleto) => {
+                    // 1. Agregar localmente primero (operación síncrona)
                     set((state) => ({
                         productos: [...state.productos, productoCompleto],
-                    })),
+                    }));
 
-                eliminarProducto: (id) =>
+                    // 2. Intentar sincronizar con Firestore (asíncrono, no bloquea)
+                    const usuario = useAuthStore.getState().usuario;
+                    if (usuario?.uid) {
+                        databaseService
+                            .addProducto(productoCompleto)
+                            .then((firestoreId) => {
+                                console.log(
+                                    "✅ Producto sincronizado a Firestore:",
+                                    firestoreId,
+                                );
+                            })
+                            .catch((error) => {
+                                console.error(
+                                    "⚠️ Error al sincronizar producto a Firestore (guardado local exitoso):",
+                                    error,
+                                );
+                            });
+                    }
+                },
+
+                eliminarProducto: (id) => {
+                    // 1. Eliminar localmente primero (operación síncrona)
                     set((state) => ({
-                        // <--- Agrega esto
                         productos: state.productos.filter((p) => p.uid !== id),
-                    })),
+                    }));
 
-                actualizarProducto: (id, datos) =>
+                    // 2. Intentar sincronizar con Firestore (asíncrono, no bloquea)
+                    const usuario = useAuthStore.getState().usuario;
+                    if (usuario?.uid && id) {
+                        databaseService
+                            .deleteProducto(usuario.uid, id)
+                            .then(() => {
+                                console.log(
+                                    "✅ Producto eliminado de Firestore:",
+                                    id,
+                                );
+                            })
+                            .catch((error) => {
+                                console.error(
+                                    "⚠️ Error al eliminar producto de Firestore (eliminado local exitoso):",
+                                    error,
+                                );
+                            });
+                    }
+                },
+
+                actualizarProducto: (id, datos) => {
+                    // 1. Actualizar localmente primero (operación síncrona)
                     set((state) => ({
                         productos: state.productos.map((producto) =>
                             producto.uid === id
@@ -219,7 +261,27 @@ export const useStore = create<AppState>()(
                                   }
                                 : producto,
                         ),
-                    })),
+                    }));
+
+                    // 2. Intentar sincronizar con Firestore (asíncrono, no bloquea)
+                    const usuario = useAuthStore.getState().usuario;
+                    if (usuario?.uid && id) {
+                        databaseService
+                            .updateProducto(usuario.uid, id, datos)
+                            .then(() => {
+                                console.log(
+                                    "✅ Producto actualizado en Firestore:",
+                                    id,
+                                );
+                            })
+                            .catch((error) => {
+                                console.error(
+                                    "⚠️ Error al actualizar producto en Firestore (actualizado local exitoso):",
+                                    error,
+                                );
+                            });
+                    }
+                },
 
                 obtenerProductoPorId: (id) => {
                     // Se usa get para acceder a la lista de productos actual
