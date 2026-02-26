@@ -1,7 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
+import { databaseService } from "../firebase/databaseService";
 import { ItemVenta, Producto, Venta } from "./types";
+import { useAuthStore } from "./useAuthStore";
 // En este archivo se define qupe es lo que tiene la store de zustand, no se usa en otro lado
 
 interface AppState {
@@ -9,6 +11,7 @@ interface AppState {
     // Nota: como el archivo de types es un tipo declaration file, no es necesario hacer la importacion TS lo reconoce en automático
     productos: Producto[];
     ventas: Venta[];
+    ventasPendientes: Venta[];
     carrito: ItemVenta[];
 
     obtenerTotalCarrito: () => number;
@@ -34,6 +37,7 @@ interface AppState {
     //  ------------------- VENTAS ---------------------
     // Una vez se imprima una venta, y se cobre, esta no se puede modificar por ningún motivo
     agregarVenta: () => void;
+    sincronizarVentasLocales: () => Promise<void>;
 
     // ---------------- Utilidades -------------------
     calcularVentasHoy: () => number;
@@ -191,6 +195,7 @@ export const useStore = create<AppState>()(
                         0,
                     ),
                 ventas: [],
+                ventasPendientes: [],
 
                 // Estos son todos los métodos
                 agregarProducto: (productoCompleto) =>
@@ -225,18 +230,80 @@ export const useStore = create<AppState>()(
                     return productos.find((p) => p.id === id);
                 },
 
-                agregarVenta: () =>
+                agregarVenta: () => {
+                    const ventaNueva: Venta = {
+                        idVenta: `${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+                        fecha: new Date(),
+                        items: get().carrito,
+                        total: get().obtenerTotalCarrito(),
+                    };
+
                     set((state) => ({
-                        ventas: [
-                            ...state.ventas,
-                            {
-                                id: `${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-                                fecha: new Date(),
-                                items: state.carrito,
-                                total: get().obtenerTotalCarrito(),
-                            },
+                        ventas: [...state.ventas, ventaNueva],
+                        ventasPendientes: [
+                            ...state.ventasPendientes,
+                            ventaNueva,
                         ],
-                    })),
+                    }));
+
+                    const userId = useAuthStore.getState().usuario?.uid;
+
+                    if (!userId) {
+                        console.warn(
+                            "No se pudo sincronizar la venta: usuario no autenticado",
+                        );
+                        return;
+                    }
+
+                    databaseService
+                        .addVenta(userId, ventaNueva)
+                        .then(() => {
+                            set((state) => ({
+                                ventasPendientes: state.ventasPendientes.filter(
+                                    (venta) =>
+                                        venta.idVenta !== ventaNueva.idVenta,
+                                ),
+                            }));
+                        })
+                        .catch((error) => {
+                            console.log(
+                                "Error al sincronizar venta con Firestore",
+                                error,
+                            );
+                        });
+                },
+
+                sincronizarVentasLocales: async () => {
+                    const userId = useAuthStore.getState().usuario?.uid;
+
+                    if (!userId) {
+                        console.warn(
+                            "No se pudo sincronizar ventas: usuario no autenticado",
+                        );
+                        return;
+                    }
+
+                    const ventasPendientes = get().ventasPendientes;
+
+                    if (ventasPendientes.length === 0) {
+                        return;
+                    }
+
+                    const resultados = await Promise.allSettled(
+                        ventasPendientes.map((venta) =>
+                            databaseService.addVenta(userId, venta),
+                        ),
+                    );
+
+                    const pendientesRestantes = ventasPendientes.filter(
+                        (_venta, index) =>
+                            resultados[index].status !== "fulfilled",
+                    );
+
+                    set(() => ({
+                        ventasPendientes: pendientesRestantes,
+                    }));
+                },
 
                 calcularVentasHoy: () => {
                     const { ventas } = get();
