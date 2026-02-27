@@ -147,7 +147,6 @@ _Desbloquea:_ Que podamos escribir la lógica de IA
 - [x] En `functions/package.json`, agregrar `@google/generative-ai`
 - [x] En `.env.example` (crear archivo), documentar variables: `GEMINI_API_KEY`, `FIREBASE_PROJECT_ID`
 - [x] En `functions/.env` (crear y **NO commitear**), agregar valores reales
-- [x] En `functions/tsconfig.json`, asegurar que `lib/index.js` sea el main
 
 **Por qué aquí:** Sin la librería de Gemini, no podemos llamar a la API
 
@@ -169,22 +168,19 @@ _Desbloquea:_ Que podamos escribir la lógica de IA
 
 ---
 
-#### B.3 — Crear Cloud Function `askAssistant` (básica)
+#### B.3 — Crear Cloud Function `askAssistant` (básica) ✅ COMPLETADO
 
-- [ ] `functions/src/functions/askAssistant.ts`
-- [ ] Estructura mínima:
-    ```typescript
-    export const askAssistant = onCall(async (request) => {
-        // 1. Validar: usuario autenticado
-        // 2. Leer usuario de Firestore
-        // 3. Verificar plan PRO
-        // 4. Verificar límites diarios (10/día PRO, 0/día GRATIS)
-        // 5. Construir contexto (productos, ventas, métricas)
-        // 6. Llamar a Gemini con prompt de sistema
-        // 7. Incrementar contador de uso
-        // 8. Retornar respuesta
-    });
-    ```
+- [x] `functions/src/functions/askAssistant.ts`
+- [x] Estructura mínima:
+    - [x] 1. Validar: usuario autenticado (HttpsError "unauthenticated")
+    - [x] 2. Leer usuario de Firestore
+    - [x] 3. Verificar plan PRO (HttpsError "permission-denied")
+    - [x] 4. Verificar límites mensuales con limitsManager (HttpsError "resource-exhausted")
+    - [x] 5. Construir contexto (productos, ventas, métricas) con contextBuilder
+    - [x] 6. Llamar a Gemini con prompt de sistema usando geminiService
+    - [x] 7. Incrementar contador de uso con incrementQueryCount
+    - [x] 8. Retornar respuesta (AIResponse)
+- [x] Exportar askAssistant desde `functions/src/index.ts`
 
 **Por qué aquí:** Desbloquea la pantalla Chat IA
 

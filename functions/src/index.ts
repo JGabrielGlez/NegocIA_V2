@@ -11,6 +11,9 @@ import {setGlobalOptions} from "firebase-functions";
 import {onRequest} from "firebase-functions/https";
 import * as logger from "firebase-functions/logger";
 
+// Importar Cloud Functions
+export {askAssistant} from "./functions/askAssistant";
+
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
