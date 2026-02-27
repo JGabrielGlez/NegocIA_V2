@@ -12,6 +12,8 @@ import {
 } from "expo-router";
 import { useEffect, useRef } from "react";
 import { AppState } from "react-native";
+import { auth } from "@/firebase/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 import "./global.css";
 
 export default function RootLayout() {
@@ -19,7 +21,30 @@ export default function RootLayout() {
     const segments = useSegments();
     const rootNavigationState = useRootNavigationState();
     const usuario = useAuthStore((state) => state.usuario);
+    const setAuthData = useAuthStore((state) => state.setAuthData);
     const hasNavigated = useRef(false);
+
+    // Sincronizar estado de Firebase Auth con Zustand
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+            if (firebaseUser) {
+                // Usuario autenticado en Firebase
+                setAuthData({ usuario: firebaseUser });
+            } else {
+                // Usuario NO autenticado en Firebase
+                // Si Zustand tiene un usuario pero Firebase no, limpiar Zustand
+                if (usuario) {
+                    setAuthData({ 
+                        usuario: null, 
+                        isPremium: false, 
+                        plan: "GRATIS" 
+                    });
+                }
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     useEffect(() => {
         if (!rootNavigationState?.key) {
