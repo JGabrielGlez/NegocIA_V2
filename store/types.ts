@@ -38,6 +38,15 @@ export interface Usuario {
     creditos: number;
 }
 
+// Define las estadísticas de uso del asistente IA
+export interface AIUsageStats {
+    queriesUsedThisMonth: number;
+    nextResetDate: Date;
+    totalQueriesAllTime: number;
+    priceUpdatesUsedThisMonth: number;
+    lastQueryAt: Date | null;
+}
+
 // Esto creo no lo usaré
 export interface ProductoFirestore extends Producto {
     fechaAgregado?: any;

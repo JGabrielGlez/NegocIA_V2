@@ -225,4 +225,55 @@ export const databaseService = {
             throw error;
         }
     },
+
+    crearAIUsageDoc: async (uid: string) => {
+        try {
+            // Crear documento de uso de IA en usuarios/{uid}/ai_usage/analytics
+            const docRef = doc(
+                db,
+                COLLECTIONS.USUARIOS,
+                uid,
+                "ai_usage",
+                "analytics",
+            );
+
+            // Calcular nextResetDate (fecha actual + 30 días)
+            const nextResetDate = new Date();
+            nextResetDate.setDate(nextResetDate.getDate() + 30);
+
+            await setDoc(docRef, {
+                queriesUsedThisMonth: 0,
+                nextResetDate: nextResetDate,
+                totalQueriesAllTime: 0,
+                priceUpdatesUsedThisMonth: 0,
+                lastQueryAt: null,
+            });
+        } catch (error: any) {
+            console.log("Error en databaseService.crearAIUsageDoc", error);
+            throw error;
+        }
+    },
+
+    getAIUsageDoc: async (uid: string) => {
+        try {
+            // Leer documento de uso de IA desde usuarios/{uid}/ai_usage/analytics
+            const docRef = doc(
+                db,
+                COLLECTIONS.USUARIOS,
+                uid,
+                "ai_usage",
+                "analytics",
+            );
+            const docSnap = await getDoc(docRef);
+
+            if (!docSnap.exists()) {
+                return null;
+            }
+
+            return docSnap.data();
+        } catch (error: any) {
+            console.log("Error en databaseService.getAIUsageDoc", error);
+            throw error;
+        }
+    },
 };

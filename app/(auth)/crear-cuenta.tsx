@@ -15,8 +15,8 @@ import {
     View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { auth } from "../../firebase/firebaseConfig.js";
 import { databaseService } from "../../firebase/databaseService";
+import { auth } from "../../firebase/firebaseConfig.js";
 
 // FIXME quitar todos los espacios tanto al inicio como al final de lo que es el correo, para evitar confusiones con los usuarios, ya que al pegar un correo, se le agrega un espacio al final, cosa que la app marca como correo inválido
 
@@ -77,6 +77,10 @@ export default function crearCuenta() {
             try {
                 await databaseService.crearUsuario(user.uid, email);
                 console.log("✅ Usuario sincronizado a Firestore:", user.uid);
+
+                // Crear documento de límites de IA
+                await databaseService.crearAIUsageDoc(user.uid);
+                console.log("✅ Documento de límites IA creado:", user.uid);
             } catch (firestoreError: any) {
                 // Si falla la creación en Firestore, el registro de Auth NO se revierte
                 console.error(

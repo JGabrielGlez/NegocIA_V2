@@ -172,14 +172,14 @@ _Desbloquea:_ Que podamos escribir la lógica de IA
 
 - [x] `functions/src/functions/askAssistant.ts`
 - [x] Estructura mínima:
-    - [x] 1. Validar: usuario autenticado (HttpsError "unauthenticated")
-    - [x] 2. Leer usuario de Firestore
-    - [x] 3. Verificar plan PRO (HttpsError "permission-denied")
-    - [x] 4. Verificar límites mensuales con limitsManager (HttpsError "resource-exhausted")
-    - [x] 5. Construir contexto (productos, ventas, métricas) con contextBuilder
-    - [x] 6. Llamar a Gemini con prompt de sistema usando geminiService
-    - [x] 7. Incrementar contador de uso con incrementQueryCount
-    - [x] 8. Retornar respuesta (AIResponse)
+    - [x]   1. Validar: usuario autenticado (HttpsError "unauthenticated")
+    - [x]   2. Leer usuario de Firestore
+    - [x]   3. Verificar plan PRO (HttpsError "permission-denied")
+    - [x]   4. Verificar límites mensuales con limitsManager (HttpsError "resource-exhausted")
+    - [x]   5. Construir contexto (productos, ventas, métricas) con contextBuilder
+    - [x]   6. Llamar a Gemini con prompt de sistema usando geminiService
+    - [x]   7. Incrementar contador de uso con incrementQueryCount
+    - [x]   8. Retornar respuesta (AIResponse)
 - [x] Exportar askAssistant desde `functions/src/index.ts`
 
 **Por qué aquí:** Desbloquea la pantalla Chat IA
@@ -190,9 +190,13 @@ _Desbloquea:_ Que podamos escribir la lógica de IA
 
 _Desbloquea:_ Protección contra abuso, billingconsi
 
-#### C.1 — Crear estructura de límites en Firestore
+#### C.1 — Crear estructura de límites en Firestore ✅ COMPLETADO
 
-- [ ] Agregar documento `usuarios/{uid}/ai_usage/analytics` con:
+- [x] Crear función `crearAIUsageDoc(uid)` en `databaseService.ts`
+- [x] Crear función `getAIUsageDoc(uid)` en `databaseService.ts`
+- [x] Agregar interfaz `AIUsageStats` en `store/types.ts`
+- [x] Llamar a `crearAIUsageDoc()` en `crear-cuenta.tsx` tras el registro
+- [x] Documento `usuarios/{uid}/ai_usage/analytics` con estructura:
     ```
     {
       queriesUsedThisMonth: 0,
