@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import admin from "../config/firebaseAdmin";
 
 /**
  * Utilidad para gestionar límites de uso de IA
@@ -139,41 +139,41 @@ export async function incrementQueryCount(userId: string): Promise<void> {
  * @returns Objeto con queriesRemaining y nextResetDate
  */
 export async function getQueriesRemaining(
-  userId: string,
-  plan: string,
+    userId: string,
+    plan: string,
 ): Promise<{ queriesRemaining: number; nextResetDate: Date }> {
-  const db = admin.firestore();
-  const usageDocRef = db
-    .collection("usuarios")
-    .doc(userId)
-    .collection("ai_usage")
-    .doc("analytics");
+    const db = admin.firestore();
+    const usageDocRef = db
+        .collection("usuarios")
+        .doc(userId)
+        .collection("ai_usage")
+        .doc("analytics");
 
-  const usageDoc = await usageDocRef.get();
+    const usageDoc = await usageDocRef.get();
 
-  if (!usageDoc.exists) {
+    if (!usageDoc.exists) {
+        return {
+            queriesRemaining: 0,
+            nextResetDate: new Date(),
+        };
+    }
+
+    const usageData = usageDoc.data();
+    if (!usageData) {
+        return {
+            queriesRemaining: 0,
+            nextResetDate: new Date(),
+        };
+    }
+
+    // Obtener límite según el plan
+    const limit = QUERY_LIMITS[plan as keyof typeof QUERY_LIMITS] || 0;
+    const queriesUsed = usageData.queriesUsedThisMonth || 0;
+    const queriesRemaining = Math.max(0, limit - queriesUsed);
+    const nextResetDate = usageData.nextResetDate?.toDate() || new Date();
+
     return {
-      queriesRemaining: 0,
-      nextResetDate: new Date(),
+        queriesRemaining,
+        nextResetDate,
     };
-  }
-
-  const usageData = usageDoc.data();
-  if (!usageData) {
-    return {
-      queriesRemaining: 0,
-      nextResetDate: new Date(),
-    };
-  }
-
-  // Obtener límite según el plan
-  const limit = QUERY_LIMITS[plan as keyof typeof QUERY_LIMITS] || 0;
-  const queriesUsed = usageData.queriesUsedThisMonth || 0;
-  const queriesRemaining = Math.max(0, limit - queriesUsed);
-  const nextResetDate = usageData.nextResetDate?.toDate() || new Date();
-
-  return {
-    queriesRemaining,
-    nextResetDate,
-  };
 }
