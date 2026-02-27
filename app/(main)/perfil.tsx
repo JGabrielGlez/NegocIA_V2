@@ -4,6 +4,7 @@ import { Alert, Pressable, ScrollView, Text, View } from "react-native";
 
 import BadgePRO from "@/components/BadgePRO";
 import CabeceraNavegacion from "@/components/cabeceraNavegacion";
+import { DevToolsPanel } from "@/components/DevToolsPanel";
 import { databaseService } from "@/firebase/databaseService";
 import { Usuario } from "@/store/types";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -176,6 +177,9 @@ export default function PerfilScreen() {
 
                 {/* Espaciador */}
                 <View className="h-8" />
+
+                {/* DevTools Panel (solo en desarrollo) */}
+                <DevToolsPanel />
             </ScrollView>
         </View>
     );
