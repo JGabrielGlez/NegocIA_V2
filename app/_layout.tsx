@@ -4,25 +4,48 @@ import {
     syncSubscriptionWithBackend,
 } from "@/services/revenueCat";
 import { useAuthStore } from "@/store/useAuthStore";
-import { Stack, useRouter, useSegments } from "expo-router";
-import { useEffect } from "react";
+import {
+    Stack,
+    useRootNavigationState,
+    useRouter,
+    useSegments,
+} from "expo-router";
+import { useEffect, useRef } from "react";
 import { AppState } from "react-native";
 import "./global.css";
 
 export default function RootLayout() {
     const router = useRouter();
     const segments = useSegments();
+    const rootNavigationState = useRootNavigationState();
     const usuario = useAuthStore((state) => state.usuario);
+    const hasNavigated = useRef(false);
 
     useEffect(() => {
+        if (!rootNavigationState?.key) {
+            return;
+        }
+
+        // Evitar múltiples intentos de navegación
+        if (hasNavigated.current) {
+            return;
+        }
+
+        // Si estamos en la pantalla de presentación (índice), no hacer nada
+        if (segments.length === 0 || segments[0] === undefined) {
+            return;
+        }
+
         const enAuth = segments[0] === "(auth)";
 
         if (!usuario && !enAuth) {
+            hasNavigated.current = true;
             router.replace("/(auth)/iniciar-sesion");
             return;
         }
 
         if (usuario && enAuth) {
+            hasNavigated.current = true;
             router.replace("/dashboard");
         }
 
@@ -42,7 +65,7 @@ export default function RootLayout() {
                     );
                 });
         }
-    }, [usuario, segments, router]);
+    }, [usuario, segments, router, rootNavigationState?.key]);
 
     // Segundo useEffect: Sincronizar suscripción cuando la app vuelve al foreground
     useEffect(() => {

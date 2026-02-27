@@ -1,0 +1,149 @@
+[debug] [2026-02-27T23:14:59.211Z] ----------------------------------------------------------------------
+[debug] [2026-02-27T23:14:59.216Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Jesus\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2026-02-27T23:14:59.217Z] CLI Version:   15.5.1
+[debug] [2026-02-27T23:14:59.217Z] Platform:      win32
+[debug] [2026-02-27T23:14:59.217Z] Node Version:  v24.13.1
+[debug] [2026-02-27T23:14:59.217Z] Time:          Fri Feb 27 2026 16:14:59 GMT-0700 (Mexican Pacific Standard Time)
+[debug] [2026-02-27T23:14:59.217Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-02-27T23:15:04.345Z] Object "/emulators/firestore" in "firebase.json" has unknown property: {"additionalProperty":"import"}
+[debug] [2026-02-27T23:15:04.355Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-27T23:15:04.355Z] > authorizing via signed-in user (jesusgabrielgonzaleses2@gmail.com)
+[debug] [2026-02-27T23:15:04.554Z] java version "25.0.2" 2026-01-20 LTS
+Java(TM) SE Runtime Environment (build 25.0.2+10-LTS-69)
+Java HotSpot(TM) 64-Bit Server VM (build 25.0.2+10-LTS-69, mixed mode, sharing)
+
+[debug] [2026-02-27T23:15:04.565Z] Parsed Java major version: 25
+[info] i  emulators: Starting emulators: auth, functions, firestore, hosting, extensions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, hosting, extensions"}}
+[debug] [2026-02-27T23:15:04.569Z] Checked if tokens are valid: true, expires at: 1772235811532
+[debug] [2026-02-27T23:15:04.570Z] Checked if tokens are valid: true, expires at: 1772235811532
+[debug] [2026-02-27T23:15:04.571Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 [none]
+[debug] [2026-02-27T23:15:05.022Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 200
+[debug] [2026-02-27T23:15:05.022Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 {"projectNumber":"129510647165","projectId":"negocia-a17c5","lifecycleState":"ACTIVE","name":"NegocIA","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-01-18T23:26:28.060347Z"}
+[warn] !  hosting: The hosting emulator is configured but there is no hosting configuration. Have you run firebase init hosting? {"metadata":{"emulator":{"name":"hosting"},"message":"The hosting emulator is configured but there is no hosting configuration. Have you run \u001b[1mfirebase init hosting\u001b[22m?"}}
+[debug] [2026-02-27T23:15:05.043Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-27T23:15:05.044Z] assigned listening specs for emulators {"user":{"auth":[{"address":"0.0.0.0","family":"IPv4","port":1212}],"firestore":[{"address":"0.0.0.0","family":"IPv4","port":1214}],"firestore.websocket":[{"address":"0.0.0.0","family":"IPv4","port":9150}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2026-02-27T23:15:05.050Z] Write emulator hub locator at C:\Users\Jesus\AppData\Local\Temp\hub-negocia-a17c5.json
+[debug] [2026-02-27T23:15:05.068Z] [Extensions] Started Extensions emulator, this is a noop.
+[debug] [2026-02-27T23:15:05.084Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-27T23:15:05.084Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-27T23:15:05.084Z] late-assigned ports for functions and eventarc emulators {"user":{"auth":[{"address":"0.0.0.0","family":"IPv4","port":1212}],"firestore":[{"address":"0.0.0.0","family":"IPv4","port":1214}],"firestore.websocket":[{"address":"0.0.0.0","family":"IPv4","port":9150}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"0.0.0.0","family":"IPv4","port":1213}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, database, hosting, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, database, hosting, pubsub, storage, dataconnect\u001b[22m"}}
+[debug] [2026-02-27T23:15:05.119Z] defaultcredentials: writing to file C:\Users\Jesus\AppData\Roaming\firebase\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json
+[debug] [2026-02-27T23:15:05.128Z] Setting GAC to C:\Users\Jesus\AppData\Roaming\firebase\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\Jesus\\AppData\\Roaming\\firebase\\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json"}}
+[debug] [2026-02-27T23:15:05.129Z] Checked if tokens are valid: true, expires at: 1772235811532
+[debug] [2026-02-27T23:15:05.129Z] Checked if tokens are valid: true, expires at: 1772235811532
+[debug] [2026-02-27T23:15:05.129Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/negocia-a17c5/adminSdkConfig [none]
+[debug] [2026-02-27T23:15:05.456Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/negocia-a17c5/adminSdkConfig 200
+[debug] [2026-02-27T23:15:05.457Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/negocia-a17c5/adminSdkConfig {"projectId":"negocia-a17c5","storageBucket":"negocia-a17c5.firebasestorage.app"}
+[debug] [2026-02-27T23:15:05.486Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2026-02-27T23:15:05.487Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2026-02-27T23:15:05.487Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\Jesus\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.20.2.jar","--host","0.0.0.0","--port",1214,"--websocket_port",9150,"--project_id","negocia-a17c5","--rules","C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\firestore.rules","--single_project_mode",true,"--functions_emulator","127.0.0.1:1213"],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false,"port":1214} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\Jesus\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.20.2.jar\",\"--host\",\"0.0.0.0\",\"--port\",1214,\"--websocket_port\",9150,\"--project_id\",\"negocia-a17c5\",\"--rules\",\"C:\\\\Users\\\\Jesus\\\\Desktop\\\\MarcaPersonal\\\\NegocIA\\\\AppNegocIA\\\\firestore.rules\",\"--single_project_mode\",true,\"--functions_emulator\",\"127.0.0.1:1213\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false,\"port\":1214}"}}
+[info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
+[debug] [2026-02-27T23:15:06.201Z] WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::allocateMemory has been called by io.netty.util.internal.PlatformDependent0$2 (file:/C:/Users/Jesus/.cache/firebase/emulators/cloud-firestore-emulator-v1.20.2.jar)
+WARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$2
+WARNING: sun.misc.Unsafe::allocateMemory will be removed in a future release
+ {"metadata":{"emulator":{"name":"firestore"},"message":"WARNING: A terminally deprecated method in sun.misc.Unsafe has been called\nWARNING: sun.misc.Unsafe::allocateMemory has been called by io.netty.util.internal.PlatformDependent0$2 (file:/C:/Users/Jesus/.cache/firebase/emulators/cloud-firestore-emulator-v1.20.2.jar)\nWARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$2\nWARNING: sun.misc.Unsafe::allocateMemory will be removed in a future release\r\n"}}
+[debug] [2026-02-27T23:15:08.288Z] Feb 27, 2026 4:15:08 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+INFO: Started WebSocket server on ws://0.0.0.0:9150
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 27, 2026 4:15:08 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start\r\nINFO: Started WebSocket server on ws://0.0.0.0:9150\r\n"}}
+[debug] [2026-02-27T23:15:08.373Z] API endpoint: http://0.0.0.0:1214 {"metadata":{"emulator":{"name":"firestore"},"message":"API endpoint: http://0.0.0.0:1214"}}
+[debug] [2026-02-27T23:15:08.373Z] 
+If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:
+
+   export FIRESTORE_EMULATOR_HOST=0.0.0.0:1214
+
+If you are running a Firestore in Datastore Mode project, run:
+
+   export DATASTORE_EMULATOR_HOST=0.0.0.0:1214
+
+Note: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.
+Dev App Server is now running.
+
+ {"metadata":{"emulator":{"name":"firestore"},"message":"\nIf you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:\r\n\n   export FIRESTORE_EMULATOR_HOST=0.0.0.0:1214\n\nIf you are running a Firestore in Datastore Mode project, run:\r\n\n   export DATASTORE_EMULATOR_HOST=0.0.0.0:1214\n\nNote: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.\r\nDev App Server is now running.\n\r\n"}}
+[info] +  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
+[debug] [2026-02-27T23:15:19.214Z] [Extensions] Connecting Extensions emulator, this is a noop.
+[info] i  functions: Watching "C:\Users\Jesus\Desktop\MarcaPersonal\NegocIA\AppNegocIA\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\functions\" for Cloud Functions..."}}
+[debug] [2026-02-27T23:15:19.252Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2026-02-27T23:15:22.059Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "24"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "@google/generative-ai": "^0.5.0",
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.4.1",
+    "typescript": "^5.7.3"
+  },
+  "private": true
+}
+[debug] [2026-02-27T23:15:22.059Z] Building nodejs source
+[debug] [2026-02-27T23:15:22.060Z] Failed to find version of module node: reached end of search path C:\Users\Jesus\Desktop\MarcaPersonal\NegocIA\AppNegocIA\functions\node_modules
+[info] +  functions: Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env, .env.local. 
+[debug] [2026-02-27T23:15:22.114Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-02-27T23:15:22.128Z] Found firebase-functions binary at 'C:\Users\Jesus\Desktop\MarcaPersonal\NegocIA\AppNegocIA\functions\node_modules\.bin\firebase-functions'
+[debug] [2026-02-27T23:15:22.259Z] Feb 27, 2026 4:15:22 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel
+INFO: Connected to new websocket client
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 27, 2026 4:15:22 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel\r\nINFO: Connected to new websocket client\r\n"}}
+[info] Serving at port 8916
+
+[error] (node:20912) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[debug] [2026-02-27T23:15:24.176Z] Got response from /__/functions.yaml {"endpoints":{"askAssistant":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"callableTrigger":{},"entryPoint":"askAssistant"},"verifySubscription":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"verifySubscription"},"ping":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"ping"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[debug] [2026-02-27T23:15:28.270Z] defaultcredentials: writing to file C:\Users\Jesus\AppData\Roaming\firebase\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json
+[debug] [2026-02-27T23:15:28.271Z] Setting GAC to C:\Users\Jesus\AppData\Roaming\firebase\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\Jesus\\AppData\\Roaming\\firebase\\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json"}}
+[info] +  functions: Loaded functions definitions from source: askAssistant, verifySubscription, ping. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: askAssistant, verifySubscription, ping."}}
+[info] +  functions[us-central1-askAssistant]: http function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/askAssistant). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/askAssistant)."}}
+[info] +  functions[us-central1-verifySubscription]: http function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/verifySubscription). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/verifySubscription)."}}
+[info] +  functions[us-central1-ping]: http function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/ping). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/ping)."}}
+[debug] [2026-02-27T23:15:28.281Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬──────────────────────────────────┬──────────────────────────────────┐
+│ Emulator       │ Host:Port                        │ View in Emulator UI              │
+├────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+│ Authentication │ 0.0.0.0:1212                     │ http://127.0.0.1:4000/auth       │
+├────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+│ Functions      │ 0.0.0.0:1213                     │ http://127.0.0.1:4000/functions  │
+├────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+│ Firestore      │ 0.0.0.0:1214                     │ http://127.0.0.1:4000/firestore  │
+├────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+│ Hosting        │ Failed to initialize (see above) │                                  │
+├────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+│ Extensions     │ 0.0.0.0:1213                     │ http://127.0.0.1:4000/extensions │
+└────────────────┴──────────────────────────────────┴──────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500, 9150
+┌─────────────────────────┬───────────────┬─────────────────────┐
+│ Extension Instance Name │ Extension Ref │ View in Emulator UI │
+└─────────────────────────┴───────────────┴─────────────────────┘
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
