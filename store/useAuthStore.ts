@@ -15,6 +15,7 @@ interface AuthState {
     isLoading?: boolean;
     usuario: User | null;
     isPremium: boolean;
+    plan: "PRO" | "GRATIS";
     mensajeError: Record<string, string>;
 
     // Funciones
@@ -23,6 +24,7 @@ interface AuthState {
     setAuthData: (data: Partial<AuthState>) => void;
     setIsLoading: (loading: boolean) => void;
     setIsPremium: (isPro: boolean) => void;
+    setPlan: (plan: "PRO" | "GRATIS") => void;
     iniciarSesion: (
         correo: string,
         password: string,
@@ -56,12 +58,18 @@ export const useAuthStore = create<AuthState>()(
 
             isPremium: false,
 
+            plan: "GRATIS",
+
             setIsLoading: (loading) => {
                 get().setAuthData({ isLoading: loading });
             },
 
             setIsPremium: (isPro) => {
                 get().setAuthData({ isPremium: isPro });
+            },
+
+            setPlan: (plan) => {
+                get().setAuthData({ plan });
             },
 
             setAuthData: (datos) => set(datos),
@@ -102,7 +110,11 @@ export const useAuthStore = create<AuthState>()(
                     const user = userCredential.user;
                     // Se actualiza la info del usuario, esto es para verificar el estado del correo que esté validado
                     await user.reload();
-                    set({ usuario: userCredential.user, isPremium: false }); // Reset isPremium en nuevo login
+                    set({
+                        usuario: userCredential.user,
+                        isPremium: false,
+                        plan: "GRATIS",
+                    }); // Reset al login
 
                     if (!user.emailVerified) {
                         Alert.alert(
@@ -154,7 +166,11 @@ export const useAuthStore = create<AuthState>()(
                 const auth = getAuth();
                 try {
                     await signOut(auth); //cierra sesión en el servidor
-                    get().setAuthData({ usuario: null, isPremium: false }); //cierra sesión localmente y resetea premium
+                    get().setAuthData({
+                        usuario: null,
+                        isPremium: false,
+                        plan: "GRATIS",
+                    }); //cierra sesión localmente y resetea
                     router.replace("/(auth)/iniciar-sesion");
                 } catch (error: any) {
                     console.log(error.code);

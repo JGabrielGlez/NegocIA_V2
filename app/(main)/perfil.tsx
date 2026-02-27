@@ -2,6 +2,7 @@ import { useRouter } from "expo-router";
 import { LogOut, Settings } from "lucide-react-native";
 import { Alert, Pressable, ScrollView, Text, View } from "react-native";
 
+import BadgePRO from "@/components/BadgePRO";
 import CabeceraNavegacion from "@/components/cabeceraNavegacion";
 import { databaseService } from "@/firebase/databaseService";
 import { Usuario } from "@/store/types";
@@ -85,9 +86,12 @@ export default function PerfilScreen() {
                         </Text>
                     </View>
 
-                    <Text className="mb-1 text-xl font-bold text-gray-900">
-                        {userProfile?.nombre || "Usuario"}
-                    </Text>
+                    <View className="mb-1 flex-row items-center">
+                        <Text className="text-xl font-bold text-gray-900">
+                            {userProfile?.nombre || "Usuario"}
+                        </Text>
+                        <BadgePRO />
+                    </View>
                     <Text className="mb-4 text-sm text-gray-600">
                         {usuario?.email}
                     </Text>

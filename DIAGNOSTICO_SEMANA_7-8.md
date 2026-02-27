@@ -508,13 +508,14 @@ REVENUECAT_WEBHOOK_SECRET=rc_webhook_secret_XXX
 
 #### Tareas
 
-1. ✅ Agregar `useEffect` en `app/_layout.tsx` para verificar suscripción al iniciar app (45 min)
-    - Llamar `revenueCat.checkSubscriptionStatus()`
-    - Si `isPro !== useAuthStore.isPremium`, sincronizar con Firestore
-2. ✅ Crear función `syncSubscriptionWithBackend()` (1 hora)
-    - Llamar Cloud Function `checkServerSubscription(userId)`
-    - Comparar con estado local
-    - Actualizar si hay discrepancia
+1. ✅ Agregar `useEffect` en `app/_layout.tsx` para sincronizar suscripción al volver al foreground (45 min) — **COMPLETADO**
+    - Usar `AppState` de react-native para detectar cambios
+    - Llamar `syncSubscriptionWithBackend()` cuando estado es "active"
+    - Cleanup: remover listener al desmontar
+2. ✅ Crear función `syncSubscriptionWithBackend()` en `services/revenueCat.ts` (1 hora) — **COMPLETADO**
+    - Llamar `checkSubscriptionStatus()`
+    - Comparar con `useAuthStore.isPremium`
+    - Actualizar Firestore y store si hay discrepancia
 3. ✅ Agregar badge "PRO" en header/profile (30 min)
     - Componente `BadgePRO.tsx`
     - Mostrar solo si `useAuthStore.plan === "PRO"`
@@ -525,10 +526,10 @@ REVENUECAT_WEBHOOK_SECRET=rc_webhook_secret_XXX
 
 #### Archivos a Crear/Modificar
 
-- `app/_layout.tsx` (agregar useEffect para sync)
-- `services/revenueCat.ts` (agregar `syncSubscriptionWithBackend`)
-- `components/BadgePRO.tsx` (nuevo)
-- `app/(main)/perfil.tsx` (mostrar badge)
+- ✅ `app/_layout.tsx` (agregar useEffect para sync con AppState)
+- ✅ `services/revenueCat.ts` (agregar `syncSubscriptionWithBackend`)
+- ✅ `components/BadgePRO.tsx` (nuevo)
+- ✅ `app/(main)/perfil.tsx` (mostrar badge junto a nombre)
 - `functions/src/functions/checkServerSubscription.ts` (nuevo Cloud Function)
 
 #### Criterios de Éxito
