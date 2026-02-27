@@ -116,20 +116,20 @@ _Desbloquea:_ Que Cloud Functions tenga datos reales para leer
 
 ---
 
-#### A.3 — Sincronizar productos a Firestore desde Zustand
+#### A.3 — Sincronizar productos a Firestore desde Zustand ✅ COMPLETADO
 
-- [ ] Cuando `agregarProducto()` se ejecuta, también llamar a `databaseService.addProducto()`
-- [ ] Idem `actualizarProducto()` y `eliminarProducto()`
-- [ ] Agregar sincronización offline similar a A.2
+- [x] Cuando `agregarProducto()` se ejecuta, también llamar a `databaseService.addProducto()`
+- [x] Idem `actualizarProducto()` y `eliminarProducto()`
+- [x] Agregar sincronización offline similar a A.2
 
 **Por qué aquí:** Los productos deben estar en Firestore (aunque ya exista `addProducto()`, no se está usando)
 
 ---
 
-#### A.4 — Crear usuario en Firestore al registrarse
+#### A.4 — Crear usuario en Firestore al registrarse ✅ COMPLETADO
 
-- [ ] En `useAuthStore.ts`, después de crear cuenta con Firebase Auth, llamar a `databaseService.crearUsuario(uid, email)`
-- [ ] Documento debe incluir:
+- [x] En `crear-cuenta.tsx`, después de crear cuenta con Firebase Auth, llamar a `databaseService.crearUsuario(uid, email)`
+- [x] Documento debe incluir:
     - `uid`, `correo`, `nombre` (vacío), `plan` ("GRATIS"), `estado` ("activo")
     - `subscriptionStartDate`: Timestamp (fecha de registro para GRATIS)
     - `nextResetDate`: Timestamp (subscriptionStartDate + 30 días)
