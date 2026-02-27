@@ -268,13 +268,13 @@ export default function AsistenteIA() {
                                             ? "text-right text-slate-500"
                                             : "text-left text-slate-500"
                                     }`}>
-                                    {item.timestamp.toLocaleTimeString(
-                                        "es-MX",
-                                        {
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                        },
-                                    )}
+                                    {(typeof item.timestamp === "string"
+                                        ? new Date(item.timestamp)
+                                        : item.timestamp
+                                    ).toLocaleTimeString("es-MX", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                    })}
                                 </Text>
                             </View>
                         </View>

@@ -32,7 +32,7 @@ export default function RootLayout() {
         }
 
         // Si estamos en la pantalla de presentación (índice), no hacer nada
-        if (segments.length === 0 || segments[0] === undefined) {
+        if (segments[0] === undefined) {
             return;
         }
 
