@@ -212,17 +212,17 @@ _Desbloquea:_ Protección contra abuso, billingconsi
 
 ---
 
-#### C.2 — Implementar limitsManager.ts
+#### C.2 — Implementar limitsManager.ts ✅ COMPLETADO
 
-- [ ] `checkIfCanQuery(userId, plan)` — retorna true/false
+- [x] `checkIfCanQuery(userId, plan)` — retorna true/false
     - Plan GRATIS: límite 3 consultas/mes (30 días)
     - Plan PRO: límite 30 consultas/mes (30 días)
     - Al verificar: comparar fecha actual contra nextResetDate
     - Si ya pasó nextResetDate: resetear queriesUsedThisMonth a 0 y calcular nuevo nextResetDate = nextResetDate anterior + 30 días
     - Si no ha pasado: verificar contra límite normalmente
-- [ ] `incrementQueryCount(userId)` — suma 1 al contador
-- [ ] `resetCounterIfNeeded(userId)` — verifica si nextResetDate ya pasó y resetea automáticamente
-- [ ] `getQueriesRemaining(userId)` — para UI (cuántas consultas quedan en este ciclo de 30 días)
+- [x] `incrementQueryCount(userId)` — suma 1 al contador
+- [x] `resetCounterIfNeeded(userId)` — verifica si nextResetDate ya pasó y resetea automáticamente
+- [x] `getQueriesRemaining(userId)` — para UI (cuántas consultas quedan en este ciclo de 30 días)
 
 **Por qué aquí:** Lógica centralizada para límites
 
