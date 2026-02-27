@@ -234,13 +234,16 @@ _Desbloquea:_ Que usuario vea las respuestas de la IA
 
 #### D.1 — Crear componente Chat IA (asistente-ia.tsx)
 
-- [ ] Pantalla con:
-    - Historial de mensajes (user/IA)
-    - Input para escribir preguntas
-    - Indicador de carga mientras Gemini responde
-    - Contador de "consultas restantes" (ej: 7/10)
-    - Si es GRATIS: paywall "Actualiza a PRO"
-- [ ] Integración con Cloud Function:
+- [x] Pantalla con:
+    - [x] Layout base con KeyboardAvoidingView + FlatList optimizados para teclado
+    - [x] Diseño profesional de burbujas, timestamps y animación de escritura
+    - [x] Historial de mensajes (user/IA)
+    - [x] Input para escribir preguntas
+    - [x] Indicador de carga mientras Gemini responde
+    - [x] Contador de "consultas restantes" (ej: 7/10)
+    - [x] Si es GRATIS: paywall "Actualiza a PRO"
+- [x] Integración con Cloud Function:
+    - [x] Función `askAI` conectada a Cloud Function `askAssistant`
     ```typescript
     const askAI = async (question: string) => {
         const response = await firebase
@@ -259,7 +262,7 @@ _Desbloquea:_ Que usuario vea las respuestas de la IA
 
 #### D.2 — Crear Store para Chat IA
 
-- [ ] `store/useAIStore.ts`:
+- [x] `store/useAIStore.ts`:
     - `messages: { role: "user"|"ai", content: string, timestamp: Date }[]`
     - `isLoading: boolean`
     - `queriesRemaining: number`
@@ -322,7 +325,7 @@ _Desbloquea:_ Que Gemini responda en el tono correcto
 | --------------------------------- | ------ | ------------------------------------------------ |
 | `firebase/databaseService.ts`     | 20%    | 7 métodos a completar (ver A.1)                  |
 | `functions/src/index.ts`          | 1%     | Casi todo — solo boilerplate                     |
-| `app/(features)/asistente-ia.tsx` | 0%     | Archivo vacío                                    |
+| `app/(features)/asistente-ia.tsx` | 85%    | Chat IA implementado                             |
 | `store/types.ts`                  | 90%    | Agregar `AIMessage`, `AIUsageStats`              |
 | `store/useAuthStore.ts`           | 85%    | Agregar sincronización a Firestore tras registro |
 

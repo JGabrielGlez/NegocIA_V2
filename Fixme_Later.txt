@@ -1,0 +1,1 @@
+Todos los text input, hacer uso de una flatList para acomodar lo que se escriba

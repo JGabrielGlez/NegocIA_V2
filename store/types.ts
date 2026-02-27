@@ -47,6 +47,14 @@ export interface AIUsageStats {
     lastQueryAt: Date | null;
 }
 
+// Mensajes del chat IA
+export interface AIMessage {
+    id: string;
+    role: "user" | "ai";
+    content: string;
+    timestamp: Date;
+}
+
 // Esto creo no lo usaré
 export interface ProductoFirestore extends Producto {
     fechaAgregado?: any;
