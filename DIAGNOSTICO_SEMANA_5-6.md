@@ -144,26 +144,26 @@ _Desbloquea:_ Que podamos escribir la lógica de IA
 
 #### B.1 — Preparar Cloud Functions para Gemini API ✅ **BASE**
 
-- [ ] En `functions/package.json`, agregrar `@google/generative-ai`
-- [ ] En `.env.example` (crear archivo), documentar variables: `GEMINI_API_KEY`, `FIREBASE_PROJECT_ID`
-- [ ] En `functions/.env` (crear y **NO commitear**), agregar valores reales
-- [ ] En `functions/tsconfig.json`, asegurar que `lib/index.js` sea el main
+- [x] En `functions/package.json`, agregrar `@google/generative-ai`
+- [x] En `.env.example` (crear archivo), documentar variables: `GEMINI_API_KEY`, `FIREBASE_PROJECT_ID`
+- [x] En `functions/.env` (crear y **NO commitear**), agregar valores reales
+- [x] En `functions/tsconfig.json`, asegurar que `lib/index.js` sea el main
 
 **Por qué aquí:** Sin la librería de Gemini, no podemos llamar a la API
 
 ---
 
-#### B.2 — Crear estructura de carpetas en functions/src
+#### B.2 — Crear estructura de carpetas en functions/src ✅ COMPLETADO
 
-- [ ] `functions/src/types/` — interfaces para TypeScript
-    - `AIRequest.ts` — { question: string, userId: string }
-    - `AIResponse.ts` — { answer: string, tokensUsed: number }
-- [ ] `functions/src/services/` — servicios reutilizables
-    - `geminiService.ts` — llamar a Gemini API
-    - `firestoreService.ts` — leer/escribir datos de usuario
-- [ ] `functions/src/utils/` — helpers
-    - `contextBuilder.ts` — construir contexto de negocio (productos, ventas)
-    - `limitsManager.ts` — verificar y actualizar límites de uso
+- [x] `functions/src/types/` — interfaces para TypeScript
+    - [x] `AIRequest.ts` — { question: string, userId: string }
+    - [x] `AIResponse.ts` — { answer: string, tokensUsed: number }
+- [x] `functions/src/services/` — servicios reutilizables
+    - [x] `geminiService.ts` — llamar a Gemini API
+    - [x] `firestoreService.ts` — leer/escribir datos de usuario
+- [x] `functions/src/utils/` — helpers
+    - [x] `contextBuilder.ts` — construir contexto de negocio (productos, ventas)
+    - [x] `limitsManager.ts` — verificar y actualizar límites de uso
 
 **Por qué aquí:** Código organizado y reutilizable
 
