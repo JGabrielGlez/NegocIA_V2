@@ -206,7 +206,7 @@ _Desbloquea:_ Protección contra abuso, billingconsi
       lastQueryAt: Timestamp
     }
     ```
-- [ ] Cloud Function debe mantener estos campos actualizados
+- [x] Cloud Function debe mantener estos campos actualizados
 
 **Por qué aquí:** Implementar límites de Cloud Function sin esta estructura es imposible
 
