@@ -1,11 +1,11 @@
+import * as admin from "firebase-admin";
 import * as logger from "firebase-functions/logger";
-
-// TODO: Descomentar cuando se implemente
-// import * as admin from "firebase-admin";
 
 /**
  * Servicio para interactuar con Firestore
  */
+
+const db = admin.firestore();
 
 /**
  * Obtener datos del usuario desde Firestore
@@ -14,8 +14,13 @@ import * as logger from "firebase-functions/logger";
  */
 export async function getUserData(userId: string): Promise<any> {
     try {
-        // TODO: Implementar lógica de lectura desde Firestore
-        throw new Error("getUserData no implementado aún");
+        const userDoc = await db.collection("usuarios").doc(userId).get();
+
+        if (!userDoc.exists) {
+            return null;
+        }
+
+        return userDoc.data();
     } catch (error) {
         logger.error("firestoreService.getUserData falló", {
             service: "firestoreService",
@@ -57,8 +62,17 @@ export async function updateUserData(userId: string, data: any): Promise<void> {
  */
 export async function getUserProducts(userId: string): Promise<any[]> {
     try {
-        // TODO: Implementar lógica de lectura de productos
-        throw new Error("getUserProducts no implementado aún");
+        const productsSnapshot = await db
+            .collection("productos")
+            .where("usuarioId", "==", userId)
+            .get();
+
+        const products = productsSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+
+        return products;
     } catch (error) {
         logger.error("firestoreService.getUserProducts falló", {
             service: "firestoreService",
@@ -78,8 +92,17 @@ export async function getUserProducts(userId: string): Promise<any[]> {
  */
 export async function getUserSales(userId: string): Promise<any[]> {
     try {
-        // TODO: Implementar lógica de lectura de ventas
-        throw new Error("getUserSales no implementado aún");
+        const salesSnapshot = await db
+            .collection("ventas")
+            .where("usuarioId", "==", userId)
+            .get();
+
+        const sales = salesSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+
+        return sales;
     } catch (error) {
         logger.error("firestoreService.getUserSales falló", {
             service: "firestoreService",

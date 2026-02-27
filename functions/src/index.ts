@@ -7,9 +7,13 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
+import * as admin from "firebase-admin";
 import { setGlobalOptions } from "firebase-functions";
 import { onRequest } from "firebase-functions/https";
 import * as logger from "firebase-functions/logger";
+
+// Inicializar Firebase Admin
+admin.initializeApp();
 
 // Importar Cloud Functions
 export { askAssistant } from "./functions/askAssistant";

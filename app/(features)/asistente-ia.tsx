@@ -146,9 +146,20 @@ export default function AsistenteIA() {
         const question = inputText.trim();
         if (!question) return;
 
-        if (!isPro) {
-            // Navegar a pantalla de planes en lugar de mostrar Alert
-            router.push("/(features)/planes");
+        // Validar si tiene consultas restantes
+        if (queriesRemaining <= 0) {
+            // Si no tiene consultas, navegar a planes para upgrade
+            Alert.alert(
+                "Consultas agotadas",
+                "Ya usaste todas tus consultas disponibles este mes. Mejora a PRO para consultas ilimitadas.",
+                [
+                    { text: "Cancelar", style: "cancel" },
+                    {
+                        text: "Ver planes",
+                        onPress: () => router.push("/(features)/planes"),
+                    },
+                ],
+            );
             return;
         }
 
