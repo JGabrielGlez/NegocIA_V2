@@ -1,14 +1,16 @@
 import CabeceraNavegacion from "@/components/cabeceraNavegacion";
 import { databaseService } from "@/firebase/databaseService";
 import { functions } from "@/firebase/firebaseConfig";
+import { AIMessage } from "@/store/types";
 import { useAIStore } from "@/store/useAIStore";
 import { useAuthStore } from "@/store/useAuthStore";
-import { AIMessage } from "@/store/types";
+import { useRouter } from "expo-router";
 import { httpsCallable } from "firebase/functions";
+import { Send } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-    Animated,
     Alert,
+    Animated,
     Easing,
     FlatList,
     KeyboardAvoidingView,
@@ -18,7 +20,6 @@ import {
     TextInput,
     View,
 } from "react-native";
-import { Send } from "lucide-react-native";
 
 // DEV_SAMPLE_REMOVE: Mensajes de ejemplo para revisar el diseno
 const DEV_SAMPLE_MESSAGES: AIMessage[] = [
@@ -43,6 +44,7 @@ const PLAN_LIMITS = {
 } as const;
 
 export default function AsistenteIA() {
+    const router = useRouter();
     const usuario = useAuthStore((state) => state.usuario);
     const messages = useAIStore((state) => state.messages);
     const isLoading = useAIStore((state) => state.isLoading);
@@ -145,10 +147,8 @@ export default function AsistenteIA() {
         if (!question) return;
 
         if (!isPro) {
-            Alert.alert(
-                "Función PRO",
-                "El asistente IA solo está disponible para usuarios PRO.",
-            );
+            // Navegar a pantalla de planes en lugar de mostrar Alert
+            router.push("/(features)/planes");
             return;
         }
 

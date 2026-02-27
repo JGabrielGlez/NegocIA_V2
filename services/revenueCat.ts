@@ -1,12 +1,29 @@
+import { Alert } from "react-native";
 import Purchases, { PurchasesOfferings } from "react-native-purchases";
 import { databaseService } from "../firebase/databaseService";
 import { useAuthStore } from "../store/useAuthStore";
 
 /**
- * Inicializar RevenueCat con el userId de Firebase Auth
- * @param userId - UID del usuario autenticado
+ * Inicializa RevenueCat con el SDK de react-native-purchases.
+ *
+ * Debe ser llamada UNA SOLA VEZ al iniciar la app, idealmente en el layout raíz
+ * (app/_layout.tsx) dentro de un useEffect. Vincula el usuario de Firebase Auth
+ * con RevenueCat para que el sistema de suscripciones pueda identificarlo.
+ *
+ * @async
+ * @param {string} userId - UID del usuario autenticado en Firebase Auth
+ * @returns {Promise<void>} Resuelve cuando RevenueCat está configurado. Lanza error si hay problema.
+ *
+ * @example
+ * // En app/_layout.tsx
+ * useEffect(() => {
+ *   if (user?.uid) {
+ *     await initializeRevenueCat(user.uid);
+ *   }
+ * }, [user?.uid]);
+ *
+ * @throws {Error} Si EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID no está configurada
  */
-
 export async function initializeRevenueCat(userId: string): Promise<void> {
     try {
         const apiKey = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID;
@@ -31,8 +48,24 @@ export async function initializeRevenueCat(userId: string): Promise<void> {
 }
 
 /**
- * Obtener offerings (productos disponibles) de RevenueCat
- * @returns Offerings disponibles o null si hay error
+ * Obtiene los offerings (paquetes de suscripción disponibles) configurados en RevenueCat.
+ *
+ * Un "offering" es un conjunto de paquetes (packages) que RevenueCat presenta al usuario.
+ * En el dashboard de RevenueCat debes haber creado un offering "pro_monthly" que contiene
+ * el paquete $299 MXN/mes para Android.
+ *
+ * @async
+ * @returns {Promise<PurchasesOfferings | null>} Objeto con offerings disponibles, o null si hay error
+ *
+ * @example
+ * const offerings = await getOfferings();
+ * if (offerings?.current) {
+ *   const proPackage = offerings.current.getPackage('pro_monthly');
+ *   console.log(`Precio: ${proPackage?.product?.priceString}`);
+ * }
+ *
+ * @note Retorna null de forma segura si no hay offerings o hay error (no lanza excepción)
+ * @see https://docs.revenuecat.com/docs/displaying-products
  */
 export async function getOfferings(): Promise<PurchasesOfferings | null> {
     try {
@@ -52,8 +85,27 @@ export async function getOfferings(): Promise<PurchasesOfferings | null> {
 }
 
 /**
- * Verificar estado de suscripción del usuario
- * @returns { isPro: boolean, expiresAt: Date | null }
+ * Verifica el estado actual de suscripción del usuario consultando RevenueCat.
+ *
+ * Consulta el entitlement "pro" para determinar si el usuario tiene suscripción activa.
+ * Si hay algún error, retorna { isPro: false, expiresAt: null } de forma segura
+ * (no lanza excepción).
+ *
+ * @async
+ * @returns {Promise<{isPro: boolean, expiresAt: Date | null}>} Estado de suscripción:
+ *   - isPro: true si tiene entitlement "pro" activo
+ *   - expiresAt: Fecha de expiración de la suscripción (null si es gratuita o sin fecha)
+ *
+ * @example
+ * const { isPro, expiresAt } = await checkSubscriptionStatus();
+ * if (isPro) {
+ *   console.log(`Premium hasta: ${expiresAt?.toLocaleDateString('es-MX')}`);
+ * } else {
+ *   console.log('Usuario está en plan Gratuito');
+ * }
+ *
+ * @note En caso de error, retorna plan GRATIS (más seguro que asumir PRO)
+ * @see https://docs.revenuecat.com/docs/entitlements
  */
 export async function checkSubscriptionStatus(): Promise<{
     isPro: boolean;
@@ -99,9 +151,31 @@ export async function checkSubscriptionStatus(): Promise<{
 }
 
 /**
- * Sincronizar estado de suscripción con Firestore
- * Compara estado local con RevenueCat y actualiza si hay discrepancia
- * @param userId - UID del usuario
+ * Sincroniza el estado de suscripción entre RevenueCat, el store Zustand y Firestore.
+ *
+ * Compara el estado de suscripción en RevenueCat con el almacenado localmente en el store.
+ * Si hay discrepancia:
+ * 1. Actualiza Firestore con el estado correcto (isPro)
+ * 2. Actualiza el store local para que la UI refleje el cambio inmediatamente
+ *
+ * Esta función debe ser llamada:
+ * - Al iniciar la app (después de autenticarse)
+ * - Después de una compra exitosa
+ * - Ocasionalmente como verificación de integridad (ej: cada 1 hora)
+ *
+ * @async
+ * @param {string} userId - UID del usuario en Firebase Auth
+ * @returns {Promise<void>} Resuelve cuando la sincronización es completa
+ *
+ * @example
+ * // Después de que el usuario se autentica
+ * const { user } = useAuthStore();
+ * if (user?.uid) {
+ *   await syncSubscriptionWithBackend(user.uid);
+ * }
+ *
+ * @throws {Error} Si hay problema al actualizar Firestore
+ * @see checkSubscriptionStatus Para consultar solo (sin sincronizar)
  */
 export async function syncSubscriptionWithBackend(
     userId: string,
@@ -152,5 +226,89 @@ export async function syncSubscriptionWithBackend(
     } catch (error) {
         console.error("[syncSubscriptionWithBackend] Error:", error);
         throw error;
+    }
+}
+
+/**
+ * Realiza la compra de un paquete de suscripción a través de Google Play Billing.
+ *
+ * Maneja robustamente varios tipos de errores:
+ * - Cancelación del usuario: Retorna false sin mostrar alerta
+ * - Error de red/offline: Muestra alerta de conexión
+ * - Error de Google Play: Muestra alerta genérica de compra
+ *
+ * Después de la compra, verifica que el entitlement "pro" esté activo en RevenueCat.
+ *
+ * @async
+ * @param {any} packageToOffer - Paquete de RevenueCat a comprar (obtenido de getOfferings)
+ * @returns {Promise<boolean>} true si compra exitosa y PRO está activo, false si falló o fue cancelada
+ *
+ * @example
+ * const offerings = await getOfferings();
+ * if (offerings?.current?.monthly) {
+ *   const success = await purchasePackage(offerings.current.monthly);
+ *   if (success) {
+ *     console.log('¡Bienvenido al plan PRO!');
+ *   }
+ * }
+ *
+ * @note No lanza excepciones; siempre maneja errores internamente
+ * @see getOfferings Para obtener la lista de paquetes disponibles
+ * @see https://docs.revenuecat.com/docs/making-purchases
+ */
+export async function purchasePackage(packageToOffer: any): Promise<boolean> {
+    try {
+        console.log("[purchasePackage] Iniciando compra de paquete...");
+
+        await Purchases.purchasePackage(packageToOffer);
+
+        // Después de compra exitosa, verificar si entitlement PRO está activo
+        const customerInfo = await Purchases.getCustomerInfo();
+        if (customerInfo.entitlements.active["pro"]) {
+            console.log(
+                "[purchasePackage] ✅ Compra exitosa. Entitlement PRO activado.",
+            );
+            return true;
+        } else {
+            console.warn(
+                "[purchasePackage] Compra registrada pero entitlement PRO no activo.",
+            );
+            return false;
+        }
+    } catch (error: any) {
+        // Capturar cancelación del usuario (no mostrar error)
+        if (
+            error.code === "PurchaseCancelledError" ||
+            error.userCancelled === true ||
+            error.message?.includes("cancelled")
+        ) {
+            console.log("[purchasePackage] Usuario canceló la compra.");
+            return false;
+        }
+
+        // Capturar errores de red
+        if (
+            error.code === "NetworkError" ||
+            error.message?.includes("network") ||
+            error.message?.includes("offline") ||
+            error instanceof TypeError
+        ) {
+            console.error("[purchasePackage] Error de red:", error);
+            Alert.alert(
+                "Sin conexión",
+                "No hay conexión a internet. Verifica tu red e intenta de nuevo.",
+                [{ text: "Aceptar", onPress: () => {} }],
+            );
+            return false;
+        }
+
+        // Error de Google Play Billing u otro error de compra
+        console.error("[purchasePackage] Error al realizar compra:", error);
+        Alert.alert(
+            "No se pudo completar la compra",
+            "No se pudo procesar tu pago. Verifica tu método de pago e intenta de nuevo.",
+            [{ text: "Aceptar", onPress: () => {} }],
+        );
+        return false;
     }
 }

@@ -551,11 +551,11 @@ REVENUECAT_WEBHOOK_SECRET=rc_webhook_secret_XXX
     - Upgrade a PRO
     - Usar asistente IA
     - Verificar límites (30 consultas/mes)
-3. ✅ Probar escenarios de error (1.5 horas)
-    - Compra cancelada por usuario
-    - Error de red durante compra
+3. ✅ Probar escenarios de error (1.5 horas) — **COMPLETADO**
+    - Compra cancelada por usuario ✅
+    - Error de red durante compra ✅
     - Expiración de suscripción
-    - Intento de usar IA sin suscripción activa
+    - Intento de usar IA sin suscripción activa ✅
 4. ✅ Verificar sincronización multi-dispositivo (1 hora)
     - Comprar en dispositivo A
     - Abrir app en dispositivo B
@@ -564,9 +564,9 @@ REVENUECAT_WEBHOOK_SECRET=rc_webhook_secret_XXX
 
 #### Archivos a Crear/Modificar
 
-- `services/revenueCat.ts` (agregar manejo de errores robusto)
-- `app/(features)/asistente-ia.tsx` (verificar paywall en tiempo real)
-- `app/(features)/planes.tsx` (mejoras de UX en errores)
+- ✅ `services/revenueCat.ts` (manejo de errores robusto en `purchasePackage()`)
+- ✅ `app/(features)/asistente-ia.tsx` (navegación a `planes.tsx` en lugar de Alert)
+- ✅ `app/(features)/planes.tsx` (indicador de carga y botón deshabilitado)
 
 #### Criterios de Éxito
 

@@ -1,12 +1,12 @@
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, ScrollView, Text, View } from "react-native";
-import Purchases, { PurchasesPackage } from "react-native-purchases";
+import { PurchasesPackage } from "react-native-purchases";
 
 import CabeceraNavegacion from "@/components/cabeceraNavegacion";
 import PlanCard from "@/components/PlanCard";
 import { databaseService } from "@/firebase/databaseService";
-import { getOfferings } from "@/services/revenueCat";
+import { getOfferings, purchasePackage } from "@/services/revenueCat";
 import { useAuthStore } from "@/store/useAuthStore";
 
 const PLAN_FEATURES = {
@@ -34,7 +34,7 @@ export default function PlanesScreen() {
 
     const [currentPlan, setCurrentPlan] = useState<"GRATIS" | "PRO">("GRATIS");
     const [isLoading, setIsLoading] = useState(true);
-    const [pricesLoading, setPricesLoading] = useState(false);
+    const [isPurchasing, setIsPurchasing] = useState(false);
     const [prices, setPrices] = useState<{ gratis: string; pro?: string }>({
         gratis: "Consulta",
     });
@@ -55,7 +55,6 @@ export default function PlanesScreen() {
                 }
 
                 // Obtener offerings (precios) de RevenueCat
-                setPricesLoading(true);
                 const offerings = await getOfferings();
 
                 if (offerings?.current) {
@@ -84,7 +83,6 @@ export default function PlanesScreen() {
                 });
             } finally {
                 setIsLoading(false);
-                setPricesLoading(false);
             }
         };
 
@@ -102,11 +100,17 @@ export default function PlanesScreen() {
         }
 
         try {
-            setPricesLoading(true);
+            setIsPurchasing(true);
 
             console.log("Iniciando compra del paquete:", proPackage.identifier);
 
-            await Purchases.purchasePackage(proPackage);
+            // Usar la nueva función purchasePackage con manejo robusto de errores
+            const purchaseSuccessful = await purchasePackage(proPackage);
+
+            if (!purchaseSuccessful) {
+                // purchasePackage ya mostró el Alert apropiado (cancelación, error de red, etc)
+                return;
+            }
 
             console.log("Compra exitosa");
 
@@ -116,7 +120,8 @@ export default function PlanesScreen() {
             });
 
             // Actualizar store local
-            setAuthData({ usuario: { ...usuario, plan: "PRO" } as any });
+            useAuthStore.getState().setPlan("PRO");
+            useAuthStore.getState().setIsPremium(true);
             setCurrentPlan("PRO");
 
             Alert.alert(
@@ -130,25 +135,13 @@ export default function PlanesScreen() {
                 ],
             );
         } catch (error: any) {
-            console.error("Error durante la compra:", error);
-
-            if (error.userCancelled) {
-                console.log("Usuario canceló la compra");
-                return;
-            }
-
+            console.error("Error inesperado durante la compra:", error);
             Alert.alert(
-                "Error en la compra",
-                "No pudimos procesar tu compra. Por favor intenta de nuevo.\n\n" +
-                    (error.message || ""),
+                "Error",
+                "Ocurrió un error inesperado. Intenta de nuevo.",
             );
         } finally {
-            setPricesLoading(false);
-            // Recargar offerings después del intento
-            const offerings = await getOfferings();
-            if (offerings?.current?.availablePackages[0]) {
-                setProPackage(offerings.current.availablePackages[0]);
-            }
+            setIsPurchasing(false);
         }
     };
 
@@ -193,9 +186,9 @@ export default function PlanesScreen() {
                         price={prices.pro || "$299 MXN"}
                         features={PLAN_FEATURES.PRO}
                         isCurrent={currentPlan === "PRO"}
-                        isLoading={pricesLoading}
+                        isLoading={isPurchasing}
                         onPress={
-                            currentPlan === "PRO"
+                            currentPlan === "PRO" || isPurchasing
                                 ? undefined
                                 : handlePurchasePRO
                         }
