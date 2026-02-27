@@ -3,9 +3,14 @@ import * as logger from "firebase-functions/logger";
 import {AIRequest} from "../types/AIRequest";
 import {AIResponse} from "../types/AIResponse";
 import {getUserData} from "../services/firestoreService";
-import {checkIfCanQuery, incrementQueryCount} from "../utils/limitsManager";
+import {
+  checkIfCanQuery,
+  getQueriesRemaining,
+  incrementQueryCount,
+} from "../utils/limitsManager";
 import {buildBusinessContext} from "../utils/contextBuilder";
 import {callGemini} from "../services/geminiService";
+import {getSystemPrompt} from "../config/systemPrompt";
 
 /**
  * Cloud Function askAssistant
@@ -13,6 +18,13 @@ import {callGemini} from "../services/geminiService";
  */
 export const askAssistant = onCall<AIRequest>(
   async (request: CallableRequest<AIRequest>): Promise<AIResponse> => {
+    const getErrorMessage = (error: unknown): string => {
+      if (error instanceof Error) {
+        return error.message;
+      }
+      return String(error);
+    };
+
     // PASO 1: Validar que el usuario esté autenticado
     if (!request.auth) {
       logger.warn("Intento de acceso sin autenticación a askAssistant");
@@ -23,10 +35,31 @@ export const askAssistant = onCall<AIRequest>(
     }
 
     const userId = request.auth.uid;
-    logger.info(`Solicitud IA del usuario: ${userId}`);
+    const {question} = request.data;
+
+    logger.info("askAssistant: request recibida", {
+      userId,
+      questionLength: question?.length || 0,
+      structuredData: true,
+    });
 
     // PASO 2: Verificar que el plan sea PRO
-    const userData = await getUserData(userId);
+    let userData;
+    try {
+      userData = await getUserData(userId);
+    } catch (error) {
+      logger.error("askAssistant: fallo al obtener datos de usuario", {
+        userId,
+        step: "verificar-plan/getUserData",
+        error: getErrorMessage(error),
+        structuredData: true,
+      });
+      throw new HttpsError(
+        "internal",
+        "No fue posible consultar los datos del usuario para validar el plan"
+      );
+    }
+
     if (!userData) {
       logger.warn(`Usuario no encontrado en Firestore: ${userId}`);
       throw new HttpsError(
@@ -34,6 +67,12 @@ export const askAssistant = onCall<AIRequest>(
         "No se encontraron los datos del usuario"
       );
     }
+
+    logger.info("askAssistant: plan verificado", {
+      userId,
+      plan: userData.plan,
+      structuredData: true,
+    });
 
     if (userData.plan !== "PRO") {
       logger.warn(`Intento de acceso a IA sin PRO del usuario: ${userId} (plan: ${userData.plan})`);
@@ -44,7 +83,28 @@ export const askAssistant = onCall<AIRequest>(
     }
 
     // PASO 3: Verificar límites mensuales
-    const canQuery = await checkIfCanQuery(userId, userData.plan);
+    let canQuery = false;
+    try {
+      const usage = await getQueriesRemaining(userId, userData.plan);
+      logger.info("askAssistant: limites consultados", {
+        userId,
+        queriesRemaining: usage.queriesRemaining,
+        structuredData: true,
+      });
+      canQuery = await checkIfCanQuery(userId, userData.plan);
+    } catch (error) {
+      logger.error("askAssistant: fallo al verificar límites", {
+        userId,
+        step: "verificar-limites",
+        error: getErrorMessage(error),
+        structuredData: true,
+      });
+      throw new HttpsError(
+        "internal",
+        "No fue posible validar los límites de consultas de IA"
+      );
+    }
+
     if (!canQuery) {
       logger.warn(`Usuario ${userId} ha excedido el límite de consultas`);
       throw new HttpsError(
@@ -54,22 +114,73 @@ export const askAssistant = onCall<AIRequest>(
     }
 
     // PASO 4: Construir contexto de negocio (productos, ventas, métricas)
-    logger.info(`Construyendo contexto de negocio para usuario: ${userId}`);
-    const businessContext = await buildBusinessContext(userId);
+    let businessContext = "";
+    try {
+      logger.info(`Construyendo contexto de negocio para usuario: ${userId}`);
+      businessContext = await buildBusinessContext(userId);
+    } catch (error) {
+      logger.error("askAssistant: fallo al construir contexto de negocio", {
+        userId,
+        step: "construir-contexto",
+        error: getErrorMessage(error),
+        structuredData: true,
+      });
+      throw new HttpsError(
+        "internal",
+        "No fue posible construir el contexto del negocio para responder"
+      );
+    }
 
-    // PASO 5: Llamar a Gemini con el contexto + pregunta del usuario
-    const {question} = request.data;
-    const prompt = `${businessContext}\n\nPregunta del usuario: ${question}`;
-    logger.info(`Llamando a Gemini para usuario: ${userId}`);
-    const answer = await callGemini(prompt);
+    // PASO 5: Llamar a Gemini con system prompt + contexto + pregunta del usuario
+    const nombreNegocio = userData.negocio || userData.nombre || "tu negocio";
+    const systemPrompt = getSystemPrompt(nombreNegocio);
+    const prompt = `${systemPrompt}\n\n${businessContext}\n\n=== PREGUNTA DEL USUARIO ===\n${question}`;
+    let answer = "";
+    try {
+      logger.info("askAssistant: iniciando llamada a Gemini", {
+        userId,
+        structuredData: true,
+      });
+      answer = await callGemini(prompt);
+    } catch (error) {
+      logger.error("askAssistant: fallo en llamada a Gemini", {
+        userId,
+        step: "llamar-gemini",
+        error: getErrorMessage(error),
+        structuredData: true,
+      });
+      throw new HttpsError(
+        "internal",
+        "El servicio de IA no pudo procesar la consulta en este momento"
+      );
+    }
 
     // PASO 6: Incrementar contador de uso
-    await incrementQueryCount(userId);
-    logger.info(`Consulta IA completada para usuario: ${userId}`);
+    try {
+      await incrementQueryCount(userId);
+    } catch (error) {
+      logger.error("askAssistant: fallo al actualizar contador de uso", {
+        userId,
+        step: "incrementar-contador",
+        error: getErrorMessage(error),
+        structuredData: true,
+      });
+      throw new HttpsError(
+        "internal",
+        "No fue posible registrar el uso de la consulta de IA"
+      );
+    }
+
+    const tokensUsed = 0;
+    logger.info("askAssistant: respuesta lista", {
+      userId,
+      tokensUsed,
+      structuredData: true,
+    });
 
     return {
       answer,
-      tokensUsed: 0, // TODO: Obtener el conteo real de tokens desde Gemini
+      tokensUsed, // TODO: Obtener el conteo real de tokens desde Gemini
     };
   }
 );

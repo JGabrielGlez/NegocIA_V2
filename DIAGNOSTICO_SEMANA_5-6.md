@@ -280,8 +280,8 @@ _Desbloquea:_ Que todo esté desplegado y escriba logs claros
 
 #### E.1 — Crear función de prueba (ping)
 
-- [ ] Cloud Function básica que retorna `{ status: "ok", timestamp }`
-- [ ] Deployment en emuladores + testing local
+- [x] Cloud Function básica que retorna `{ status: "ok", timestamp }`
+- [x] Deployment en emuladores + testing local
 
 **Por qué aquí:** Verificar que Cloud Functions funciona antes de escribir IA
 
@@ -289,9 +289,9 @@ _Desbloquea:_ Que todo esté desplegado y escriba logs claros
 
 #### E.2 — Agregar logging y error handling
 
-- [ ] Usar `logger.info()` y `logger.error()` en todas las funciones
-- [ ] Structured logging con IDs de usuario e IDs de request
-- [ ] Mensajes de error claros y específicos (no genéricos)
+- [x] Usar `logger.info()` y `logger.error()` en todas las funciones
+- [x] Structured logging con IDs de usuario e IDs de request
+- [x] Mensajes de error claros y específicos (no genéricos)
 
 **Por qué aquí:** Debugging en producción
 
@@ -303,15 +303,15 @@ _Desbloquea:_ Que Gemini responda en el tono correcto
 
 #### F.1 — Crear prompt de sistema configurable
 
-- [ ] `functions/src/config/systemPrompt.ts`:
+- [x] `functions/src/config/systemPrompt.ts`:
     ```typescript
     export const getSystemPrompt = (nombreNegocio: string) => `
       Eres el asistente de ventas de ${nombreNegocio}.
       [contexto detallado aquí]
     `;
     ```
-- [ ] Agregar ejemplos de preguntas esperadas
-- [ ] Agregar restricciones (ej: "No responden datos personales de clientes")
+- [x] Agregar ejemplos de preguntas esperadas
+- [x] Agregar restricciones (ej: "No responden datos personales de clientes")
 
 **Por qué aquí:** Que IA responda apropiadamente para un POS
 
