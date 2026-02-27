@@ -13,6 +13,7 @@ import * as logger from "firebase-functions/logger";
 
 // Importar Cloud Functions
 export { askAssistant } from "./functions/askAssistant";
+export { verifySubscription } from "./functions/verifySubscription";
 
 // Cloud Function de prueba para verificar que el servidor funciona
 export const ping = onRequest((request, response) => {

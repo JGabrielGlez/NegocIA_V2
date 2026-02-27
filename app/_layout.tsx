@@ -1,6 +1,10 @@
+import {
+    checkSubscriptionStatus,
+    initializeRevenueCat,
+} from "@/services/revenueCat";
+import { useAuthStore } from "@/store/useAuthStore";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
-import { useAuthStore } from "@/store/useAuthStore";
 import "./global.css";
 
 export default function RootLayout() {
@@ -18,6 +22,22 @@ export default function RootLayout() {
 
         if (usuario && enAuth) {
             router.replace("/dashboard");
+        }
+
+        // Inicializar RevenueCat si hay usuario autenticado
+        if (usuario?.uid) {
+            initializeRevenueCat(usuario.uid)
+                .then(async () => {
+                    // Después de inicializar RevenueCat, verificar estado de suscripción
+                    const { isPro } = await checkSubscriptionStatus();
+                    useAuthStore.getState().setIsPremium(isPro);
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error al inicializar RevenueCat en _layout:",
+                        error,
+                    );
+                });
         }
     }, [usuario, segments, router]);
 

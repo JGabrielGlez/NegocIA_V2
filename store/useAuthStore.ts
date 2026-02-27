@@ -14,6 +14,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 interface AuthState {
     isLoading?: boolean;
     usuario: User | null;
+    isPremium: boolean;
     mensajeError: Record<string, string>;
 
     // Funciones
@@ -21,6 +22,7 @@ interface AuthState {
     // Este es para setear cualquier dato de la interfaz, sin necesidad de crear una funcion para cada propiedad
     setAuthData: (data: Partial<AuthState>) => void;
     setIsLoading: (loading: boolean) => void;
+    setIsPremium: (isPro: boolean) => void;
     iniciarSesion: (
         correo: string,
         password: string,
@@ -52,8 +54,14 @@ export const useAuthStore = create<AuthState>()(
 
             isLoading: false,
 
+            isPremium: false,
+
             setIsLoading: (loading) => {
                 get().setAuthData({ isLoading: loading });
+            },
+
+            setIsPremium: (isPro) => {
+                get().setAuthData({ isPremium: isPro });
             },
 
             setAuthData: (datos) => set(datos),
@@ -94,7 +102,7 @@ export const useAuthStore = create<AuthState>()(
                     const user = userCredential.user;
                     // Se actualiza la info del usuario, esto es para verificar el estado del correo que esté validado
                     await user.reload();
-                    set({ usuario: userCredential.user });
+                    set({ usuario: userCredential.user, isPremium: false }); // Reset isPremium en nuevo login
 
                     if (!user.emailVerified) {
                         Alert.alert(
@@ -146,7 +154,7 @@ export const useAuthStore = create<AuthState>()(
                 const auth = getAuth();
                 try {
                     await signOut(auth); //cierra sesión en el servidor
-                    get().setAuthData({ usuario: null }); //cierra sesión localmente
+                    get().setAuthData({ usuario: null, isPremium: false }); //cierra sesión localmente y resetea premium
                     router.replace("/(auth)/iniciar-sesion");
                 } catch (error: any) {
                     console.log(error.code);
