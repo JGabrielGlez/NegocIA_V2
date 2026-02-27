@@ -1,10 +1,12 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+// TODO: Descomentar cuando se implemente callGemini
+// import { GoogleGenerativeAI } from "@google/generative-ai";
 
 /**
  * Servicio para interactuar con la API de Gemini
  */
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+// TODO: Descomentar cuando se implemente callGemini
+// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 /**
  * Llamar a Gemini API con un prompt

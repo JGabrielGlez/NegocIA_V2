@@ -7,12 +7,21 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import {setGlobalOptions} from "firebase-functions";
-import {onRequest} from "firebase-functions/https";
+import { setGlobalOptions } from "firebase-functions";
+import { onRequest } from "firebase-functions/https";
 import * as logger from "firebase-functions/logger";
 
 // Importar Cloud Functions
-export {askAssistant} from "./functions/askAssistant";
+export { askAssistant } from "./functions/askAssistant";
+
+// Cloud Function de prueba para verificar que el servidor funciona
+export const ping = onRequest((request, response) => {
+    logger.info("Ping endpoint llamado", { structuredData: true });
+    response.json({
+        status: "ok",
+        timestamp: new Date().toISOString(),
+    });
+});
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript

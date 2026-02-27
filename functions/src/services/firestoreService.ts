@@ -1,4 +1,5 @@
-import * as admin from "firebase-admin";
+// TODO: Descomentar cuando se implemente
+// import * as admin from "firebase-admin";
 
 /**
  * Servicio para interactuar con Firestore
@@ -10,8 +11,8 @@ import * as admin from "firebase-admin";
  * @returns Datos del usuario
  */
 export async function getUserData(userId: string): Promise<any> {
-  // TODO: Implementar lógica de lectura desde Firestore
-  throw new Error("getUserData no implementado aún");
+    // TODO: Implementar lógica de lectura desde Firestore
+    throw new Error("getUserData no implementado aún");
 }
 
 /**
@@ -20,8 +21,8 @@ export async function getUserData(userId: string): Promise<any> {
  * @param data - Datos a actualizar
  */
 export async function updateUserData(userId: string, data: any): Promise<void> {
-  // TODO: Implementar lógica de escritura en Firestore
-  throw new Error("updateUserData no implementado aún");
+    // TODO: Implementar lógica de escritura en Firestore
+    throw new Error("updateUserData no implementado aún");
 }
 
 /**
@@ -30,8 +31,8 @@ export async function updateUserData(userId: string, data: any): Promise<void> {
  * @returns Array de productos
  */
 export async function getUserProducts(userId: string): Promise<any[]> {
-  // TODO: Implementar lógica de lectura de productos
-  throw new Error("getUserProducts no implementado aún");
+    // TODO: Implementar lógica de lectura de productos
+    throw new Error("getUserProducts no implementado aún");
 }
 
 /**
@@ -40,6 +41,6 @@ export async function getUserProducts(userId: string): Promise<any[]> {
  * @returns Array de ventas
  */
 export async function getUserSales(userId: string): Promise<any[]> {
-  // TODO: Implementar lógica de lectura de ventas
-  throw new Error("getUserSales no implementado aún");
+    // TODO: Implementar lógica de lectura de ventas
+    throw new Error("getUserSales no implementado aún");
 }
