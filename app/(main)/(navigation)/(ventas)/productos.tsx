@@ -25,9 +25,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function productos() {
     // Estos son para los campos de texto visuales
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalEdicionVisible, setModalEdicionVisible] = useState(false);
     const [nombreProducto, setNombreProducto] = useState("");
     const [precioProducto, setPrecioProducto] = useState("");
     const [busqueda, setBusqueda] = useState("");
+    const [productoEnEdicion, setProductoEnEdicion] = useState<Producto | null>(null);
 
     // Aquí va la logica de la store
     // Traer todos los productos de esta
@@ -35,6 +37,7 @@ export default function productos() {
     const productosDeStore = useStore((state) => state.productos);
     const agregarProducto = useStore((state) => state.agregarProducto);
     const eliminarProducto = useStore((state) => state.eliminarProducto);
+    const actualizarProducto = useStore((state) => state.actualizarProducto);
     const servicios = databaseService;
     // Esto es para insertar el id del usuario dentro de cada producto
     const usuario = useAuthStore((state) => state.usuario);
@@ -85,6 +88,7 @@ export default function productos() {
             });
 
             // 5. Solo si todo lo anterior salió BIEN, limpiamos los campos
+            setModalVisible(false);
             setPrecioProducto("");
             setNombreProducto("");
         } catch (error) {
@@ -103,6 +107,46 @@ export default function productos() {
 
             eliminarProducto(id);
         } catch (error: any) {}
+    };
+
+    const manejarAbrirEdicion = (producto: Producto) => {
+        setProductoEnEdicion(producto);
+        setNombreProducto(producto.nombre);
+        setPrecioProducto(producto.precio.toString());
+        setModalEdicionVisible(true);
+    };
+
+    const manejarGuardarEdicion = async () => {
+        if (!productoEnEdicion?.id) {
+            alert("Error: no se encontró el ID del producto");
+            return;
+        }
+
+        if (nombreProducto.trim() === "" || precioProducto === "") {
+            alert("Rellena todos los campos");
+            return;
+        }
+
+        const precioProductoParsed = parseFloat(precioProducto);
+        if (isNaN(precioProductoParsed)) {
+            alert("El precio debe ser un número válido");
+            return;
+        }
+
+        try {
+            actualizarProducto(productoEnEdicion.id, {
+                nombre: nombreProducto.trim(),
+                precio: precioProductoParsed,
+            });
+
+            setModalEdicionVisible(false);
+            setProductoEnEdicion(null);
+            setNombreProducto("");
+            setPrecioProducto("");
+        } catch (error) {
+            console.error("Error al guardar edición:", error);
+            alert("No se pudo guardar los cambios. Revisa tu conexión.");
+        }
     };
 
     const limpiarPrecio = (texto: string) => {
@@ -151,6 +195,9 @@ export default function productos() {
                         nombre={item.nombre}
                         precio={item.precio}
                         key={item.id}
+                        funcionEditar={() => {
+                            manejarAbrirEdicion(item);
+                        }}
                         funcionEliminar={() => {
                             // Como siempre traigo productos validados, dice con el ! que nunca será undefined ese atributo; ts al ver que en la definición lo puse como opcional se da cuenta que puede ser undefined
                             manejarEliminarProducto(item.id!);
@@ -210,6 +257,65 @@ export default function productos() {
                                 <View className="flex-1">
                                     <Boton
                                         onPress={manejarGuardado}
+                                        texto="Guardar"
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </KeyboardAvoidingView>
+            </Modal>
+
+            {/* Modal de Edición */}
+            <Modal
+                visible={modalEdicionVisible}
+                transparent={true}
+                animationType="slide"
+                onRequestClose={() => setModalEdicionVisible(false)}>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    className="flex-1">
+                    <View className="flex-1 justify-end bg-black/40">
+                        <View className="rounded-t-3xl bg-white p-6 shadow-xl">
+                            <View className="mb-6 h-1.5 w-12 self-center rounded-full bg-gray-300" />
+
+                            <Text className="mb-6 text-2xl font-bold text-gray-800">
+                                Editar Producto
+                            </Text>
+
+                            <View className="mb-8 gap-y-4">
+                                <CampoTexto
+                                    sugerencia="Ej. Coca Cola 2L"
+                                    etiqueta="Nombre del producto"
+                                    valueCampo={nombreProducto}
+                                    onChangeText={setNombreProducto}
+                                />
+                                <CampoTexto
+                                    prefijo="$"
+                                    sugerencia="0.00"
+                                    esNumero={true}
+                                    etiqueta="Precio"
+                                    valueCampo={precioProducto}
+                                    onChangeText={manejarPrecio}
+                                />
+                            </View>
+
+                            <View className="flex-row gap-x-3">
+                                <View className="flex-1">
+                                    <Boton
+                                        onPress={() => {
+                                            setModalEdicionVisible(false);
+                                            setProductoEnEdicion(null);
+                                            setNombreProducto("");
+                                            setPrecioProducto("");
+                                        }}
+                                        texto="Cancelar"
+                                        colorDeFondo={true}
+                                    />
+                                </View>
+                                <View className="flex-1">
+                                    <Boton
+                                        onPress={manejarGuardarEdicion}
                                         texto="Guardar"
                                     />
                                 </View>
