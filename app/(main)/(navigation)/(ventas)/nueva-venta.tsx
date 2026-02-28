@@ -66,6 +66,8 @@ export default function nuevaVenta() {
     const [modalCarritoVisible, setModalCarritoVisible] = useState(false);
     // Estado para el modal de confirmación de venta
     const [modalConfirmarVisible, setModalConfirmarVisible] = useState(false);
+    // Estado para el modal de confirmación de cancelación
+    const [modalCancelarVisible, setModalCancelarVisible] = useState(false);
 
     // Función helper para obtener la cantidad de un producto en el carrito
     const obtenerCantidadEnCarrito = (idProducto: string): number => {
@@ -435,12 +437,10 @@ export default function nuevaVenta() {
                         <View className="flex-row gap-3">
                             <TouchableOpacity
                                 onPress={() => {
-                                    setModalConfirmarVisible(false);
-                                    vaciarCarritoStore();
-                                    setMontoRecibido("");
+                                    setModalCancelarVisible(true);
                                 }}
-                                className="flex-1 items-center justify-center rounded-lg border-2 border-gray-300 py-4">
-                                <Text className="text-lg font-semibold text-gray-700">
+                                className="flex-1 items-center justify-center rounded-lg border-2 border-red-300 py-4">
+                                <Text className="text-lg font-semibold text-red-600">
                                     Cancelar
                                 </Text>
                             </TouchableOpacity>
@@ -480,6 +480,46 @@ export default function nuevaVenta() {
                                     Confirmar Venta
                                 </Text>
                             </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            {/* Modal de Confirmación de Cancelación */}
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalCancelarVisible}
+                onRequestClose={() => setModalCancelarVisible(false)}>
+                <View className="flex-1 items-center justify-center bg-black/50">
+                    <View className="mx-6 rounded-3xl bg-white p-6">
+                        <Text className="mb-4 text-center text-xl font-bold">
+                            ¿Cancelar venta?
+                        </Text>
+                        <Text className="mb-6 text-center text-gray-600">
+                            Se borrarán todos los productos del carrito. ¿Estás seguro?
+                        </Text>
+
+                        {/* Botones */}
+                        <View className="flex-row gap-3">
+                            <View className="flex-1">
+                                <Boton
+                                    onPress={() => setModalCancelarVisible(false)}
+                                    texto="No, volver"
+                                    colorDeFondo={true}
+                                />
+                            </View>
+                            <View className="flex-1">
+                                <Boton
+                                    onPress={() => {
+                                        vaciarCarritoStore();
+                                        setMontoRecibido("");
+                                        setModalCancelarVisible(false);
+                                        setModalConfirmarVisible(false);
+                                    }}
+                                    texto="Sí, cancelar venta"
+                                />
+                            </View>
                         </View>
                     </View>
                 </View>
