@@ -1,51 +1,79 @@
-[debug] [2026-02-28T22:14:11.158Z] ----------------------------------------------------------------------
-[debug] [2026-02-28T22:14:11.167Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Jesus\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
-[debug] [2026-02-28T22:14:11.167Z] CLI Version:   15.5.1
-[debug] [2026-02-28T22:14:11.168Z] Platform:      win32
-[debug] [2026-02-28T22:14:11.168Z] Node Version:  v24.13.1
-[debug] [2026-02-28T22:14:11.168Z] Time:          Sat Feb 28 2026 15:14:11 GMT-0700 (Mexican Pacific Standard Time)
-[debug] [2026-02-28T22:14:11.168Z] ----------------------------------------------------------------------
+[debug] [2026-02-28T22:51:06.537Z] ----------------------------------------------------------------------
+[debug] [2026-02-28T22:51:06.543Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Jesus\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start --import=./emulator-data --export-on-exit
+[debug] [2026-02-28T22:51:06.544Z] CLI Version:   15.5.1
+[debug] [2026-02-28T22:51:06.544Z] Platform:      win32
+[debug] [2026-02-28T22:51:06.544Z] Node Version:  v24.13.1
+[debug] [2026-02-28T22:51:06.545Z] Time:          Sat Feb 28 2026 15:51:06 GMT-0700 (Mexican Pacific Standard Time)
+[debug] [2026-02-28T22:51:06.545Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2026-02-28T22:14:16.424Z] Object "/emulators/firestore" in "firebase.json" has unknown property: {"additionalProperty":"import"}
-[debug] [2026-02-28T22:14:16.431Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2026-02-28T22:14:16.432Z] > authorizing via signed-in user (jesusgabrielgonzaleses2@gmail.com)
-[debug] [2026-02-28T22:14:16.432Z] [iam] checking project negocia-a17c5 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
-[debug] [2026-02-28T22:14:16.434Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:16.434Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:16.435Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5:testIamPermissions [none]
-[debug] [2026-02-28T22:14:16.436Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5:testIamPermissions  x-goog-user-project=negocia-a17c5
-[debug] [2026-02-28T22:14:16.436Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
-[debug] [2026-02-28T22:14:17.146Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5:testIamPermissions 200
-[debug] [2026-02-28T22:14:17.146Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
-[debug] [2026-02-28T22:14:17.147Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:17.147Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:17.147Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/negocia-a17c5/serviceAccounts/negocia-a17c5@appspot.gserviceaccount.com:testIamPermissions [none]
-[debug] [2026-02-28T22:14:17.147Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/negocia-a17c5/serviceAccounts/negocia-a17c5@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
-[debug] [2026-02-28T22:14:17.580Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/negocia-a17c5/serviceAccounts/negocia-a17c5@appspot.gserviceaccount.com:testIamPermissions 200
-[debug] [2026-02-28T22:14:17.580Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/negocia-a17c5/serviceAccounts/negocia-a17c5@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
-[info] 
-[info] === Deploying to 'negocia-a17c5'...
-[info] 
-[info] i  deploying functions 
-[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
-[info] Running command: npm --prefix "$RESOURCE_DIR" run build
-[info] +  functions: Finished running predeploy script. 
-[debug] [2026-02-28T22:14:42.084Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:42.084Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:42.085Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 [none]
-[debug] [2026-02-28T22:14:42.555Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 200
-[debug] [2026-02-28T22:14:42.556Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 {"projectNumber":"129510647165","projectId":"negocia-a17c5","lifecycleState":"ACTIVE","name":"NegocIA","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-01-18T23:26:28.060347Z"}
-[info] i  functions: preparing codebase default for deployment 
-[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
-[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
-[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
-[debug] [2026-02-28T22:14:42.563Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:42.563Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:42.563Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/negocia-a17c5/adminSdkConfig [none]
-[debug] [2026-02-28T22:14:43.075Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/negocia-a17c5/adminSdkConfig 200
-[debug] [2026-02-28T22:14:43.075Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/negocia-a17c5/adminSdkConfig {"projectId":"negocia-a17c5","storageBucket":"negocia-a17c5.firebasestorage.app"}
-[debug] [2026-02-28T22:14:43.079Z] Validating nodejs source
-[debug] [2026-02-28T22:14:46.670Z] > [functions] package.json contents: {
+[debug] [2026-02-28T22:51:11.140Z] Object "/emulators/firestore" in "firebase.json" has unknown property: {"additionalProperty":"import"}
+[debug] [2026-02-28T22:51:11.154Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-28T22:51:11.155Z] > authorizing via signed-in user (jesusgabrielgonzaleses2@gmail.com)
+[debug] [2026-02-28T22:51:11.438Z] java version "25.0.2" 2026-01-20 LTS
+
+[debug] [2026-02-28T22:51:11.441Z] Java(TM) SE Runtime Environment (build 25.0.2+10-LTS-69)
+Java HotSpot(TM) 64-Bit Server VM (build 25.0.2+10-LTS-69, mixed mode, sharing)
+
+[debug] [2026-02-28T22:51:11.466Z] Parsed Java major version: 25
+[info] i  emulators: Starting emulators: auth, functions, firestore, hosting, extensions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, hosting, extensions"}}
+[debug] [2026-02-28T22:51:11.475Z] Checked if tokens are valid: false, expires at: 1772319775115
+[debug] [2026-02-28T22:51:11.475Z] Checked if tokens are valid: false, expires at: 1772319775115
+[debug] [2026-02-28T22:51:11.476Z] > refreshing access token with scopes: []
+[debug] [2026-02-28T22:51:11.483Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-28T22:51:11.485Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-28T22:51:12.643Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-02-28T22:51:12.644Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-28T22:51:12.672Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 [none]
+[debug] [2026-02-28T22:51:13.537Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 200
+[debug] [2026-02-28T22:51:13.538Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 {"projectNumber":"129510647165","projectId":"negocia-a17c5","lifecycleState":"ACTIVE","name":"NegocIA","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-01-18T23:26:28.060347Z"}
+[warn] !  hosting: The hosting emulator is configured but there is no hosting configuration. Have you run firebase init hosting? {"metadata":{"emulator":{"name":"hosting"},"message":"The hosting emulator is configured but there is no hosting configuration. Have you run \u001b[1mfirebase init hosting\u001b[22m?"}}
+[debug] [2026-02-28T22:51:13.581Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-28T22:51:13.581Z] assigned listening specs for emulators {"user":{"auth":[{"address":"0.0.0.0","family":"IPv4","port":1212}],"firestore":[{"address":"0.0.0.0","family":"IPv4","port":1214}],"firestore.websocket":[{"address":"0.0.0.0","family":"IPv4","port":9150}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2026-02-28T22:51:13.594Z] Found emulator hub locator: {"version":"15.5.1","origins":["http://127.0.0.1:4400","http://[::1]:4400"],"pid":16100}
+[debug] [2026-02-28T22:51:13.595Z] Write emulator hub locator at C:\Users\Jesus\AppData\Local\Temp\hub-negocia-a17c5.json
+[debug] [2026-02-28T22:51:13.609Z] [Extensions] Started Extensions emulator, this is a noop.
+[debug] [2026-02-28T22:51:13.621Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-28T22:51:13.621Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-28T22:51:13.621Z] late-assigned ports for functions and eventarc emulators {"user":{"auth":[{"address":"0.0.0.0","family":"IPv4","port":1212}],"firestore":[{"address":"0.0.0.0","family":"IPv4","port":1214}],"firestore.websocket":[{"address":"0.0.0.0","family":"IPv4","port":9150}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"0.0.0.0","family":"IPv4","port":1213}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, database, hosting, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, database, hosting, pubsub, storage, dataconnect\u001b[22m"}}
+[debug] [2026-02-28T22:51:13.755Z] defaultcredentials: writing to file C:\Users\Jesus\AppData\Roaming\firebase\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json
+[debug] [2026-02-28T22:51:13.760Z] Setting GAC to C:\Users\Jesus\AppData\Roaming\firebase\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\Jesus\\AppData\\Roaming\\firebase\\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json"}}
+[debug] [2026-02-28T22:51:13.762Z] Checked if tokens are valid: true, expires at: 1772322671644
+[debug] [2026-02-28T22:51:13.762Z] Checked if tokens are valid: true, expires at: 1772322671644
+[debug] [2026-02-28T22:51:13.762Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/negocia-a17c5/adminSdkConfig [none]
+[debug] [2026-02-28T22:51:14.548Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/negocia-a17c5/adminSdkConfig 200
+[debug] [2026-02-28T22:51:14.548Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/negocia-a17c5/adminSdkConfig {"projectId":"negocia-a17c5","storageBucket":"negocia-a17c5.firebasestorage.app"}
+[debug] [2026-02-28T22:51:14.572Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2026-02-28T22:51:14.573Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2026-02-28T22:51:14.573Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\Jesus\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.20.2.jar","--host","0.0.0.0","--port",1214,"--websocket_port",9150,"--project_id","negocia-a17c5","--rules","C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\firestore.rules","--single_project_mode",true,"--functions_emulator","127.0.0.1:1213"],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false,"port":1214} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\Jesus\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.20.2.jar\",\"--host\",\"0.0.0.0\",\"--port\",1214,\"--websocket_port\",9150,\"--project_id\",\"negocia-a17c5\",\"--rules\",\"C:\\\\Users\\\\Jesus\\\\Desktop\\\\MarcaPersonal\\\\NegocIA\\\\AppNegocIA\\\\firestore.rules\",\"--single_project_mode\",true,\"--functions_emulator\",\"127.0.0.1:1213\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false,\"port\":1214}"}}
+[info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
+[debug] [2026-02-28T22:51:15.453Z] WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::allocateMemory has been called by io.netty.util.internal.PlatformDependent0$2 (file:/C:/Users/Jesus/.cache/firebase/emulators/cloud-firestore-emulator-v1.20.2.jar)
+WARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$2
+WARNING: sun.misc.Unsafe::allocateMemory will be removed in a future release
+ {"metadata":{"emulator":{"name":"firestore"},"message":"WARNING: A terminally deprecated method in sun.misc.Unsafe has been called\nWARNING: sun.misc.Unsafe::allocateMemory has been called by io.netty.util.internal.PlatformDependent0$2 (file:/C:/Users/Jesus/.cache/firebase/emulators/cloud-firestore-emulator-v1.20.2.jar)\nWARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$2\nWARNING: sun.misc.Unsafe::allocateMemory will be removed in a future release\r\n"}}
+[debug] [2026-02-28T22:51:17.627Z] Feb 28, 2026 3:51:17 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+INFO: Started WebSocket server on ws://0.0.0.0:9150
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:51:17 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start\r\nINFO: Started WebSocket server on ws://0.0.0.0:9150\r\n"}}
+[debug] [2026-02-28T22:51:17.733Z] API endpoint: http:// {"metadata":{"emulator":{"name":"firestore"},"message":"API endpoint: http://"}}
+[debug] [2026-02-28T22:51:17.734Z] 0.0.0.0:1214
+If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:
+
+   export FIRESTORE_EMULATOR_HOST=0.0.0.0:1214
+
+If you are running a Firestore in Datastore Mode project, run:
+
+   export DATASTORE_EMULATOR_HOST=0.0.0.0:1214
+
+Note: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.
+Dev App Server is now running.
+
+ {"metadata":{"emulator":{"name":"firestore"},"message":"0.0.0.0:1214\nIf you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:\r\n\n   export FIRESTORE_EMULATOR_HOST=0.0.0.0:1214\n\nIf you are running a Firestore in Datastore Mode project, run:\r\n\n   export DATASTORE_EMULATOR_HOST=0.0.0.0:1214\n\nNote: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.\r\nDev App Server is now running.\n\r\n"}}
+[info] +  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
+[debug] [2026-02-28T22:51:29.447Z] [Extensions] Connecting Extensions emulator, this is a noop.
+[info] i  functions: Watching "C:\Users\Jesus\Desktop\MarcaPersonal\NegocIA\AppNegocIA\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\functions\" for Cloud Functions..."}}
+[debug] [2026-02-28T22:51:29.468Z] Validating nodejs source
+[debug] [2026-02-28T22:51:31.508Z] > [functions] package.json contents: {
   "name": "functions",
   "scripts": {
     "lint": "eslint src/**/*.ts",
@@ -77,97 +105,411 @@
   },
   "private": true
 }
-[debug] [2026-02-28T22:14:46.671Z] Building nodejs source
-[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
-[debug] [2026-02-28T22:14:46.675Z] Could not find functions.yaml. Must use http discovery
-[debug] [2026-02-28T22:14:46.708Z] Found firebase-functions binary at 'C:\Users\Jesus\Desktop\MarcaPersonal\NegocIA\AppNegocIA\functions\node_modules\.bin\firebase-functions'
-[info] Serving at port 8001
+[debug] [2026-02-28T22:51:31.509Z] Building nodejs source
+[debug] [2026-02-28T22:51:31.510Z] Failed to find version of module node: reached end of search path C:\Users\Jesus\Desktop\MarcaPersonal\NegocIA\AppNegocIA\functions\node_modules
+[info] +  functions: Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env, .env.local. 
+[debug] [2026-02-28T22:51:31.520Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-02-28T22:51:31.554Z] Found firebase-functions binary at 'C:\Users\Jesus\Desktop\MarcaPersonal\NegocIA\AppNegocIA\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8606
 
-[error] (node:29100) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[error] (node:20564) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 
-[debug] [2026-02-28T22:14:49.273Z] Got response from /__/functions.yaml {"endpoints":{"askAssistant":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"callableTrigger":{},"entryPoint":"askAssistant"},"verifySubscription":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"verifySubscription"},"ping":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"ping"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
-[info] i  extensions: ensuring required API firebaseextensions.googleapis.com is enabled... 
-[debug] [2026-02-28T22:14:53.369Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2026-02-28T22:14:53.369Z] > authorizing via signed-in user (jesusgabrielgonzaleses2@gmail.com)
-[debug] [2026-02-28T22:14:53.370Z] [iam] checking project negocia-a17c5 for permissions ["firebase.projects.get","firebaseextensions.instances.list"]
-[debug] [2026-02-28T22:14:53.370Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:53.370Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:53.371Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5:testIamPermissions [none]
-[debug] [2026-02-28T22:14:53.371Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5:testIamPermissions  x-goog-user-project=negocia-a17c5
-[debug] [2026-02-28T22:14:53.371Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
-[debug] [2026-02-28T22:14:53.790Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5:testIamPermissions 200
-[debug] [2026-02-28T22:14:53.790Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
-[debug] [2026-02-28T22:14:53.791Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:53.791Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:53.821Z] >>> [apiv2][query] GET https://firebaseextensions.googleapis.com/v1beta/projects/negocia-a17c5/instances pageSize=100&pageToken=
-[debug] [2026-02-28T22:14:54.293Z] <<< [apiv2][status] GET https://firebaseextensions.googleapis.com/v1beta/projects/negocia-a17c5/instances 200
-[debug] [2026-02-28T22:14:54.293Z] <<< [apiv2][body] GET https://firebaseextensions.googleapis.com/v1beta/projects/negocia-a17c5/instances {}
-[info] i  functions: Loaded environment variables from .env. 
-[info] i  functions: preparing functions directory for uploading... 
-[info] i  functions: packaged C:\Users\Jesus\Desktop\MarcaPersonal\NegocIA\AppNegocIA\functions (139.43 KB) for uploading 
-[debug] [2026-02-28T22:14:54.553Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:54.553Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:54.554Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/negocia-a17c5/locations/-/functions [none]
-[debug] [2026-02-28T22:14:55.212Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/negocia-a17c5/locations/-/functions 200
-[debug] [2026-02-28T22:14:55.212Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/negocia-a17c5/locations/-/functions {}
-[debug] [2026-02-28T22:14:55.213Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:55.213Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:55.214Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/negocia-a17c5/locations/-/functions filter=environment%3D%22GEN_2%22
-[debug] [2026-02-28T22:14:55.615Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/negocia-a17c5/locations/-/functions 200
-[debug] [2026-02-28T22:14:55.615Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/negocia-a17c5/locations/-/functions {"functions":[{"name":"projects/negocia-a17c5/locations/us-central1/functions/verifySubscription","buildConfig":{"build":"projects/129510647165/locations/us-central1/builds/91b8812e-c5e2-4f1a-a62f-1064ff7d1812","runtime":"nodejs24","entryPoint":"verifySubscription","source":{"storageSource":{"bucket":"gcf-v2-sources-129510647165-us-central1","object":"verifySubscription/function-source.zip","generation":"1772316349095635"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"dockerRepository":"projects/negocia-a17c5/locations/us-central1/repositories/gcf-artifacts","sourceProvenance":{"resolvedStorageSource":{"bucket":"gcf-v2-sources-129510647165-us-central1","object":"verifySubscription/function-source.zip","generation":"1772316349095635"}},"dockerRegistry":"ARTIFACT_REGISTRY","serviceAccount":"projects/negocia-a17c5/serviceAccounts/129510647165-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/negocia-a17c5/locations/us-central1/services/verifysubscription","timeoutSeconds":60,"environmentVariables":{"GEMINI_API_KEY":"AIzaSyBUKADAZhpMSM4RtfCj5rvkBaySqpRB448","GCP_PROJECT_ID":"negocia-a17c5","REVENUECAT_WEBHOOK_SECRET":"placeholder","FIREBASE_CONFIG":"{\"projectId\":\"negocia-a17c5\",\"storageBucket\":\"negocia-a17c5.firebasestorage.app\"}","GCLOUD_PROJECT":"negocia-a17c5","EVENTARC_CLOUD_EVENT_SOURCE":"projects/negocia-a17c5/locations/us-central1/services/verifySubscription","FUNCTION_TARGET":"verifySubscription","LOG_EXECUTION_ID":"true","FUNCTION_SIGNATURE_TYPE":"http"},"ingressSettings":"ALLOW_ALL","uri":"https://verifysubscription-kxeu5kvi6a-uc.a.run.app","serviceAccountEmail":"129510647165-compute@developer.gserviceaccount.com","availableMemory":"256Mi","allTrafficOnLatestRevision":true,"revision":"verifysubscription-00001-zot","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"state":"ACTIVE","updateTime":"2026-02-28T22:05:56.634392501Z","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"b17ea305d159a45fefc40c98f10f15c105b9265b"},"environment":"GEN_2","url":"https://us-central1-negocia-a17c5.cloudfunctions.net/verifySubscription","createTime":"2026-02-28T22:05:49.327695952Z","satisfiesPzi":true},{"name":"projects/negocia-a17c5/locations/us-central1/functions/askAssistant","buildConfig":{"build":"projects/129510647165/locations/us-central1/builds/91b8812e-c5e2-4f1a-a62f-1064ff7d1812","runtime":"nodejs24","entryPoint":"askAssistant","source":{"storageSource":{"bucket":"gcf-v2-sources-129510647165-us-central1","object":"askAssistant/function-source.zip","generation":"1772316256937105"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"dockerRepository":"projects/negocia-a17c5/locations/us-central1/repositories/gcf-artifacts","sourceProvenance":{"resolvedStorageSource":{"bucket":"gcf-v2-sources-129510647165-us-central1","object":"askAssistant/function-source.zip","generation":"1772316256937105"}},"dockerRegistry":"ARTIFACT_REGISTRY","serviceAccount":"projects/negocia-a17c5/serviceAccounts/129510647165-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/negocia-a17c5/locations/us-central1/services/askassistant","timeoutSeconds":60,"environmentVariables":{"GEMINI_API_KEY":"AIzaSyBUKADAZhpMSM4RtfCj5rvkBaySqpRB448","GCP_PROJECT_ID":"negocia-a17c5","REVENUECAT_WEBHOOK_SECRET":"placeholder","FIREBASE_CONFIG":"{\"projectId\":\"negocia-a17c5\",\"storageBucket\":\"negocia-a17c5.firebasestorage.app\"}","GCLOUD_PROJECT":"negocia-a17c5","EVENTARC_CLOUD_EVENT_SOURCE":"projects/negocia-a17c5/locations/us-central1/services/askAssistant","FUNCTION_TARGET":"askAssistant","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","uri":"https://askassistant-kxeu5kvi6a-uc.a.run.app","serviceAccountEmail":"129510647165-compute@developer.gserviceaccount.com","availableMemory":"256Mi","allTrafficOnLatestRevision":true,"revision":"askassistant-00001-kiz","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"state":"ACTIVE","updateTime":"2026-02-28T22:05:48.379017257Z","labels":{"deployment-tool":"cli-firebase","deployment-callable":"true","firebase-functions-hash":"b17ea305d159a45fefc40c98f10f15c105b9265b"},"environment":"GEN_2","url":"https://us-central1-negocia-a17c5.cloudfunctions.net/askAssistant","createTime":"2026-02-28T22:04:17.815064424Z","satisfiesPzi":true},{"name":"projects/negocia-a17c5/locations/us-central1/functions/ping","buildConfig":{"build":"projects/129510647165/locations/us-central1/builds/91b8812e-c5e2-4f1a-a62f-1064ff7d1812","runtime":"nodejs24","entryPoint":"ping","source":{"storageSource":{"bucket":"gcf-v2-sources-129510647165-us-central1","object":"ping/function-source.zip","generation":"1772316349484629"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"dockerRepository":"projects/negocia-a17c5/locations/us-central1/repositories/gcf-artifacts","sourceProvenance":{"resolvedStorageSource":{"bucket":"gcf-v2-sources-129510647165-us-central1","object":"ping/function-source.zip","generation":"1772316349484629"}},"dockerRegistry":"ARTIFACT_REGISTRY","serviceAccount":"projects/negocia-a17c5/serviceAccounts/129510647165-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/negocia-a17c5/locations/us-central1/services/ping","timeoutSeconds":60,"environmentVariables":{"GEMINI_API_KEY":"AIzaSyBUKADAZhpMSM4RtfCj5rvkBaySqpRB448","GCP_PROJECT_ID":"negocia-a17c5","REVENUECAT_WEBHOOK_SECRET":"placeholder","FIREBASE_CONFIG":"{\"projectId\":\"negocia-a17c5\",\"storageBucket\":\"negocia-a17c5.firebasestorage.app\"}","GCLOUD_PROJECT":"negocia-a17c5","EVENTARC_CLOUD_EVENT_SOURCE":"projects/negocia-a17c5/locations/us-central1/services/ping","FUNCTION_TARGET":"ping","LOG_EXECUTION_ID":"true","FUNCTION_SIGNATURE_TYPE":"http"},"ingressSettings":"ALLOW_ALL","uri":"https://ping-kxeu5kvi6a-uc.a.run.app","serviceAccountEmail":"129510647165-compute@developer.gserviceaccount.com","availableMemory":"256Mi","allTrafficOnLatestRevision":true,"revision":"ping-00001-xad","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"state":"ACTIVE","updateTime":"2026-02-28T22:05:56.034393222Z","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"b17ea305d159a45fefc40c98f10f15c105b9265b"},"environment":"GEN_2","url":"https://us-central1-negocia-a17c5.cloudfunctions.net/ping","createTime":"2026-02-28T22:05:49.728260071Z","satisfiesPzi":true}]}
-[info] i  functions: ensuring required API run.googleapis.com is enabled... 
-[info] i  functions: ensuring required API eventarc.googleapis.com is enabled... 
-[info] i  functions: ensuring required API pubsub.googleapis.com is enabled... 
-[info] i  functions: ensuring required API storage.googleapis.com is enabled... 
-[info] i  functions: generating the service identity for pubsub.googleapis.com... 
-[debug] [2026-02-28T22:14:55.657Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:55.657Z] Checked if tokens are valid: true, expires at: 1772319775115
-[info] i  functions: generating the service identity for eventarc.googleapis.com... 
-[debug] [2026-02-28T22:14:55.658Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:55.658Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:55.658Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/129510647165/services/pubsub.googleapis.com:generateServiceIdentity [none]
-[debug] [2026-02-28T22:14:55.658Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1beta1/projects/129510647165/services/pubsub.googleapis.com:generateServiceIdentity  x-goog-user-project=129510647165
-[debug] [2026-02-28T22:14:55.658Z] >>> [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/129510647165/services/pubsub.googleapis.com:generateServiceIdentity {}
-[debug] [2026-02-28T22:14:55.661Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/129510647165/services/eventarc.googleapis.com:generateServiceIdentity [none]
-[debug] [2026-02-28T22:14:55.661Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1beta1/projects/129510647165/services/eventarc.googleapis.com:generateServiceIdentity  x-goog-user-project=129510647165
-[debug] [2026-02-28T22:14:55.661Z] >>> [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/129510647165/services/eventarc.googleapis.com:generateServiceIdentity {}
-[debug] [2026-02-28T22:14:56.260Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/129510647165/services/pubsub.googleapis.com:generateServiceIdentity 200
-[debug] [2026-02-28T22:14:56.260Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/129510647165/services/pubsub.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-129510647165@gcp-sa-pubsub.iam.gserviceaccount.com","uniqueId":"106413101968704346903"}}
-[debug] [2026-02-28T22:14:56.277Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/129510647165/services/eventarc.googleapis.com:generateServiceIdentity 200
-[debug] [2026-02-28T22:14:56.277Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/129510647165/services/eventarc.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-129510647165@gcp-sa-eventarc.iam.gserviceaccount.com","uniqueId":"109446868724342066994"}}
-[debug] [2026-02-28T22:14:56.282Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:56.282Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:56.282Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 [none]
-[debug] [2026-02-28T22:14:56.422Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 200
-[debug] [2026-02-28T22:14:56.422Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 {"projectNumber":"129510647165","projectId":"negocia-a17c5","lifecycleState":"ACTIVE","name":"NegocIA","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-01-18T23:26:28.060347Z"}
-[debug] [2026-02-28T22:14:56.423Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:56.423Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:56.423Z] >>> [apiv2][query] GET https://compute.googleapis.com/compute/v1/projects/129510647165 [none]
-[debug] [2026-02-28T22:14:56.710Z] <<< [apiv2][status] GET https://compute.googleapis.com/compute/v1/projects/129510647165 403
-[debug] [2026-02-28T22:14:56.711Z] <<< [apiv2][body] GET https://compute.googleapis.com/compute/v1/projects/129510647165 {"error":{"code":403,"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","errors":[{"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","domain":"usageLimits","reason":"accessNotConfigured","extendedHelp":"https://console.developers.google.com"}],"status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SERVICE_DISABLED","domain":"googleapis.com","metadata":{"activationUrl":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165","containerInfo":"129510647165","consumer":"projects/129510647165","serviceTitle":"Compute Engine API","service":"compute.googleapis.com"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developers console API activation","url":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165"}]}]}}
-[debug] [2026-02-28T22:14:56.713Z] unable to look up default compute service account. Falling back to 129510647165-compute@developer.gserviceaccount.com. Error: {"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":403,"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","errors":[{"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","domain":"usageLimits","reason":"accessNotConfigured","extendedHelp":"https://console.developers.google.com"}],"status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SERVICE_DISABLED","domain":"googleapis.com","metadata":{"activationUrl":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165","containerInfo":"129510647165","consumer":"projects/129510647165","serviceTitle":"Compute Engine API","service":"compute.googleapis.com"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developers console API activation","url":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165"}]}]}},"response":{"statusCode":403}},"exit":1,"message":"Request to https://compute.googleapis.com/compute/v1/projects/129510647165 had HTTP Error: 403, Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","status":403}
-[debug] [2026-02-28T22:14:56.713Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:56.714Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:56.714Z] >>> [apiv2][query] GET https://compute.googleapis.com/compute/v1/projects/129510647165 [none]
-[debug] [2026-02-28T22:14:56.858Z] <<< [apiv2][status] GET https://compute.googleapis.com/compute/v1/projects/129510647165 403
-[debug] [2026-02-28T22:14:56.858Z] <<< [apiv2][body] GET https://compute.googleapis.com/compute/v1/projects/129510647165 {"error":{"code":403,"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","errors":[{"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","domain":"usageLimits","reason":"accessNotConfigured","extendedHelp":"https://console.developers.google.com"}],"status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SERVICE_DISABLED","domain":"googleapis.com","metadata":{"containerInfo":"129510647165","serviceTitle":"Compute Engine API","activationUrl":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165","consumer":"projects/129510647165","service":"compute.googleapis.com"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developers console API activation","url":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165"}]}]}}
-[debug] [2026-02-28T22:14:56.859Z] unable to look up default compute service account. Falling back to 129510647165-compute@developer.gserviceaccount.com. Error: {"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":403,"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","errors":[{"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","domain":"usageLimits","reason":"accessNotConfigured","extendedHelp":"https://console.developers.google.com"}],"status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SERVICE_DISABLED","domain":"googleapis.com","metadata":{"containerInfo":"129510647165","serviceTitle":"Compute Engine API","activationUrl":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165","consumer":"projects/129510647165","service":"compute.googleapis.com"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developers console API activation","url":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165"}]}]}},"response":{"statusCode":403}},"exit":1,"message":"Request to https://compute.googleapis.com/compute/v1/projects/129510647165 had HTTP Error: 403, Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","status":403}
-[debug] [2026-02-28T22:14:56.860Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:56.860Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:56.860Z] >>> [apiv2][query] GET https://compute.googleapis.com/compute/v1/projects/129510647165 [none]
-[debug] [2026-02-28T22:14:57.154Z] <<< [apiv2][status] GET https://compute.googleapis.com/compute/v1/projects/129510647165 403
-[debug] [2026-02-28T22:14:57.154Z] <<< [apiv2][body] GET https://compute.googleapis.com/compute/v1/projects/129510647165 {"error":{"code":403,"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","errors":[{"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","domain":"usageLimits","reason":"accessNotConfigured","extendedHelp":"https://console.developers.google.com"}],"status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SERVICE_DISABLED","domain":"googleapis.com","metadata":{"serviceTitle":"Compute Engine API","consumer":"projects/129510647165","service":"compute.googleapis.com","containerInfo":"129510647165","activationUrl":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developers console API activation","url":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165"}]}]}}
-[debug] [2026-02-28T22:14:57.155Z] unable to look up default compute service account. Falling back to 129510647165-compute@developer.gserviceaccount.com. Error: {"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":403,"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","errors":[{"message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","domain":"usageLimits","reason":"accessNotConfigured","extendedHelp":"https://console.developers.google.com"}],"status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SERVICE_DISABLED","domain":"googleapis.com","metadata":{"serviceTitle":"Compute Engine API","consumer":"projects/129510647165","service":"compute.googleapis.com","containerInfo":"129510647165","activationUrl":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developers console API activation","url":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165"}]}]}},"response":{"statusCode":403}},"exit":1,"message":"Request to https://compute.googleapis.com/compute/v1/projects/129510647165 had HTTP Error: 403, Compute Engine API has not been used in project 129510647165 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=129510647165 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","status":403}
-[debug] [2026-02-28T22:14:57.158Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:57.159Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:57.159Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/negocia-a17c5/billingInfo [none]
-[debug] [2026-02-28T22:14:57.559Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/negocia-a17c5/billingInfo 200
-[debug] [2026-02-28T22:14:57.559Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/negocia-a17c5/billingInfo {"name":"projects/negocia-a17c5/billingInfo","projectId":"negocia-a17c5","billingAccountName":"billingAccounts/011BA2-63AFA5-1E1F50","billingEnabled":true}
-[debug] [2026-02-28T22:14:57.566Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:57.566Z] Checked if tokens are valid: true, expires at: 1772319775115
-[debug] [2026-02-28T22:14:57.567Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v2/projects/negocia-a17c5/locations/us-central1/functions:generateUploadUrl [none]
-[debug] [2026-02-28T22:14:57.819Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v2/projects/negocia-a17c5/locations/us-central1/functions:generateUploadUrl 200
-[debug] [2026-02-28T22:14:57.819Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/negocia-a17c5/locations/us-central1/functions:generateUploadUrl {"uploadUrl":"https://storage.googleapis.com/gcf-v2-uploads-129510647165.us-central1.cloudfunctions.appspot.com/29cf677f-9801-46b2-b315-ae0923d2b0a1.zip?GoogleAccessId=service-129510647165@gcf-admin-robot.iam.gserviceaccount.com&Expires=1772318697&Signature=Pd%2FzAQB1ii9C2MXcj8qGxxQi%2B0u05VLjLCwqlqbiYNEVyZ2WQhWVEta3EfYmN3KFTxw0VCJ33OonhPA534eK7gAB0Nlpiqt4Ld8T0Vt2IPPAz7kX5q7pb9eHMuKDFSVjqAXxR%2B29ImpgeVxfSKM80KssuNrS%2BfFk3AdKu2MfyM9%2Bs0b%2FB7RTOgnOG4oVOE1LOUTbHWRM%2FIdIFBiCEEzQdZJg0Oo%2BZZ41Cl9pPUOORnNZqMU9UbIEEdJswV4cu%2B1TQp44ew3oGVeObeOpD4wN%2Faw2PFe4ZNy1DZclMiBJMxhBIqBqlwX9K2HV6uyN5U2W2fwytaqjSVfWG1xJMtdhAQ%3D%3D","storageSource":{"bucket":"gcf-v2-uploads-129510647165.us-central1.cloudfunctions.appspot.com","object":"29cf677f-9801-46b2-b315-ae0923d2b0a1.zip"}}
-[debug] [2026-02-28T22:14:57.824Z] >>> [apiv2][query] PUT https://storage.googleapis.com/gcf-v2-uploads-129510647165.us-central1.cloudfunctions.appspot.com/29cf677f-9801-46b2-b315-ae0923d2b0a1.zip GoogleAccessId=service-129510647165%40gcf-admin-robot.iam.gserviceaccount.com&Expires=1772318697&Signature=Pd%2FzAQB1ii9C2MXcj8qGxxQi%2B0u05VLjLCwqlqbiYNEVyZ2WQhWVEta3EfYmN3KFTxw0VCJ33OonhPA534eK7gAB0Nlpiqt4Ld8T0Vt2IPPAz7kX5q7pb9eHMuKDFSVjqAXxR%2B29ImpgeVxfSKM80KssuNrS%2BfFk3AdKu2MfyM9%2Bs0b%2FB7RTOgnOG4oVOE1LOUTbHWRM%2FIdIFBiCEEzQdZJg0Oo%2BZZ41Cl9pPUOORnNZqMU9UbIEEdJswV4cu%2B1TQp44ew3oGVeObeOpD4wN%2Faw2PFe4ZNy1DZclMiBJMxhBIqBqlwX9K2HV6uyN5U2W2fwytaqjSVfWG1xJMtdhAQ%3D%3D
-[debug] [2026-02-28T22:14:57.824Z] >>> [apiv2][body] PUT https://storage.googleapis.com/gcf-v2-uploads-129510647165.us-central1.cloudfunctions.appspot.com/29cf677f-9801-46b2-b315-ae0923d2b0a1.zip [stream]
+[debug] [2026-02-28T22:51:33.891Z] Got response from /__/functions.yaml {"endpoints":{"askAssistant":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"callableTrigger":{},"entryPoint":"askAssistant"},"verifySubscription":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"verifySubscription"},"ping":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"ping"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[debug] [2026-02-28T22:51:37.967Z] defaultcredentials: writing to file C:\Users\Jesus\AppData\Roaming\firebase\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json
+[debug] [2026-02-28T22:51:37.969Z] Setting GAC to C:\Users\Jesus\AppData\Roaming\firebase\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\Jesus\\AppData\\Roaming\\firebase\\jesusgabrielgonzaleses2_gmail_com_application_default_credentials.json"}}
+[info] +  functions: Loaded functions definitions from source: askAssistant, verifySubscription, ping. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: askAssistant, verifySubscription, ping."}}
+[info] +  functions[us-central1-askAssistant]: http function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/askAssistant). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/askAssistant)."}}
+[info] +  functions[us-central1-verifySubscription]: http function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/verifySubscription). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/verifySubscription)."}}
+[info] +  functions[us-central1-ping]: http function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/ping). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:1213/negocia-a17c5/us-central1/ping)."}}
+[debug] [2026-02-28T22:51:37.982Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬──────────────────────────────────┬──────────────────────────────────┐
+│ Emulator       │ Host:Port                        │ View in Emulator UI              │
+├────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+│ Authentication │ 0.0.0.0:1212                     │ http://127.0.0.1:4000/auth       │
+├────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+│ Functions      │ 0.0.0.0:1213                     │ http://127.0.0.1:4000/functions  │
+├────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+│ Firestore      │ 0.0.0.0:1214                     │ http://127.0.0.1:4000/firestore  │
+├────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+│ Hosting        │ Failed to initialize (see above) │                                  │
+├────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+│ Extensions     │ 0.0.0.0:1213                     │ http://127.0.0.1:4000/extensions │
+└────────────────┴──────────────────────────────────┴──────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500, 9150
+┌─────────────────────────┬───────────────┬─────────────────────┐
+│ Extension Instance Name │ Extension Ref │ View in Emulator UI │
+└─────────────────────────┴───────────────┴─────────────────────┘
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2026-02-28T22:51:45.803Z] Feb 28, 2026 3:51:45 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel
+INFO: Connected to new websocket client
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:51:45 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel\r\nINFO: Connected to new websocket client\r\n"}}
+[debug] [2026-02-28T22:51:48.720Z] Feb 28, 2026 3:51:48 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:51:48 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:51:49.286Z] Feb 28, 2026 3:51:49 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:51:49 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:53:44.713Z] >>> [apiv2][query] POST http://127.0.0.1:1213/functions/projects/negocia-a17c5/trigger_multicast [none]
+[debug] [2026-02-28T22:53:44.715Z] >>> [apiv2][body] POST http://127.0.0.1:1213/functions/projects/negocia-a17c5/trigger_multicast {"eventId":"5878b35a-9c39-42f9-990a-7400ff5fe015","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/negocia-a17c5","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-02-28T22:53:44.709Z","data":{"uid":"lYr2vtjh7FpAfdkXTZCUk8YgXTJ8","email":"negocia@gmail.com","emailVerified":false,"metadata":{"creationTime":"2026-02-28T22:53:44.701Z","lastSignInTime":"2026-02-28T22:53:44.701Z"},"customClaims":{},"providerData":[{"rawId":"negocia@gmail.com","providerId":"password","email":"negocia@gmail.com","federatedId":"negocia@gmail.com"}]}}
+[debug] [2026-02-28T22:53:44.758Z] <<< [apiv2][status] POST http://127.0.0.1:1213/functions/projects/negocia-a17c5/trigger_multicast 200
+[debug] [2026-02-28T22:53:44.759Z] <<< [apiv2][body] POST http://127.0.0.1:1213/functions/projects/negocia-a17c5/trigger_multicast {"status":"multicast_acknowledged"}
+[info] i  To verify the email address negocia@gmail.com, follow this link: http://127.0.0.1:1212/emulator/action?mode=verifyEmail&lang=en&oobCode=6ONqyMrozv8HXjVmOHe_fNoy3c9Yu9wh82X9f3E1kwNWtHgiwBWSg2&apiKey=fake-api-key {"metadata":{"emulator":{"name":"auth"},"message":"To verify the email address negocia@gmail.com, follow this link: http://127.0.0.1:1212/emulator/action?mode=verifyEmail&lang=en&oobCode=6ONqyMrozv8HXjVmOHe_fNoy3c9Yu9wh82X9f3E1kwNWtHgiwBWSg2&apiKey=fake-api-key"}}
+[debug] [2026-02-28T22:53:56.628Z] >>> [apiv2][query] POST http://127.0.0.1:1213/functions/projects/negocia-a17c5/trigger_multicast [none]
+[debug] [2026-02-28T22:53:56.628Z] >>> [apiv2][body] POST http://127.0.0.1:1213/functions/projects/negocia-a17c5/trigger_multicast {"eventId":"71509eca-12d7-41f5-be62-1f28113b534a","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/negocia-a17c5","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-02-28T22:53:56.628Z","data":{"uid":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","email":"negocia4@gmail.com","emailVerified":false,"metadata":{"creationTime":"2026-02-28T22:53:56.627Z","lastSignInTime":"2026-02-28T22:53:56.627Z"},"customClaims":{},"providerData":[{"rawId":"negocia4@gmail.com","providerId":"password","email":"negocia4@gmail.com","federatedId":"negocia4@gmail.com"}]}}
+[debug] [2026-02-28T22:53:56.636Z] <<< [apiv2][status] POST http://127.0.0.1:1213/functions/projects/negocia-a17c5/trigger_multicast 200
+[debug] [2026-02-28T22:53:56.636Z] <<< [apiv2][body] POST http://127.0.0.1:1213/functions/projects/negocia-a17c5/trigger_multicast {"status":"multicast_acknowledged"}
+[info] i  To verify the email address negocia4@gmail.com, follow this link: http://127.0.0.1:1212/emulator/action?mode=verifyEmail&lang=en&oobCode=4l-Xt2T3JAKe1bcXNZUp4mvNNP-xlMar-Hek_HVhKVPcEdbgax6chd&apiKey=fake-api-key {"metadata":{"emulator":{"name":"auth"},"message":"To verify the email address negocia4@gmail.com, follow this link: http://127.0.0.1:1212/emulator/action?mode=verifyEmail&lang=en&oobCode=4l-Xt2T3JAKe1bcXNZUp4mvNNP-xlMar-Hek_HVhKVPcEdbgax6chd&apiKey=fake-api-key"}}
+[debug] [2026-02-28T22:54:43.575Z] Feb 28, 2026 3:54:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:45.767Z] Feb 28, 2026 3:54:45 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:45 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:45.878Z] Feb 28, 2026 3:54:45 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:45 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:45.922Z] Feb 28, 2026 3:54:45 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:45 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:45.926Z] Feb 28, 2026 3:54:45 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:45 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:46.035Z] Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:46.093Z] Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:46.516Z] Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:46.635Z] Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\nFeb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:46.796Z] Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:46 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:47.009Z] Feb 28, 2026 3:54:47 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:47 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:47.138Z] Feb 28, 2026 3:54:47 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:47 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:54:47.451Z] Feb 28, 2026 3:54:47 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:54:47 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:55:38.394Z] Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:55:38.516Z] Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:55:38.622Z] Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:55:38.702Z] Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:55:38.766Z] Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:55:38.810Z] Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:55:38.899Z] Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:55:38.997Z] Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:55:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:02.455Z] Feb 28, 2026 3:56:02 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:02 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:02.831Z] Feb 28, 2026 3:56:02 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:02 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:02.930Z] Feb 28, 2026 3:56:02 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:02 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:03.431Z] Feb 28, 2026 3:56:03 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:03 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:09.133Z] Feb 28, 2026 3:56:09 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:09 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:09.388Z] Feb 28, 2026 3:56:09 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:09 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:13.536Z] Feb 28, 2026 3:56:13 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:13 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:13.950Z] Feb 28, 2026 3:56:13 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:13 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:18.553Z] Feb 28, 2026 3:56:18 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:18 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:18.656Z] Feb 28, 2026 3:56:18 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:18 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:23.024Z] Feb 28, 2026 3:56:23 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:23 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:23.662Z] Feb 28, 2026 3:56:23 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:23 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:39.037Z] Feb 28, 2026 3:56:39 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:39 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:39.080Z] Feb 28, 2026 3:56:39 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose
+INFO: channel closed
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:39 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose\r\nINFO: channel closed\r\n"}}
+[debug] [2026-02-28T22:56:45.711Z] Feb 28, 2026 3:56:45 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:45 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:54.341Z] Feb 28, 2026 3:56:54 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:54 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:56:54.696Z] Feb 28, 2026 3:56:54 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:56:54 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:03.068Z] Feb 28, 2026 3:57:03 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:03 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:03.079Z] Feb 28, 2026 3:57:03 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreWriteHandler onClose
+INFO: channel closed
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:03 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreWriteHandler onClose\r\nINFO: channel closed\r\n"}}
+[debug] [2026-02-28T22:57:13.862Z] Feb 28, 2026 3:57:13 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:13 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:13.977Z] Feb 28, 2026 3:57:13 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:13 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:14.056Z] Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:14.364Z] Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:14.422Z] Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:14.606Z] Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:14.641Z] Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:14.782Z] Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:14.851Z] Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:14 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:18.983Z] Feb 28, 2026 3:57:18 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:18 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:18.991Z] Feb 28, 2026 3:57:18 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose
+INFO: channel closed
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:18 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose\r\nINFO: channel closed\r\n"}}
+[debug] [2026-02-28T22:57:27.802Z] Feb 28, 2026 3:57:27 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:27 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:27.889Z] Feb 28, 2026 3:57:27 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:27 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:27.962Z] Feb 28, 2026 3:57:27 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:27 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:28.059Z] Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:28.113Z] Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:28.156Z] Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:28.171Z] Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:28.565Z] Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:28.668Z] Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:28.839Z] Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\nFeb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:28.935Z] Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:28.984Z] Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:28 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:29.043Z] Feb 28, 2026 3:57:29 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:29 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:29.193Z] Feb 28, 2026 3:57:29 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:29 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:35.568Z] Feb 28, 2026 3:57:35 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:35 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:35.791Z] Feb 28, 2026 3:57:35 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:35 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:43.199Z] Feb 28, 2026 3:57:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:43.451Z] Feb 28, 2026 3:57:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:48.275Z] Feb 28, 2026 3:57:48 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:48 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:48.403Z] Feb 28, 2026 3:57:48 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:48 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:54.932Z] Feb 28, 2026 3:57:54 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:54 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:57:55.105Z] Feb 28, 2026 3:57:55 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:57:55 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:00.001Z] Feb 28, 2026 3:58:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:00.093Z] Feb 28, 2026 3:58:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:12.057Z] Feb 28, 2026 3:58:12 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:12 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:23.799Z] Feb 28, 2026 3:58:23 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:23 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:24.136Z] Feb 28, 2026 3:58:24 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:24 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:29.136Z] Feb 28, 2026 3:58:29 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:29 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:29.143Z] Feb 28, 2026 3:58:29 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose
+INFO: channel closed
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:29 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose\r\nINFO: channel closed\r\n"}}
+[debug] [2026-02-28T22:58:30.245Z] Feb 28, 2026 3:58:30 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:30 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:30.254Z] Feb 28, 2026 3:58:30 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreWriteHandler onClose
+INFO: channel closed
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:30 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreWriteHandler onClose\r\nINFO: channel closed\r\n"}}
+[debug] [2026-02-28T22:58:42.714Z] Feb 28, 2026 3:58:42 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:42 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:42.797Z] Feb 28, 2026 3:58:42 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:42 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:42.952Z] Feb 28, 2026 3:58:42 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:42 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:43.221Z] Feb 28, 2026 3:58:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:43.491Z] Feb 28, 2026 3:58:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:43.768Z] Feb 28, 2026 3:58:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:43.812Z] Feb 28, 2026 3:58:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:43.962Z] Feb 28, 2026 3:58:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:43 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:44.070Z] Feb 28, 2026 3:58:44 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:44 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:49.589Z] Feb 28, 2026 3:58:49 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:49 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:49.656Z] Feb 28, 2026 3:58:49 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:49 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:49.758Z] Feb 28, 2026 3:58:49 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:49 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:58:50.409Z] Feb 28, 2026 3:58:50 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:58:50 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:59:29.935Z] [work-queue] {"queuedWork":["/negocia-a17c5/us-central1/askAssistant-2026-02-28T22:59:29.930Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2026-02-28T22:59:29.937Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/negocia-a17c5/us-central1/askAssistant-2026-02-28T22:59:29.930Z"],"workRunningCount":1}
+[debug] [2026-02-28T22:59:29.949Z] Accepted request POST /negocia-a17c5/us-central1/askAssistant --> us-central1-askAssistant
+[debug] [2026-02-28T22:59:29.969Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2026-02-28T22:59:29.975Z] [functions] Got req.url=/negocia-a17c5/us-central1/askAssistant, mapping to path=/ {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/negocia-a17c5/us-central1/askAssistant, mapping to path=/"}}
+[info] i  functions: Loaded environment variables from .env, .env.local. 
+[debug] [2026-02-28T22:59:30.112Z] [worker-pool] addWorker(us-central1-askAssistant) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-askAssistant)"}}
+[debug] [2026-02-28T22:59:30.116Z] [worker-pool] Adding worker with key us-central1-askAssistant, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-askAssistant, total=1"}}
+[info] >  (node:27204) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead. {"user":"(node:27204) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m (node:27204) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead."}}
+[info] >  (Use `node --trace-deprecation ...` to show where the warning was created) {"user":"(Use `node --trace-deprecation ...` to show where the warning was created)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m (Use `node --trace-deprecation ...` to show where the warning was created)"}}
+[debug] [2026-02-28T22:59:35.032Z] [runtime-status] [27204] Resolved module firebase-admin {"declared":true,"installed":true,"version":"13.6.0","resolution":"C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"13.6.0\",\"resolution\":\"C:\\\\Users\\\\Jesus\\\\Desktop\\\\MarcaPersonal\\\\NegocIA\\\\AppNegocIA\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2026-02-28T22:59:35.042Z] [runtime-status] [27204] Resolved module firebase-functions {"declared":true,"installed":true,"version":"7.0.6","resolution":"C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"7.0.6\",\"resolution\":\"C:\\\\Users\\\\Jesus\\\\Desktop\\\\MarcaPersonal\\\\NegocIA\\\\AppNegocIA\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2026-02-28T22:59:35.043Z] [runtime-status] [27204] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2026-02-28T22:59:35.045Z] [runtime-status] [27204] Resolved module firebase-functions {"declared":true,"installed":true,"version":"7.0.6","resolution":"C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"7.0.6\",\"resolution\":\"C:\\\\Users\\\\Jesus\\\\Desktop\\\\MarcaPersonal\\\\NegocIA\\\\AppNegocIA\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2026-02-28T22:59:35.046Z] [runtime-status] [27204] Detected firebase-functions v7+, skipping legacy stubs. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] Detected firebase-functions v7+, skipping legacy stubs."}}
+[debug] [2026-02-28T22:59:35.048Z] [runtime-status] [27204] Resolved module firebase-admin {"declared":true,"installed":true,"version":"13.6.0","resolution":"C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"13.6.0\",\"resolution\":\"C:\\\\Users\\\\Jesus\\\\Desktop\\\\MarcaPersonal\\\\NegocIA\\\\AppNegocIA\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2026-02-28T22:59:35.468Z] [runtime-status] [27204] Resolved module firebase-functions {"declared":true,"installed":true,"version":"7.0.6","resolution":"C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"7.0.6\",\"resolution\":\"C:\\\\Users\\\\Jesus\\\\Desktop\\\\MarcaPersonal\\\\NegocIA\\\\AppNegocIA\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2026-02-28T22:59:36.908Z] [runtime-status] [27204] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"13.6.0","resolution":"C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"13.6.0\",\"resolution\":\"C:\\\\Users\\\\Jesus\\\\Desktop\\\\MarcaPersonal\\\\NegocIA\\\\AppNegocIA\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2026-02-28T22:59:36.916Z] [runtime-status] [27204] initializeApp(DEFAULT) {"storageBucket":"negocia-a17c5.firebasestorage.app","projectId":"negocia-a17c5"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] initializeApp(DEFAULT) {\"storageBucket\":\"negocia-a17c5.firebasestorage.app\",\"projectId\":\"negocia-a17c5\"}"}}
+[debug] [2026-02-28T22:59:36.981Z] [runtime-status] [27204] Functions runtime initialized. {"cwd":"C:\\Users\\Jesus\\Desktop\\MarcaPersonal\\NegocIA\\AppNegocIA\\functions","node_version":"24.13.1"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] Functions runtime initialized. {\"cwd\":\"C:\\\\Users\\\\Jesus\\\\Desktop\\\\MarcaPersonal\\\\NegocIA\\\\AppNegocIA\\\\functions\",\"node_version\":\"24.13.1\"}"}}
+[debug] [2026-02-28T22:59:36.982Z] [runtime-status] [27204] Listening to port: \\?\pipe\fire_emu_057aebc1fb7499be {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[runtime-status] [27204] Listening to port: \\\\?\\pipe\\fire_emu_057aebc1fb7499be"}}
+[debug] [2026-02-28T22:59:36.998Z] [worker-us-central1-askAssistant-9ed74b39-ebe0-496b-a271-b20b63e8a932]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[worker-us-central1-askAssistant-9ed74b39-ebe0-496b-a271-b20b63e8a932]: IDLE"}}
+[debug] [2026-02-28T22:59:36.999Z] [worker-pool] submitRequest(triggerId=us-central1-askAssistant) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-askAssistant)"}}
+[info] i  functions: Beginning execution of "us-central1-askAssistant" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"Beginning execution of \"us-central1-askAssistant\""}}
+[debug] [2026-02-28T22:59:37.004Z] [worker-us-central1-askAssistant-9ed74b39-ebe0-496b-a271-b20b63e8a932]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[worker-us-central1-askAssistant-9ed74b39-ebe0-496b-a271-b20b63e8a932]: BUSY"}}
+[info] >  {"verifications":{"app":"MISSING","auth":"VALID"},"logging.googleapis.com/labels":{"firebase-log-type":"callable-request-verification"},"severity":"DEBUG","message":"Callable request verification passed"} {"user":{"verifications":{"app":"MISSING","auth":"VALID"},"logging.googleapis.com/labels":{"firebase-log-type":"callable-request-verification"},"severity":"DEBUG","message":"Callable request verification passed"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"verifications\":{\"app\":\"MISSING\",\"auth\":\"VALID\"},\"logging.googleapis.com/labels\":{\"firebase-log-type\":\"callable-request-verification\"},\"severity\":\"DEBUG\",\"message\":\"Callable request verification passed\"}"}}
+[info] >  {"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","questionLength":82,"structuredData":true,"severity":"INFO","message":"askAssistant: request recibida"} {"user":{"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","questionLength":82,"structuredData":true,"severity":"INFO","message":"askAssistant: request recibida"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"userId\":\"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy\",\"questionLength\":82,\"structuredData\":true,\"severity\":\"INFO\",\"message\":\"askAssistant: request recibida\"}"}}
+[debug] [2026-02-28T22:59:38.188Z] Feb 28, 2026 3:59:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:59:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected HTTP/2 connection.\r\n"}}
+[info] >  {"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","plan":"GRATIS","structuredData":true,"severity":"INFO","message":"askAssistant: plan verificado"} {"user":{"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","plan":"GRATIS","structuredData":true,"severity":"INFO","message":"askAssistant: plan verificado"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"userId\":\"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy\",\"plan\":\"GRATIS\",\"structuredData\":true,\"severity\":\"INFO\",\"message\":\"askAssistant: plan verificado\"}"}}
+[info] >  {"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","queriesRemaining":3,"structuredData":true,"severity":"INFO","message":"askAssistant: limites consultados"} {"user":{"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","queriesRemaining":3,"structuredData":true,"severity":"INFO","message":"askAssistant: limites consultados"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"userId\":\"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy\",\"queriesRemaining\":3,\"structuredData\":true,\"severity\":\"INFO\",\"message\":\"askAssistant: limites consultados\"}"}}
+[info] >  {"severity":"INFO","message":"Construyendo contexto de negocio para usuario: 0HlkRCSjpBbPCQ5NXAGqEOfPAvEy"} {"user":{"severity":"INFO","message":"Construyendo contexto de negocio para usuario: 0HlkRCSjpBbPCQ5NXAGqEOfPAvEy"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"severity\":\"INFO\",\"message\":\"Construyendo contexto de negocio para usuario: 0HlkRCSjpBbPCQ5NXAGqEOfPAvEy\"}"}}
+[info] >  {"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","structuredData":true,"severity":"INFO","message":"buildBusinessContext: iniciando para usuario"} {"user":{"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","structuredData":true,"severity":"INFO","message":"buildBusinessContext: iniciando para usuario"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"userId\":\"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy\",\"structuredData\":true,\"severity\":\"INFO\",\"message\":\"buildBusinessContext: iniciando para usuario\"}"}}
+[info] >  {"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","productCount":5,"salesCount":2,"structuredData":true,"severity":"INFO","message":"buildBusinessContext: datos obtenidos"} {"user":{"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","productCount":5,"salesCount":2,"structuredData":true,"severity":"INFO","message":"buildBusinessContext: datos obtenidos"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"userId\":\"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy\",\"productCount\":5,\"salesCount\":2,\"structuredData\":true,\"severity\":\"INFO\",\"message\":\"buildBusinessContext: datos obtenidos\"}"}}
+[info] >  {"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","contextLength":473,"structuredData":true,"severity":"INFO","message":"buildBusinessContext: contexto construido exitosamente"} {"user":{"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","contextLength":473,"structuredData":true,"severity":"INFO","message":"buildBusinessContext: contexto construido exitosamente"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"userId\":\"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy\",\"contextLength\":473,\"structuredData\":true,\"severity\":\"INFO\",\"message\":\"buildBusinessContext: contexto construido exitosamente\"}"}}
+[warn] !  Google API requested!
+   - URL: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyBUKADAZhpMSM4RtfCj5rvkBaySqpRB448"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"Google API requested!\n   - URL: \"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyBUKADAZhpMSM4RtfCj5rvkBaySqpRB448\"\n   - Be careful, this may be a production service."}}
+[info] >  {"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","businessContextLength":473,"safeBusinessContextLength":473,"structuredData":true,"severity":"INFO","message":"askAssistant: iniciando llamada a Gemini"} {"user":{"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","businessContextLength":473,"safeBusinessContextLength":473,"structuredData":true,"severity":"INFO","message":"askAssistant: iniciando llamada a Gemini"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"userId\":\"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy\",\"businessContextLength\":473,\"safeBusinessContextLength\":473,\"structuredData\":true,\"severity\":\"INFO\",\"message\":\"askAssistant: iniciando llamada a Gemini\"}"}}
+[info] >  {"model":"gemini-2.5-flash","promptLength":1383,"severity":"INFO","message":"geminiService.callGemini: iniciando llamada"} {"user":{"model":"gemini-2.5-flash","promptLength":1383,"severity":"INFO","message":"geminiService.callGemini: iniciando llamada"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"model\":\"gemini-2.5-flash\",\"promptLength\":1383,\"severity\":\"INFO\",\"message\":\"geminiService.callGemini: iniciando llamada\"}"}}
+[info] >  {"model":"gemini-2.5-flash","responseLength":412,"structuredData":true,"severity":"INFO","message":"geminiService.callGemini: respuesta exitosa"} {"user":{"model":"gemini-2.5-flash","responseLength":412,"structuredData":true,"severity":"INFO","message":"geminiService.callGemini: respuesta exitosa"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"model\":\"gemini-2.5-flash\",\"responseLength\":412,\"structuredData\":true,\"severity\":\"INFO\",\"message\":\"geminiService.callGemini: respuesta exitosa\"}"}}
+[info] >  {"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","tokensUsed":0,"structuredData":true,"severity":"INFO","message":"askAssistant: respuesta lista"} {"user":{"userId":"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy","tokensUsed":0,"structuredData":true,"severity":"INFO","message":"askAssistant: respuesta lista"},"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"\u001b[90m> \u001b[39m {\"userId\":\"0HlkRCSjpBbPCQ5NXAGqEOfPAvEy\",\"tokensUsed\":0,\"structuredData\":true,\"severity\":\"INFO\",\"message\":\"askAssistant: respuesta lista\"}"}}
+[debug] [2026-02-28T22:59:42.613Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-askAssistant" in 5609.957ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"Finished \"us-central1-askAssistant\" in 5609.957ms"}}
+[debug] [2026-02-28T22:59:42.617Z] [worker-us-central1-askAssistant-9ed74b39-ebe0-496b-a271-b20b63e8a932]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"[worker-us-central1-askAssistant-9ed74b39-ebe0-496b-a271-b20b63e8a932]: IDLE"}}
+[debug] [2026-02-28T22:59:42.618Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2026-02-28T22:59:42.620Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-askAssistant"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2026-02-28T22:59:42.621Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2026-02-28T22:59:50.166Z] Feb 28, 2026 3:59:50 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:59:50 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-02-28T22:59:50.178Z] Feb 28, 2026 3:59:50 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose
+INFO: channel closed
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Feb 28, 2026 3:59:50 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose\r\nINFO: channel closed\r\n"}}
