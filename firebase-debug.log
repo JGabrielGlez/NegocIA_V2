@@ -1,0 +1,21 @@
+[debug] [2026-02-28T07:35:42.330Z] ----------------------------------------------------------------------
+[debug] [2026-02-28T07:35:42.335Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Jesus\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2026-02-28T07:35:42.336Z] CLI Version:   15.5.1
+[debug] [2026-02-28T07:35:42.336Z] Platform:      win32
+[debug] [2026-02-28T07:35:42.336Z] Node Version:  v24.13.1
+[debug] [2026-02-28T07:35:42.337Z] Time:          Sat Feb 28 2026 00:35:42 GMT-0700 (Mexican Pacific Standard Time)
+[debug] [2026-02-28T07:35:42.337Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-02-28T07:35:45.337Z] Object "/emulators/firestore" in "firebase.json" has unknown property: {"additionalProperty":"import"}
+[debug] [2026-02-28T07:35:45.350Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-28T07:35:45.352Z] > authorizing via signed-in user (jesusgabrielgonzaleses2@gmail.com)
+[debug] [2026-02-28T07:35:45.489Z] java version "25.0.2" 2026-01-20 LTS
+Java(TM) SE Runtime Environment (build 25.0.2+10-LTS-69)
+
+[debug] [2026-02-28T07:35:45.490Z] Java HotSpot(TM) 64-Bit Server VM (build 25.0.2+10-LTS-69, mixed mode, sharing)
+
+[debug] [2026-02-28T07:35:45.500Z] Parsed Java major version: 25
+[info] i  emulators: Starting emulators: auth, functions, firestore, hosting, extensions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, hosting, extensions"}}
+[debug] [2026-02-28T07:35:45.505Z] Checked if tokens are valid: true, expires at: 1772267282519
+[debug] [2026-02-28T07:35:45.505Z] Checked if tokens are valid: true, expires at: 1772267282519
+[debug] [2026-02-28T07:35:45.506Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/negocia-a17c5 [none]

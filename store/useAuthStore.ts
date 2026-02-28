@@ -117,6 +117,9 @@ export const useAuthStore = create<AuthState>()(
                     }); // Reset al login
 
                     if (!user.emailVerified) {
+                        await signOut(auth);
+                        get().setAuthData({ usuario: null });
+
                         Alert.alert(
                             "Acción necesaria",
                             "Es necesario verificar la dirección de correo electrónico",

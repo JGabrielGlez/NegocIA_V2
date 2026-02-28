@@ -24,7 +24,7 @@ export const functions = getFunctions(app);
 
 // Esto es para usar los emuladores en lugar de los recursos reales
 if (__DEV__) {
-    const ip = "10.58.1.71";
+    const ip = "192.168.1.74";
     // Si usas un celular físico, cambia 'localhost' por la IP de tu PC
     connectAuthEmulator(auth, "http://" + ip + ":1212");
     connectFirestoreEmulator(db, ip, 1214);

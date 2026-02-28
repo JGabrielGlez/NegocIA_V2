@@ -1,3 +1,4 @@
+import { auth } from "@/firebase/firebaseConfig";
 import {
     checkSubscriptionStatus,
     initializeRevenueCat,
@@ -10,10 +11,9 @@ import {
     useRouter,
     useSegments,
 } from "expo-router";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useRef } from "react";
 import { AppState } from "react-native";
-import { auth } from "@/firebase/firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
 import "./global.css";
 
 export default function RootLayout() {
@@ -34,10 +34,10 @@ export default function RootLayout() {
                 // Usuario NO autenticado en Firebase
                 // Si Zustand tiene un usuario pero Firebase no, limpiar Zustand
                 if (usuario) {
-                    setAuthData({ 
-                        usuario: null, 
-                        isPremium: false, 
-                        plan: "GRATIS" 
+                    setAuthData({
+                        usuario: null,
+                        isPremium: false,
+                        plan: "GRATIS",
                     });
                 }
             }
@@ -63,13 +63,15 @@ export default function RootLayout() {
 
         const enAuth = segments[0] === "(auth)";
 
-        if (!usuario && !enAuth) {
+        const usuarioVerificado = !!usuario?.emailVerified;
+
+        if ((!usuario || !usuarioVerificado) && !enAuth) {
             hasNavigated.current = true;
             router.replace("/(auth)/iniciar-sesion");
             return;
         }
 
-        if (usuario && enAuth) {
+        if (usuario && usuarioVerificado && enAuth) {
             hasNavigated.current = true;
             router.replace("/dashboard");
         }

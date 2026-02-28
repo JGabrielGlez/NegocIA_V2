@@ -4,6 +4,7 @@ import { useRootNavigationState, useRouter } from "expo-router";
 import {
     createUserWithEmailAndPassword,
     sendEmailVerification,
+    signOut,
 } from "firebase/auth";
 import { useState } from "react";
 import {
@@ -92,6 +93,8 @@ export default function crearCuenta() {
                     firestoreError,
                 );
             }
+
+            await signOut(auth);
 
             // Redirigir a lo que es el inicio de sesión
             cuentaRegistradaExitosamente();
