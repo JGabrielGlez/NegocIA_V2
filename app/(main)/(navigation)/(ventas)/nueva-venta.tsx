@@ -168,7 +168,7 @@ export default function nuevaVenta() {
                                         {/* Badge circular rojo en esquina superior derecha */}
                                         {cantidadEnCarrito > 0 && (
                                             <View
-                                                className="absolute -right-2 -top-2 h-8 w-8 items-center justify-center rounded-full bg-red-500"
+                                                className="absolute -right-1 -top-20 h-8 w-8 items-center justify-center rounded-full bg-red-500"
                                                 style={estilos.sombraNormal}>
                                                 <Text className="text-sm font-bold text-white">
                                                     {cantidadEnCarrito}
@@ -181,7 +181,7 @@ export default function nuevaVenta() {
                                             {/* Botón [-] - solo visible si hay items en carrito */}
                                             {cantidadEnCarrito > 0 && (
                                                 <TouchableOpacity
-                                                    className="h-14 w-14 items-center justify-center rounded-full bg-gray-500"
+                                                    className="h-10 w-10 items-center justify-center rounded-full bg-gray-500"
                                                     style={estilos.sombraNormal}
                                                     onPress={() => {
                                                         eliminarDelCarrito(
@@ -189,7 +189,7 @@ export default function nuevaVenta() {
                                                         );
                                                     }}>
                                                     <Minus
-                                                        size={28}
+                                                        size={24}
                                                         color="white"
                                                     />
                                                 </TouchableOpacity>
@@ -197,14 +197,14 @@ export default function nuevaVenta() {
 
                                             {/* Botón [+] - siempre visible */}
                                             <TouchableOpacity
-                                                className="h-14 w-14 items-center justify-center rounded-full bg-primary"
+                                                className="h-10 w-10 items-center justify-center rounded-full bg-primary"
                                                 style={estilos.sombraNormal}
                                                 onPress={() => {
                                                     agregarAlCarrito(
                                                         item.id || "",
                                                     );
                                                 }}>
-                                                <Plus size={28} color="white" />
+                                                <Plus size={24} color="white" />
                                             </TouchableOpacity>
                                         </View>
                                     </TarjetaInfo>
