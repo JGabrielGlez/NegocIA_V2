@@ -64,6 +64,8 @@ export default function nuevaVenta() {
 
     // Estado para el modal del carrito
     const [modalCarritoVisible, setModalCarritoVisible] = useState(false);
+    // Estado para el modal de confirmación de venta
+    const [modalConfirmarVisible, setModalConfirmarVisible] = useState(false);
 
     // Función helper para obtener la cantidad de un producto en el carrito
     const obtenerCantidadEnCarrito = (idProducto: string): number => {
@@ -220,75 +222,15 @@ export default function nuevaVenta() {
                     {/* Por ahora solo haré lo que es el diseño básico, de solo agregar */}
                 </ScrollView>
 
-                <View className="flex-1 justify-between bg-white pl-4 pr-4 pt-4">
-                    <Text className="pl-2 text-base font-normal text-gray-600">
-                        {" "}
-                        {cantidadDeProductosStore} productos
-                    </Text>
-                    <View className="flex-row justify-between">
-                        <Text className="pl-2 text-lg font-normal text-gray-600">
-                            Subtotal:
-                        </Text>
-                        <Text className="pl-2 text-lg font-normal text-gray-600">
-                            ${totalAPagarStore.toFixed(2)}
-                        </Text>
+                {/* Botón flotante para abrir modal de confirmación */}
+                {carrito.length > 0 && (
+                    <View className="bg-white p-4">
+                        <Boton
+                            onPress={() => setModalConfirmarVisible(true)}
+                            texto={`Confirmar venta (${cantidadDeProductosStore} productos)`}
+                        />
                     </View>
-                    <CampoTexto
-                        esNumero={true}
-                        etiqueta="Monto recibido"
-                        valueCampo={montoRecibido}
-                        // Ese método debe de hacer la resta, si es menor, poner en color rojo, del contrario en verde
-                        onChangeText={(texto) => setMontoRecibido(texto)}
-                        sugerencia=""
-                    />
-                    <View className="flex-row justify-between">
-                        <Text className="pl-2 text-lg font-normal text-gray-600">
-                            Cambio:
-                        </Text>
-                        <Text className="pl-2 text-lg font-extrabold text-primary">
-                            {cambioActualizado.toFixed(2)}
-                        </Text>
-                    </View>
-                    <View className="flex-row flex-wrap justify-between">
-                        <View style={{ width: "30%" }}>
-                            {/* TODO   cambiar el boton de cancelar para que tenga otro color, en caso de verlo necesario.*/}
-                            <Boton
-                                onPress={() => {
-                                    vaciarCarritoStore();
-                                    setMontoRecibido("");
-                                    valoresStore();
-                                    // Pondré esto unicamente para checar todas las variables de la store, para ver si persisten
-                                }}
-                                texto="Cancelar"
-                                colorDeFondo={true}
-                            />
-                        </View>
-                        <View style={{ width: "65%" }}>
-                            <Boton
-                                onPress={() => {
-                                    // FIXME   AGREGAR VALIDACION PARA QUE SOLO SE EJECUTE ESTO SI EL MONTO RECIBIDO ES MAYOR O IGUAL QUE EL TOTAL
-                                    {
-                                        console.log(montoNumerico);
-                                        console.log(totalAPagarStore);
-                                    }
-                                    if (
-                                        montoNumerico >= totalAPagarStore &&
-                                        totalAPagarStore > 0
-                                    ) {
-                                        (agregarVenta(),
-                                            vaciarCarritoStore(),
-                                            setMontoRecibido(""));
-                                    } else {
-                                        alert(
-                                            "El monto recibido es menor al total a pagar",
-                                        );
-                                    }
-                                }}
-                                texto="Confirmar venta"
-                            />
-                        </View>
-                    </View>
-                </View>
+                )}
             </KeyboardAvoidingView>
 
             {/* Botón flotante de carrito */}
@@ -413,6 +355,132 @@ export default function nuevaVenta() {
                                 </View>
                             </>
                         )}
+                    </View>
+                </View>
+            </Modal>
+
+            {/* Modal de Confirmación de Venta */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalConfirmarVisible}
+                onRequestClose={() => setModalConfirmarVisible(false)}>
+                <View className="flex-1 justify-end bg-black/50">
+                    <View className="rounded-t-3xl bg-white p-6">
+                        {/* Header del Modal */}
+                        <View className="mb-6 flex-row items-center justify-between">
+                            <Text className="text-2xl font-bold">
+                                Confirmar Venta
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => setModalConfirmarVisible(false)}>
+                                <X size={28} color="#666" />
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* Contenido del Modal */}
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            contentContainerStyle={{ flexGrow: 1 }}>
+                            {/* Cantidad de productos */}
+                            <View className="mb-4 flex-row justify-between">
+                                <Text className="text-lg font-normal text-gray-600">
+                                    Cantidad de productos:
+                                </Text>
+                                <Text className="text-lg font-semibold text-gray-900">
+                                    {cantidadDeProductosStore}
+                                </Text>
+                            </View>
+
+                            {/* Subtotal */}
+                            <View className="mb-6 flex-row justify-between border-b border-gray-200 pb-4">
+                                <Text className="text-lg font-normal text-gray-600">
+                                    Subtotal:
+                                </Text>
+                                <Text className="text-lg font-semibold text-gray-900">
+                                    ${totalAPagarStore.toFixed(2)}
+                                </Text>
+                            </View>
+
+                            {/* Monto Recibido */}
+                            <View className="mb-6">
+                                <CampoTexto
+                                    esNumero={true}
+                                    etiqueta="Monto recibido"
+                                    valueCampo={montoRecibido}
+                                    onChangeText={(texto) =>
+                                        setMontoRecibido(texto)
+                                    }
+                                    sugerencia=""
+                                />
+                            </View>
+
+                            {/* Cambio */}
+                            <View className="mb-8 flex-row justify-between rounded-lg bg-blue-50 p-4">
+                                <Text className="text-lg font-semibold text-gray-700">
+                                    Cambio:
+                                </Text>
+                                <Text
+                                    className={`text-2xl font-bold ${
+                                        cambioActualizado >= 0
+                                            ? "text-green-600"
+                                            : "text-red-600"
+                                    }`}>
+                                    ${cambioActualizado.toFixed(2)}
+                                </Text>
+                            </View>
+                        </ScrollView>
+
+                        {/* Botones */}
+                        <View className="flex-row gap-3">
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setModalConfirmarVisible(false);
+                                    vaciarCarritoStore();
+                                    setMontoRecibido("");
+                                }}
+                                className="flex-1 items-center justify-center rounded-lg border-2 border-gray-300 py-4">
+                                <Text className="text-lg font-semibold text-gray-700">
+                                    Cancelar
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (
+                                        montoNumerico >= totalAPagarStore &&
+                                        totalAPagarStore > 0
+                                    ) {
+                                        agregarVenta();
+                                        vaciarCarritoStore();
+                                        setMontoRecibido("");
+                                        setModalConfirmarVisible(false);
+                                        Alert.alert(
+                                            "Éxito",
+                                            "Venta registrada correctamente",
+                                        );
+                                    } else {
+                                        Alert.alert(
+                                            "Error",
+                                            "El monto recibido debe ser mayor o igual al total a pagar",
+                                        );
+                                    }
+                                }}
+                                disabled={
+                                    montoNumerico < totalAPagarStore ||
+                                    totalAPagarStore === 0
+                                }
+                                className={`flex-1 items-center justify-center rounded-lg py-4 ${
+                                    montoNumerico >= totalAPagarStore &&
+                                    totalAPagarStore > 0
+                                        ? "bg-primary"
+                                        : "bg-gray-300"
+                                }`}>
+                                <Text className="text-lg font-semibold text-white">
+                                    Confirmar Venta
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
