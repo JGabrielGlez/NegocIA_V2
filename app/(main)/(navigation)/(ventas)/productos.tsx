@@ -4,6 +4,8 @@ import CabeceraNavegacion from "@/components/cabeceraNavegacion";
 import CampoTexto from "@/components/campoTexto";
 import ItemProducto from "@/components/itemProducto";
 import BotonMasFlotante from "@/components/masFlotante";
+import TooltipPortal from "@/components/TooltipPortal";
+import { TooltipProvider } from "@/context/TooltipContext";
 import { databaseService } from "@/firebase/databaseService";
 import { Producto } from "@/store/types";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -33,9 +35,6 @@ export default function productos() {
         null,
     );
     const [nombreDuplicado, setNombreDuplicado] = useState(false);
-    const [productoConTooltip, setProductoConTooltip] = useState<string | null>(
-        null,
-    );
 
     // Aquí va la logica de la store
     // Traer todos los productos de esta
@@ -233,176 +232,177 @@ export default function productos() {
     };
 
     return (
-        <SafeAreaView className="flex-1">
-            <CabeceraNavegacion nombrePagina="Productos" />
-            <Buscador
-                filtrar={true}
-                placeholder="Buscar productos..."
-                onSearch={setBusqueda}
-            />
+        <TooltipProvider>
+            <SafeAreaView className="flex-1">
+                <TooltipPortal />
+                <CabeceraNavegacion nombrePagina="Productos" />
+                <Buscador
+                    filtrar={true}
+                    placeholder="Buscar productos..."
+                    onSearch={setBusqueda}
+                />
 
-            <ScrollView className="bg-white">
-                {productosFiltrados.map((item) => (
-                    <ItemProducto
-                        id={item.id!}
-                        nombre={item.nombre}
-                        precio={item.precio}
-                        tooltipVisible={productoConTooltip === item.id}
-                        onTooltipToggle={setProductoConTooltip}
-                        key={item.id}
-                        funcionEditar={() => {
-                            manejarAbrirEdicion(item);
-                        }}
-                        funcionEliminar={() => {
-                            // Como siempre traigo productos validados, dice con el ! que nunca será undefined ese atributo; ts al ver que en la definición lo puse como opcional se da cuenta que puede ser undefined
-                            manejarEliminarProducto(item.id!);
-                        }}
-                    />
-                ))}
-            </ScrollView>
+                <ScrollView className="bg-white">
+                    {productosFiltrados.map((item) => (
+                        <ItemProducto
+                            id={item.id!}
+                            nombre={item.nombre}
+                            precio={item.precio}
+                            key={item.id}
+                            funcionEditar={() => {
+                                manejarAbrirEdicion(item);
+                            }}
+                            funcionEliminar={() => {
+                                // Como siempre traigo productos validados, dice con el ! que nunca será undefined ese atributo; ts al ver que en la definición lo puse como opcional se da cuenta que puede ser undefined
+                                manejarEliminarProducto(item.id!);
+                            }}
+                        />
+                    ))}
+                </ScrollView>
 
-            <BotonMasFlotante accion={() => setModalVisible(true)} />
+                <BotonMasFlotante accion={() => setModalVisible(true)} />
 
-            <Modal
-                visible={modalVisible}
-                transparent={true}
-                animationType="slide"
-                onRequestClose={() => setModalVisible(false)}>
-                {/* 1. KeyboardAvoidingView debe envolver el contenido interactivo */}
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    className="flex-1">
-                    {/* 2. Contenedor que detecta clics fuera (opcional) y oscurece el fondo */}
-                    <View className="flex-1 justify-end bg-black/40">
-                        {/* 3. La Tarjeta Blanca */}
-                        <View className="rounded-t-3xl bg-white p-6 shadow-xl">
-                            {/* Indicador visual de que es un "drawer" */}
-                            <View className="mb-6 h-1.5 w-12 self-center rounded-full bg-gray-300" />
+                <Modal
+                    visible={modalVisible}
+                    transparent={true}
+                    animationType="slide"
+                    onRequestClose={() => setModalVisible(false)}>
+                    {/* 1. KeyboardAvoidingView debe envolver el contenido interactivo */}
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : "height"}
+                        className="flex-1">
+                        {/* 2. Contenedor que detecta clics fuera (opcional) y oscurece el fondo */}
+                        <View className="flex-1 justify-end bg-black/40">
+                            {/* 3. La Tarjeta Blanca */}
+                            <View className="rounded-t-3xl bg-white p-6 shadow-xl">
+                                {/* Indicador visual de que es un "drawer" */}
+                                <View className="mb-6 h-1.5 w-12 self-center rounded-full bg-gray-300" />
 
-                            <Text className="mb-6 text-2xl font-bold text-gray-800">
-                                Agregar Producto
-                            </Text>
+                                <Text className="mb-6 text-2xl font-bold text-gray-800">
+                                    Agregar Producto
+                                </Text>
 
-                            <View className="mb-8 gap-y-4">
-                                <View>
-                                    <CampoTexto
-                                        sugerencia="Ej. Coca Cola 2L"
-                                        etiqueta="Nombre del producto"
-                                        valueCampo={nombreProducto}
-                                        onChangeText={manejarCambioNombre}
-                                    />
-                                    <View className="h-6">
-                                        {nombreDuplicado && (
-                                            <Text className="pl-2 text-sm font-semibold text-red-500">
-                                                Este producto ya existe
-                                            </Text>
-                                        )}
+                                <View className="mb-8 gap-y-4">
+                                    <View>
+                                        <CampoTexto
+                                            sugerencia="Ej. Coca Cola 2L"
+                                            etiqueta="Nombre del producto"
+                                            valueCampo={nombreProducto}
+                                            onChangeText={manejarCambioNombre}
+                                        />
+                                        <View className="h-6">
+                                            {nombreDuplicado && (
+                                                <Text className="pl-2 text-sm font-semibold text-red-500">
+                                                    Este producto ya existe
+                                                </Text>
+                                            )}
+                                        </View>
                                     </View>
+                                    <CampoTexto
+                                        prefijo="$"
+                                        sugerencia="0.00"
+                                        esNumero={true}
+                                        etiqueta="Precio"
+                                        valueCampo={precioProducto}
+                                        onChangeText={manejarPrecio} // Usamos la función de limpieza
+                                    />
                                 </View>
-                                <CampoTexto
-                                    prefijo="$"
-                                    sugerencia="0.00"
-                                    esNumero={true}
-                                    etiqueta="Precio"
-                                    valueCampo={precioProducto}
-                                    onChangeText={manejarPrecio} // Usamos la función de limpieza
-                                />
-                            </View>
 
-                            {/* Botonera */}
-                            <View className="flex-row gap-x-3">
-                                <View className="flex-1">
-                                    <Boton
-                                        onPress={() => {
-                                            setModalVisible(false);
-                                            setNombreProducto("");
-                                            setPrecioProducto("");
-                                            setNombreDuplicado(false);
-                                        }}
-                                        texto="Cancelar"
-                                        colorDeFondo={true}
-                                    />
-                                </View>
-                                <View className="flex-1">
-                                    <Boton
-                                        onPress={manejarGuardado}
-                                        texto="Guardar"
-                                    />
+                                {/* Botonera */}
+                                <View className="flex-row gap-x-3">
+                                    <View className="flex-1">
+                                        <Boton
+                                            onPress={() => {
+                                                setModalVisible(false);
+                                                setNombreProducto("");
+                                                setPrecioProducto("");
+                                                setNombreDuplicado(false);
+                                            }}
+                                            texto="Cancelar"
+                                            colorDeFondo={true}
+                                        />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Boton
+                                            onPress={manejarGuardado}
+                                            texto="Guardar"
+                                        />
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
-                </KeyboardAvoidingView>
-            </Modal>
+                    </KeyboardAvoidingView>
+                </Modal>
 
-            {/* Modal de Edición */}
-            <Modal
-                visible={modalEdicionVisible}
-                transparent={true}
-                animationType="slide"
-                onRequestClose={() => setModalEdicionVisible(false)}>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    className="flex-1">
-                    <View className="flex-1 justify-end bg-black/40">
-                        <View className="rounded-t-3xl bg-white p-6 shadow-xl">
-                            <View className="mb-6 h-1.5 w-12 self-center rounded-full bg-gray-300" />
+                {/* Modal de Edición */}
+                <Modal
+                    visible={modalEdicionVisible}
+                    transparent={true}
+                    animationType="slide"
+                    onRequestClose={() => setModalEdicionVisible(false)}>
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : "height"}
+                        className="flex-1">
+                        <View className="flex-1 justify-end bg-black/40">
+                            <View className="rounded-t-3xl bg-white p-6 shadow-xl">
+                                <View className="mb-6 h-1.5 w-12 self-center rounded-full bg-gray-300" />
 
-                            <Text className="mb-6 text-2xl font-bold text-gray-800">
-                                Editar Producto
-                            </Text>
+                                <Text className="mb-6 text-2xl font-bold text-gray-800">
+                                    Editar Producto
+                                </Text>
 
-                            <View className="mb-8 gap-y-4">
-                                <View>
-                                    <CampoTexto
-                                        sugerencia="Ej. Coca Cola 2L"
-                                        etiqueta="Nombre del producto"
-                                        valueCampo={nombreProducto}
-                                        onChangeText={manejarCambioNombre}
-                                    />
-                                    <View className="h-6">
-                                        {nombreDuplicado && (
-                                            <Text className="pl-2 text-sm font-semibold text-red-500">
-                                                Este producto ya existe
-                                            </Text>
-                                        )}
+                                <View className="mb-8 gap-y-4">
+                                    <View>
+                                        <CampoTexto
+                                            sugerencia="Ej. Coca Cola 2L"
+                                            etiqueta="Nombre del producto"
+                                            valueCampo={nombreProducto}
+                                            onChangeText={manejarCambioNombre}
+                                        />
+                                        <View className="h-6">
+                                            {nombreDuplicado && (
+                                                <Text className="pl-2 text-sm font-semibold text-red-500">
+                                                    Este producto ya existe
+                                                </Text>
+                                            )}
+                                        </View>
                                     </View>
+                                    <CampoTexto
+                                        prefijo="$"
+                                        sugerencia="0.00"
+                                        esNumero={true}
+                                        etiqueta="Precio"
+                                        valueCampo={precioProducto}
+                                        onChangeText={manejarPrecio}
+                                    />
                                 </View>
-                                <CampoTexto
-                                    prefijo="$"
-                                    sugerencia="0.00"
-                                    esNumero={true}
-                                    etiqueta="Precio"
-                                    valueCampo={precioProducto}
-                                    onChangeText={manejarPrecio}
-                                />
-                            </View>
 
-                            <View className="flex-row gap-x-3">
-                                <View className="flex-1">
-                                    <Boton
-                                        onPress={() => {
-                                            setModalEdicionVisible(false);
-                                            setProductoEnEdicion(null);
-                                            setNombreProducto("");
-                                            setPrecioProducto("");
-                                            setNombreDuplicado(false);
-                                        }}
-                                        texto="Cancelar"
-                                        colorDeFondo={true}
-                                    />
-                                </View>
-                                <View className="flex-1">
-                                    <Boton
-                                        onPress={manejarGuardarEdicion}
-                                        texto="Guardar"
-                                    />
+                                <View className="flex-row gap-x-3">
+                                    <View className="flex-1">
+                                        <Boton
+                                            onPress={() => {
+                                                setModalEdicionVisible(false);
+                                                setProductoEnEdicion(null);
+                                                setNombreProducto("");
+                                                setPrecioProducto("");
+                                                setNombreDuplicado(false);
+                                            }}
+                                            texto="Cancelar"
+                                            colorDeFondo={true}
+                                        />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Boton
+                                            onPress={manejarGuardarEdicion}
+                                            texto="Guardar"
+                                        />
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
-                </KeyboardAvoidingView>
-            </Modal>
-        </SafeAreaView>
+                    </KeyboardAvoidingView>
+                </Modal>
+            </SafeAreaView>
+        </TooltipProvider>
     );
 }
