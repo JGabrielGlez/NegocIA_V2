@@ -29,7 +29,10 @@ export default function productos() {
     const [nombreProducto, setNombreProducto] = useState("");
     const [precioProducto, setPrecioProducto] = useState("");
     const [busqueda, setBusqueda] = useState("");
-    const [productoEnEdicion, setProductoEnEdicion] = useState<Producto | null>(null);
+    const [productoEnEdicion, setProductoEnEdicion] = useState<Producto | null>(
+        null,
+    );
+    const [nombreDuplicado, setNombreDuplicado] = useState(false);
 
     // Aquí va la logica de la store
     // Traer todos los productos de esta
@@ -47,6 +50,32 @@ export default function productos() {
         producto.nombre.toLowerCase().includes(busqueda.toLowerCase()),
     );
 
+    // Función para verificar si un nombre es duplicado
+    const verificarDuplicado = (nombre: string, idExcluir?: string) => {
+        const nombreNormalizado = nombre.trim().toLowerCase();
+        return productosDeStore.some(
+            (producto) =>
+                producto.nombre.toLowerCase() === nombreNormalizado &&
+                (idExcluir ? producto.id !== idExcluir : true),
+        );
+    };
+
+    // Manejar cambio de nombre con validación de duplicado
+    const manejarCambioNombre = (texto: string) => {
+        setNombreProducto(texto);
+        if (texto.trim() === "") {
+            setNombreDuplicado(false);
+        } else {
+            // Al agregar: verificar contra todos
+            // Al editar: verificar contra todos excepto el producto actual
+            const esDuplicado = verificarDuplicado(
+                texto,
+                productoEnEdicion?.id,
+            );
+            setNombreDuplicado(esDuplicado);
+        }
+    };
+
     // Método para el botón de guardar
     const manejarGuardado = async () => {
         // 1. Validaciones iniciales
@@ -57,6 +86,11 @@ export default function productos() {
 
         if (nombreProducto.trim() === "" || precioProducto === "") {
             alert("Rellena todos los campos");
+            return;
+        }
+
+        if (nombreDuplicado) {
+            alert("Este producto ya existe");
             return;
         }
 
@@ -91,6 +125,7 @@ export default function productos() {
             setModalVisible(false);
             setPrecioProducto("");
             setNombreProducto("");
+            setNombreDuplicado(false);
         } catch (error) {
             // Si Firebase falla, el código salta aquí y NO se limpian los campos
             // permitiendo al usuario intentar de nuevo sin borrar lo que escribió.
@@ -113,6 +148,7 @@ export default function productos() {
         setProductoEnEdicion(producto);
         setNombreProducto(producto.nombre);
         setPrecioProducto(producto.precio.toString());
+        setNombreDuplicado(false);
         setModalEdicionVisible(true);
     };
 
@@ -124,6 +160,11 @@ export default function productos() {
 
         if (nombreProducto.trim() === "" || precioProducto === "") {
             alert("Rellena todos los campos");
+            return;
+        }
+
+        if (nombreDuplicado) {
+            alert("Este producto ya existe");
             return;
         }
 
@@ -143,6 +184,7 @@ export default function productos() {
             setProductoEnEdicion(null);
             setNombreProducto("");
             setPrecioProducto("");
+            setNombreDuplicado(false);
         } catch (error) {
             console.error("Error al guardar edición:", error);
             alert("No se pudo guardar los cambios. Revisa tu conexión.");
@@ -229,12 +271,19 @@ export default function productos() {
                             </Text>
 
                             <View className="mb-8 gap-y-4">
-                                <CampoTexto
-                                    sugerencia="Ej. Coca Cola 2L"
-                                    etiqueta="Nombre del producto"
-                                    valueCampo={nombreProducto}
-                                    onChangeText={setNombreProducto}
-                                />
+                                <View>
+                                    <CampoTexto
+                                        sugerencia="Ej. Coca Cola 2L"
+                                        etiqueta="Nombre del producto"
+                                        valueCampo={nombreProducto}
+                                        onChangeText={manejarCambioNombre}
+                                    />
+                                    {nombreDuplicado && (
+                                        <Text className="pl-2 text-sm font-semibold text-red-500">
+                                            Este producto ya existe
+                                        </Text>
+                                    )}
+                                </View>
                                 <CampoTexto
                                     prefijo="$"
                                     sugerencia="0.00"
@@ -249,7 +298,12 @@ export default function productos() {
                             <View className="flex-row gap-x-3">
                                 <View className="flex-1">
                                     <Boton
-                                        onPress={() => setModalVisible(false)}
+                                        onPress={() => {
+                                            setModalVisible(false);
+                                            setNombreProducto("");
+                                            setPrecioProducto("");
+                                            setNombreDuplicado(false);
+                                        }}
                                         texto="Cancelar"
                                         colorDeFondo={true}
                                     />
@@ -284,12 +338,19 @@ export default function productos() {
                             </Text>
 
                             <View className="mb-8 gap-y-4">
-                                <CampoTexto
-                                    sugerencia="Ej. Coca Cola 2L"
-                                    etiqueta="Nombre del producto"
-                                    valueCampo={nombreProducto}
-                                    onChangeText={setNombreProducto}
-                                />
+                                <View>
+                                    <CampoTexto
+                                        sugerencia="Ej. Coca Cola 2L"
+                                        etiqueta="Nombre del producto"
+                                        valueCampo={nombreProducto}
+                                        onChangeText={manejarCambioNombre}
+                                    />
+                                    {nombreDuplicado && (
+                                        <Text className="pl-2 text-sm font-semibold text-red-500">
+                                            Este producto ya existe
+                                        </Text>
+                                    )}
+                                </View>
                                 <CampoTexto
                                     prefijo="$"
                                     sugerencia="0.00"
@@ -308,6 +369,7 @@ export default function productos() {
                                             setProductoEnEdicion(null);
                                             setNombreProducto("");
                                             setPrecioProducto("");
+                                            setNombreDuplicado(false);
                                         }}
                                         texto="Cancelar"
                                         colorDeFondo={true}
