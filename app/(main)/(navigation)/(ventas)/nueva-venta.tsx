@@ -68,6 +68,11 @@ export default function nuevaVenta() {
     const [modalConfirmarVisible, setModalConfirmarVisible] = useState(false);
     // Estado para el modal de confirmación de cancelación
     const [modalCancelarVisible, setModalCancelarVisible] = useState(false);
+    // Estado para el modal de confirmación final de la venta
+    const [
+        modalConfirmarVentaFinalVisible,
+        setModalConfirmarVentaFinalVisible,
+    ] = useState(false);
 
     // Función helper para obtener la cantidad de un producto en el carrito
     const obtenerCantidadEnCarrito = (idProducto: string): number => {
@@ -451,13 +456,8 @@ export default function nuevaVenta() {
                                         montoNumerico >= totalAPagarStore &&
                                         totalAPagarStore > 0
                                     ) {
-                                        agregarVenta();
-                                        vaciarCarritoStore();
-                                        setMontoRecibido("");
-                                        setModalConfirmarVisible(false);
-                                        Alert.alert(
-                                            "Éxito",
-                                            "Venta registrada correctamente",
+                                        setModalConfirmarVentaFinalVisible(
+                                            true,
                                         );
                                     } else {
                                         Alert.alert(
@@ -521,6 +521,65 @@ export default function nuevaVenta() {
                                         setModalConfirmarVisible(false);
                                     }}
                                     texto="Sí, cancelar venta"
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            {/* Modal de Confirmación Final de Venta */}
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalConfirmarVentaFinalVisible}
+                onRequestClose={() =>
+                    setModalConfirmarVentaFinalVisible(false)
+                }>
+                <View className="flex-1 items-center justify-center bg-black/50">
+                    <View className="mx-6 rounded-3xl bg-white p-6">
+                        <Text className="mb-4 text-center text-xl font-bold">
+                            Confirmar venta
+                        </Text>
+                        <Text className="mb-2 text-center text-base text-gray-600">
+                            Cantidad de productos: {cantidadDeProductosStore}
+                        </Text>
+                        <Text className="mb-6 text-center text-lg font-semibold text-primary">
+                            Total: ${totalAPagarStore.toFixed(2)}
+                        </Text>
+                        <Text className="mb-6 text-center text-base text-gray-600">
+                            ¿Deseas completar esta venta?
+                        </Text>
+
+                        {/* Botones */}
+                        <View className="flex-row gap-3">
+                            <View className="flex-1">
+                                <Boton
+                                    onPress={() =>
+                                        setModalConfirmarVentaFinalVisible(
+                                            false,
+                                        )
+                                    }
+                                    texto="No, volver"
+                                    colorDeFondo={true}
+                                />
+                            </View>
+                            <View className="flex-1">
+                                <Boton
+                                    onPress={() => {
+                                        agregarVenta();
+                                        vaciarCarritoStore();
+                                        setMontoRecibido("");
+                                        setModalConfirmarVentaFinalVisible(
+                                            false,
+                                        );
+                                        setModalConfirmarVisible(false);
+                                        Alert.alert(
+                                            "Éxito",
+                                            "Venta registrada correctamente",
+                                        );
+                                    }}
+                                    texto="Sí, confirmar venta"
                                 />
                             </View>
                         </View>
