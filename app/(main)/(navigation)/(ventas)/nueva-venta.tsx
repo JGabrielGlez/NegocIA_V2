@@ -238,7 +238,7 @@ export default function nuevaVenta() {
             {/* Botón flotante de carrito */}
             {carrito.length > 0 && (
                 <TouchableOpacity
-                    className="absolute top-16 right-6 h-16 w-16 items-center justify-center rounded-full bg-primary"
+                    className="absolute right-6 top-16 h-16 w-16 items-center justify-center rounded-full bg-primary"
                     style={estilos.sombraNormal}
                     onPress={() => setModalCarritoVisible(true)}>
                     <ShoppingCart size={28} color="white" />
@@ -350,7 +350,7 @@ export default function nuevaVenta() {
                                     <Boton
                                         onPress={() => {
                                             setModalCarritoVisible(false);
-                                            // Scroll hacia abajo para ver el campo de monto
+                                            setModalConfirmarVisible(true);
                                         }}
                                         texto="Completar Venta"
                                     />
@@ -497,14 +497,17 @@ export default function nuevaVenta() {
                             ¿Cancelar venta?
                         </Text>
                         <Text className="mb-6 text-center text-gray-600">
-                            Se borrarán todos los productos del carrito. ¿Estás seguro?
+                            Se borrarán todos los productos del carrito. ¿Estás
+                            seguro?
                         </Text>
 
                         {/* Botones */}
                         <View className="flex-row gap-3">
                             <View className="flex-1">
                                 <Boton
-                                    onPress={() => setModalCancelarVisible(false)}
+                                    onPress={() =>
+                                        setModalCancelarVisible(false)
+                                    }
                                     texto="No, volver"
                                     colorDeFondo={true}
                                 />
