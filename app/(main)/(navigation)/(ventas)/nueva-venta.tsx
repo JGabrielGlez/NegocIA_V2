@@ -294,7 +294,7 @@ export default function nuevaVenta() {
             {/* Botón flotante de carrito */}
             {carrito.length > 0 && (
                 <TouchableOpacity
-                    className="absolute bottom-24 right-6 h-16 w-16 items-center justify-center rounded-full bg-primary"
+                    className="absolute top-16 right-6 h-16 w-16 items-center justify-center rounded-full bg-primary"
                     style={estilos.sombraNormal}
                     onPress={() => setModalCarritoVisible(true)}>
                     <ShoppingCart size={28} color="white" />
