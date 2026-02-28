@@ -67,20 +67,20 @@ export default function ItemProducto({
                 </View>
 
                 {/* Esta va a ser la de los textos */}
-                <Pressable
-                    onPress={mostrarTooltip_func}
-                    className="ml-2 flex-[6] justify-center">
-                    <Text
-                        numberOfLines={1}
-                        className="mb-2 text-wrap text-xl font-black">
-                        {nombre}
-                    </Text>
+                <View className="ml-2 flex-[6] justify-center">
+                    <Pressable onPress={mostrarTooltip_func}>
+                        <Text
+                            numberOfLines={1}
+                            className="mb-2 text-wrap text-xl font-black">
+                            {nombre}
+                        </Text>
+                    </Pressable>
                     <Text
                         numberOfLines={1}
                         className="text-base font-black text-primary">
                         ${precio}
                     </Text>
-                </Pressable>
+                </View>
 
                 {/* Esta va a ser la de los iconos */}
                 <View className="flex-[3] flex-row items-center">
