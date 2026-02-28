@@ -278,11 +278,13 @@ export default function productos() {
                                         valueCampo={nombreProducto}
                                         onChangeText={manejarCambioNombre}
                                     />
-                                    {nombreDuplicado && (
-                                        <Text className="pl-2 text-sm font-semibold text-red-500">
-                                            Este producto ya existe
-                                        </Text>
-                                    )}
+                                    <View className="h-6">
+                                        {nombreDuplicado && (
+                                            <Text className="pl-2 text-sm font-semibold text-red-500">
+                                                Este producto ya existe
+                                            </Text>
+                                        )}
+                                    </View>
                                 </View>
                                 <CampoTexto
                                     prefijo="$"
@@ -345,11 +347,13 @@ export default function productos() {
                                         valueCampo={nombreProducto}
                                         onChangeText={manejarCambioNombre}
                                     />
-                                    {nombreDuplicado && (
-                                        <Text className="pl-2 text-sm font-semibold text-red-500">
-                                            Este producto ya existe
-                                        </Text>
-                                    )}
+                                    <View className="h-6">
+                                        {nombreDuplicado && (
+                                            <Text className="pl-2 text-sm font-semibold text-red-500">
+                                                Este producto ya existe
+                                            </Text>
+                                        )}
+                                    </View>
                                 </View>
                                 <CampoTexto
                                     prefijo="$"
