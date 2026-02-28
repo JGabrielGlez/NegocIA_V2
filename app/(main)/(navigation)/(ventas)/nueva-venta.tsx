@@ -67,11 +67,7 @@ export default function nuevaVenta() {
 
     // Función helper para obtener la cantidad de un producto en el carrito
     const obtenerCantidadEnCarrito = (idProducto: string): number => {
-        const item = carrito.find(
-            (item) =>
-                item.producto.uid === idProducto ||
-                item.producto.id === idProducto,
-        );
+        const item = carrito.find((item) => item.producto.id === idProducto);
         return item ? item.cantidad : 0;
     };
 
@@ -152,7 +148,7 @@ export default function nuevaVenta() {
                     <View className="flex-1 flex-row flex-wrap justify-evenly">
                         {productosDeStore.map((item) => {
                             const cantidadEnCarrito = obtenerCantidadEnCarrito(
-                                item.id || item.uid || "",
+                                item.id || "",
                             );
 
                             return (
@@ -189,9 +185,7 @@ export default function nuevaVenta() {
                                                     style={estilos.sombraNormal}
                                                     onPress={() => {
                                                         eliminarDelCarrito(
-                                                            item.id ||
-                                                                item.uid ||
-                                                                "",
+                                                            item.id || "",
                                                         );
                                                     }}>
                                                     <Minus
@@ -207,9 +201,7 @@ export default function nuevaVenta() {
                                                 style={estilos.sombraNormal}
                                                 onPress={() => {
                                                     agregarAlCarrito(
-                                                        item.id ||
-                                                            item.uid ||
-                                                            "",
+                                                        item.id || "",
                                                     );
                                                 }}>
                                                 <Plus size={28} color="white" />
@@ -352,7 +344,7 @@ export default function nuevaVenta() {
                                 <FlatList
                                     data={carrito}
                                     keyExtractor={(item, index) =>
-                                        `${item.producto.id || item.producto.uid}-${index}`
+                                        `${item.producto.id}-${index}`
                                     }
                                     contentContainerStyle={{ padding: 16 }}
                                     ItemSeparatorComponent={() => (
@@ -385,8 +377,6 @@ export default function nuevaVenta() {
                                                     onPress={() =>
                                                         confirmarEliminarItem(
                                                             item.producto.id ||
-                                                                item.producto
-                                                                    .uid ||
                                                                 "",
                                                             item.producto
                                                                 .nombre,
