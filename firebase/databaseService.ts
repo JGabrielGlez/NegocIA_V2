@@ -26,6 +26,11 @@ export const databaseService = {
                 createdAt: serverTimestamp(),
             });
 
+            // Guardar el ID generado como campo en el documento
+            await updateDoc(docRef, {
+                id: docRef.id,
+            });
+
             // Importante:Si tienes una lista de productos en pantalla y agregas uno nuevo, puedes usar ese ID para actualizar tu lista local (usando Zustand o un State) sin necesidad de recargar toda la página desde Firebase (ahorrando lecturas y dinero).
             return docRef.id;
         } catch (error: any) {
