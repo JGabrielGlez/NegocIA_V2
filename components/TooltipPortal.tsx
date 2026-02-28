@@ -51,7 +51,7 @@ export default function TooltipPortal() {
                 opacity: opacidad,
                 position: "absolute",
                 top: 180,
-                left: width / 2 - 90, // Centrado (asumiendo 150px de ancho = 75px de cada lado)
+                left: width / 2 - 90, // Centrado (asumiendo 180px de ancho = 75px de cada lado)
                 width: 180,
                 zIndex: 999,
                 pointerEvents: "none",

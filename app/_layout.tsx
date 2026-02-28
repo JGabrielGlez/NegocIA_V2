@@ -1,3 +1,4 @@
+import { databaseService } from "@/firebase/databaseService";
 import { auth } from "@/firebase/firebaseConfig";
 import {
     checkSubscriptionStatus,
@@ -26,20 +27,43 @@ export default function RootLayout() {
 
     // Sincronizar estado de Firebase Auth con Zustand
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-            if (firebaseUser) {
-                // Usuario autenticado en Firebase
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            if (firebaseUser && firebaseUser.emailVerified) {
+                // Usuario autenticado y verificado en Firebase
                 setAuthData({ usuario: firebaseUser });
-            } else {
-                // Usuario NO autenticado en Firebase
-                // Si Zustand tiene un usuario pero Firebase no, limpiar Zustand
-                if (usuario) {
-                    setAuthData({
-                        usuario: null,
-                        isPremium: false,
-                        plan: "GRATIS",
-                    });
+
+                // Cargar productos y ventas desde Firestore
+                try {
+                    const { useStore } = await import("@/store/useStore");
+                    const store = useStore.getState();
+
+                    const [productos, ventas] = await Promise.all([
+                        databaseService.getProductos(firebaseUser.uid),
+                        databaseService.getVentas(firebaseUser.uid),
+                    ]);
+
+                    store.setProductos(productos);
+                    store.setVentas(ventas);
+
+                    console.log("✅ Datos cargados correctamente en _layout");
+                } catch (error) {
+                    console.error("⚠️ Error cargando datos en _layout:", error);
                 }
+            } else {
+                // Usuario NO autenticado o no verificado
+                // Limpiar el store y el estado de auth
+                try {
+                    const { useStore } = await import("@/store/useStore");
+                    useStore.getState().limpiarStore();
+                } catch (error) {
+                    console.error("⚠️ Error limpiando store:", error);
+                }
+
+                setAuthData({
+                    usuario: null,
+                    isPremium: false,
+                    plan: "GRATIS",
+                });
             }
         });
 
@@ -75,24 +99,39 @@ export default function RootLayout() {
             hasNavigated.current = true;
             router.replace("/dashboard");
         }
-
-        // Inicializar RevenueCat si hay usuario autenticado
-        if (usuario?.uid) {
-            initializeRevenueCat(usuario.uid)
-                .then(async () => {
-                    // Después de inicializar RevenueCat, verificar estado de suscripción
-                    const { isPro } = await checkSubscriptionStatus();
-                    useAuthStore.getState().setIsPremium(isPro);
-                    useAuthStore.getState().setPlan(isPro ? "PRO" : "GRATIS");
-                })
-                .catch((error) => {
-                    console.error(
-                        "Error al inicializar RevenueCat en _layout:",
-                        error,
-                    );
-                });
-        }
     }, [usuario, segments, router, rootNavigationState?.key]);
+
+    // Efecto separado para inicializar RevenueCat cuando cambia el usuario
+    useEffect(() => {
+        if (!usuario?.uid || !usuario?.emailVerified) {
+            return;
+        }
+
+        let isActive = true;
+
+        initializeRevenueCat(usuario.uid)
+            .then(async () => {
+                if (!isActive) return;
+
+                // Después de inicializar RevenueCat, verificar estado de suscripción
+                const { isPro } = await checkSubscriptionStatus();
+                if (!isActive) return;
+
+                useAuthStore.getState().setIsPremium(isPro);
+                useAuthStore.getState().setPlan(isPro ? "PRO" : "GRATIS");
+            })
+            .catch((error) => {
+                if (!isActive) return;
+                console.error(
+                    "Error al inicializar RevenueCat en _layout:",
+                    error,
+                );
+            });
+
+        return () => {
+            isActive = false;
+        };
+    }, [usuario?.uid, usuario?.emailVerified]);
 
     // Segundo useEffect: Sincronizar suscripción cuando la app vuelve al foreground
     useEffect(() => {

@@ -11,6 +11,7 @@ type AIState = {
     clearChat: () => void;
     setIsLoading: (value: boolean) => void;
     setQueriesRemaining: (value: number) => void;
+    resetAI: () => void;
 };
 
 export const useAIStore = create<AIState>()(
@@ -26,6 +27,12 @@ export const useAIStore = create<AIState>()(
             clearChat: () => set({ messages: [] }),
             setIsLoading: (value) => set({ isLoading: value }),
             setQueriesRemaining: (value) => set({ queriesRemaining: value }),
+            resetAI: () =>
+                set({
+                    messages: [],
+                    isLoading: false,
+                    queriesRemaining: 0,
+                }),
         }),
         {
             name: "ai-chat-store",

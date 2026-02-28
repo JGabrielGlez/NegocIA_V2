@@ -48,6 +48,28 @@ export async function initializeRevenueCat(userId: string): Promise<void> {
 }
 
 /**
+ * Cierra la sesión de RevenueCat y desvincula el usuario actual.
+ *
+ * Debe ser llamada al cerrar sesión en Firebase Auth para limpiar el estado
+ * de RevenueCat y permitir que un nuevo usuario se vincule correctamente.
+ *
+ * @async
+ * @returns {Promise<void>} Resuelve cuando se cierra la sesión exitosamente
+ *
+ * @example
+ * await logOutRevenueCat();
+ * console.log('Sesión de RevenueCat cerrada');
+ */
+export async function logOutRevenueCat(): Promise<void> {
+    try {
+        await Purchases.logOut();
+        console.log("✅ RevenueCat: Sesión cerrada correctamente");
+    } catch (error) {
+        console.error("❌ Error al cerrar sesión de RevenueCat:", error);
+    }
+}
+
+/**
  * Obtiene los offerings (paquetes de suscripción disponibles) configurados en RevenueCat.
  *
  * Un "offering" es un conjunto de paquetes (packages) que RevenueCat presenta al usuario.

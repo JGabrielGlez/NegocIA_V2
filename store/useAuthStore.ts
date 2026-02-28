@@ -181,6 +181,21 @@ export const useAuthStore = create<AuthState>()(
                         );
                     }
 
+                    // Cargar productos y ventas desde Firestore
+                    try {
+                        const { useStore } = await import("./useStore");
+                        const store = useStore.getState();
+                        await Promise.all([
+                            store.cargarProductosDesdeFirestore(user.uid),
+                            store.cargarVentasDesdeFirestore(user.uid),
+                        ]);
+                    } catch (loadError: any) {
+                        console.error(
+                            "⚠️ Error cargando datos desde Firestore:",
+                            loadError,
+                        );
+                    }
+
                     get().setIsLoading(false);
                     // Si pasa hasta aquí es porque está todo bien
                     router.replace("/dashboard");
@@ -200,17 +215,43 @@ export const useAuthStore = create<AuthState>()(
             },
 
             cerrarSesion: async (router: Router) => {
+                console.log("Cerrando sesión");
                 const auth = getAuth();
                 try {
-                    await signOut(auth); //cierra sesión en el servidor
+                    // 1. Cerrar sesión de RevenueCat
+                    try {
+                        const { logOutRevenueCat } =
+                            await import("@/services/revenueCat");
+                        await logOutRevenueCat();
+                    } catch (rcError) {
+                        console.error(
+                            "Error al cerrar sesión de RevenueCat:",
+                            rcError,
+                        );
+                    }
+
+                    // 2. Limpiar el store local
+                    const { useStore } = await import("./useStore");
+                    useStore.getState().limpiarStore();
+
+                    // 2b. Resetear el AI store
+                    const { useAIStore } = await import("./useAIStore");
+                    useAIStore.getState().resetAI();
+
+                    // 3. Resetear el estado de auth en Zustand
                     get().setAuthData({
                         usuario: null,
                         isPremium: false,
                         plan: "GRATIS",
-                    }); //cierra sesión localmente y resetea
+                    });
+
+                    // 4. Finalmente cerrar sesión en Firebase (esto dispara onAuthStateChanged)
+                    await signOut(auth);
+
+                    // 5. Navegar al login
                     router.replace("/(auth)/iniciar-sesion");
                 } catch (error: any) {
-                    console.log(error.code);
+                    console.log("Error al cerrar sesión:", error.code);
                 }
             },
         }),

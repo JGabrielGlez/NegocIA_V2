@@ -42,6 +42,11 @@ interface AppState {
     // ---------------- Utilidades -------------------
     calcularVentasHoy: () => number;
     obtenerTotalVentas: () => number;
+    limpiarStore: () => void;
+    cargarProductosDesdeFirestore: (userId: string) => Promise<void>;
+    cargarVentasDesdeFirestore: (userId: string) => Promise<void>;
+    setProductos: (productos: Producto[]) => void;
+    setVentas: (ventas: Venta[]) => void;
 }
 
 export const useStore = create<AppState>()(
@@ -335,6 +340,56 @@ export const useStore = create<AppState>()(
 
                 obtenerTotalVentas() {
                     return 0;
+                },
+
+                limpiarStore: () => {
+                    set({
+                        productos: [],
+                        ventas: [],
+                        ventasPendientes: [],
+                        carrito: [],
+                    });
+                },
+
+                cargarProductosDesdeFirestore: async (userId: string) => {
+                    try {
+                        const productos =
+                            await databaseService.getProductos(userId);
+                        set({ productos });
+                        console.log(
+                            "✅ Productos cargados desde Firestore:",
+                            productos.length,
+                        );
+                    } catch (error) {
+                        console.error(
+                            "❌ Error al cargar productos desde Firestore:",
+                            error,
+                        );
+                    }
+                },
+
+                cargarVentasDesdeFirestore: async (userId: string) => {
+                    try {
+                        const ventas = await databaseService.getVentas(userId);
+                        set({ ventas });
+                        console.log(
+                            "✅ Ventas cargadas desde Firestore:",
+                            ventas.length,
+                        );
+                    } catch (error) {
+                        console.error(
+                            "❌ Error al cargar ventas desde Firestore:",
+                            error,
+                        );
+                    }
+                },
+
+                setProductos: (productos: Producto[]) => {
+                    set({ productos });
+                },
+
+                setVentas: (ventas: Venta[]) => {
+                    set({ ventas });
                 },
             }),
 
