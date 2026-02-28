@@ -60,16 +60,23 @@ export default function productos() {
         );
     };
 
+    // Función para normalizar espacios múltiples
+    const normalizarEspacios = (texto: string) => {
+        // Reemplaza múltiples espacios consecutivos con un solo espacio
+        return texto.replace(/\s+/g, " ");
+    };
+
     // Manejar cambio de nombre con validación de duplicado
     const manejarCambioNombre = (texto: string) => {
-        setNombreProducto(texto);
-        if (texto.trim() === "") {
+        const textoNormalizado = normalizarEspacios(texto);
+        setNombreProducto(textoNormalizado);
+        if (textoNormalizado.trim() === "") {
             setNombreDuplicado(false);
         } else {
             // Al agregar: verificar contra todos
             // Al editar: verificar contra todos excepto el producto actual
             const esDuplicado = verificarDuplicado(
-                texto,
+                textoNormalizado,
                 productoEnEdicion?.id,
             );
             setNombreDuplicado(esDuplicado);
