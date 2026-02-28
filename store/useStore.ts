@@ -50,37 +50,7 @@ export const useStore = create<AppState>()(
             (set, get) => ({
                 // Aquí va la definición de cada uno de los métodos de la interfaz
                 // Estado inicial: vacío
-                productos: [
-                    { id: "asdfasd}", nombre: "Coca bien fría", precio: 234 },
-                    { id: "asdasf", nombre: "Iced coffe", precio: 234 },
-                    { id: "adfsdf", nombre: "Gansito", precio: 234 },
-                    { id: "adasdf", nombre: "Tortuga", precio: 234 },
-                    {
-                        id: "adsdf",
-                        nombre: "Tortuga ninja rafaeasdfasdfasdfasdfaslo",
-                        precio: 234,
-                    },
-                    {
-                        id: "aasdf",
-                        nombre: "Tortuga ninja rafaelo",
-                        precio: 234,
-                    },
-                    {
-                        id: "dasdf",
-                        nombre: "Tortuga ninja rafaelo",
-                        precio: 234,
-                    },
-                    {
-                        id: "adasdfasdf",
-                        nombre: "Tortuga ninja rafaelo",
-                        precio: 234,
-                    },
-                    {
-                        id: "adasdasdff",
-                        nombre: "Tortuga ninja rafaelo",
-                        precio: 234,
-                    },
-                ],
+                productos: [],
                 carrito: [],
 
                 vaciarCarrito: () =>
@@ -99,14 +69,14 @@ export const useStore = create<AppState>()(
                         // Busco el producto dentro del carrito
                         const existe = state.carrito.find(
                             (productoBuscado: ItemVenta) =>
-                                productoBuscado.producto.uid === idProducto,
+                                productoBuscado.producto.id === idProducto,
                         );
 
                         // Ya tengo la manera de validar si existe, en caso de que no, se agrega ese item venta , en caso contrario, se aumenta su cantidad
                         if (existe === undefined) {
                             // Voy a buscar dentro del arreglo de productos, para traerme ese objeto en específico
                             const productoSeleccionado = state.productos.find(
-                                (prod: Producto) => prod.uid === idProducto,
+                                (prod: Producto) => prod.id === idProducto,
                             )!;
 
                             const nuevoItemVenta = {
@@ -125,7 +95,7 @@ export const useStore = create<AppState>()(
                         // Este es el caso en el que ya exista dentro del carrito, por lo que debo de aumentarle a ese item su cantidad y
                         return {
                             carrito: state.carrito.map((item) =>
-                                item.producto.uid === idProducto
+                                item.producto.id === idProducto
                                     ? {
                                           ...item,
                                           cantidad: item.cantidad + 1,
@@ -142,7 +112,7 @@ export const useStore = create<AppState>()(
                     set((state) => {
                         // Buscar el item en el carrito
                         const itemExistente = state.carrito.find(
-                            (item) => item.producto.uid === idProducto,
+                            (item) => item.producto.id === idProducto,
                         );
 
                         // Si no existe en el carrito, no hacer nada
@@ -157,7 +127,7 @@ export const useStore = create<AppState>()(
                         if (itemExistente.cantidad === 1) {
                             return {
                                 carrito: state.carrito.filter(
-                                    (item) => item.producto.uid !== idProducto,
+                                    (item) => item.producto.id !== idProducto,
                                 ),
                             };
                         }
@@ -165,7 +135,7 @@ export const useStore = create<AppState>()(
                         // Si la cantidad es mayor a 1, reducir en 1 y recalcular subtotal
                         return {
                             carrito: state.carrito.map((item) =>
-                                item.producto.uid === idProducto
+                                item.producto.id === idProducto
                                     ? {
                                           ...item,
                                           cantidad: item.cantidad - 1,
@@ -181,9 +151,7 @@ export const useStore = create<AppState>()(
                 eliminarItemCompleto: (idProducto) =>
                     set((state) => ({
                         carrito: state.carrito.filter(
-                            (item) =>
-                                item.producto.uid !== idProducto &&
-                                item.producto.id !== idProducto,
+                            (item) => item.producto.id !== idProducto,
                         ),
                     })),
 
@@ -199,35 +167,17 @@ export const useStore = create<AppState>()(
 
                 // Estos son todos los métodos
                 agregarProducto: (productoCompleto) => {
-                    // 1. Agregar localmente primero (operación síncrona)
+                    // Solo agregar localmente al store
+                    // La sincronización con Firestore se hace manualmente desde la pantalla
                     set((state) => ({
                         productos: [...state.productos, productoCompleto],
                     }));
-
-                    // 2. Intentar sincronizar con Firestore (asíncrono, no bloquea)
-                    const usuario = useAuthStore.getState().usuario;
-                    if (usuario?.uid) {
-                        databaseService
-                            .addProducto(productoCompleto)
-                            .then((firestoreId) => {
-                                console.log(
-                                    "✅ Producto sincronizado a Firestore:",
-                                    firestoreId,
-                                );
-                            })
-                            .catch((error) => {
-                                console.error(
-                                    "⚠️ Error al sincronizar producto a Firestore (guardado local exitoso):",
-                                    error,
-                                );
-                            });
-                    }
                 },
 
                 eliminarProducto: (id) => {
                     // 1. Eliminar localmente primero (operación síncrona)
                     set((state) => ({
-                        productos: state.productos.filter((p) => p.uid !== id),
+                        productos: state.productos.filter((p) => p.id !== id),
                     }));
 
                     // 2. Intentar sincronizar con Firestore (asíncrono, no bloquea)
@@ -254,7 +204,7 @@ export const useStore = create<AppState>()(
                     // 1. Actualizar localmente primero (operación síncrona)
                     set((state) => ({
                         productos: state.productos.map((producto) =>
-                            producto.uid === id
+                            producto.id === id
                                 ? {
                                       ...producto,
                                       ...datos,

@@ -39,7 +39,7 @@ export const databaseService = {
             // Se construye lo que es el query para la consulta
             const q = query(
                 collection(db, COLLECTIONS.PRODUCTOS),
-                where("uid", "==", userId),
+                where("usuarioId", "==", userId),
             );
 
             // Aquí se ejecuta el query
@@ -72,7 +72,7 @@ export const databaseService = {
 
             await updateDoc(docRef, {
                 ...datos,
-                uid: userId,
+                usuarioId: userId,
                 updatedAt: serverTimestamp(),
             });
         } catch (error: any) {

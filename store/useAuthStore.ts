@@ -1,3 +1,4 @@
+import { databaseService } from "@/firebase/databaseService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Router } from "expo-router";
 import {
@@ -147,6 +148,39 @@ export const useAuthStore = create<AuthState>()(
 
                         return;
                     }
+
+                    try {
+                        const usuarioFirestore =
+                            await databaseService.getUsuario(user.uid);
+
+                        if (!usuarioFirestore) {
+                            await databaseService.crearUsuario(
+                                user.uid,
+                                user.email ?? correo,
+                            );
+                            console.log(
+                                "✅ Usuario creado en Firestore tras verificación:",
+                                user.uid,
+                            );
+                        }
+
+                        const aiUsage = await databaseService.getAIUsageDoc(
+                            user.uid,
+                        );
+                        if (!aiUsage) {
+                            await databaseService.crearAIUsageDoc(user.uid);
+                            console.log(
+                                "✅ Documento AI usage creado tras verificación:",
+                                user.uid,
+                            );
+                        }
+                    } catch (firestoreError: any) {
+                        console.error(
+                            "⚠️ Error sincronizando usuario verificado en Firestore:",
+                            firestoreError,
+                        );
+                    }
+
                     get().setIsLoading(false);
                     // Si pasa hasta aquí es porque está todo bien
                     router.replace("/dashboard");

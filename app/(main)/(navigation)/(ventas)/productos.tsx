@@ -70,7 +70,7 @@ export default function productos() {
             const nuevoProducto: Producto = {
                 nombre: nombreProducto.trim(),
                 precio: precioProductoParsed,
-                uid: usuario.uid, // Ya validamos arriba que usuario existe, no hace falta el ?
+                usuarioId: usuario.uid,
             };
 
             // 3. Llamada al servicio (AQUÍ se obtiene el ID)
