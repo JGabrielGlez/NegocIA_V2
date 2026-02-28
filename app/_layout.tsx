@@ -28,9 +28,23 @@ export default function RootLayout() {
     // Sincronizar estado de Firebase Auth con Zustand
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            console.log(
+                "[AuthStateChanged] Evento recibido:",
+                firebaseUser
+                    ? {
+                          uid: firebaseUser.uid,
+                          emailVerified: firebaseUser.emailVerified,
+                      }
+                    : "sin usuario",
+            );
+
             if (firebaseUser && firebaseUser.emailVerified) {
                 // Usuario autenticado y verificado en Firebase
                 setAuthData({ usuario: firebaseUser });
+                console.log(
+                    "[AuthStateChanged] Usuario verificado. Cargando datos de Firestore para:",
+                    firebaseUser.uid,
+                );
 
                 // Cargar productos y ventas desde Firestore
                 try {
@@ -52,6 +66,9 @@ export default function RootLayout() {
             } else {
                 // Usuario NO autenticado o no verificado
                 // Limpiar el store y el estado de auth
+                console.log(
+                    "[AuthStateChanged] Limpiando estado local por usuario no autenticado/no verificado.",
+                );
                 try {
                     const { useStore } = await import("@/store/useStore");
                     useStore.getState().limpiarStore();
@@ -104,10 +121,21 @@ export default function RootLayout() {
     // Efecto separado para inicializar RevenueCat cuando cambia el usuario
     useEffect(() => {
         if (!usuario?.uid || !usuario?.emailVerified) {
+            console.log(
+                "[RevenueCatInit] Saltado: no hay usuario verificado en store.",
+                {
+                    uid: usuario?.uid ?? null,
+                    emailVerified: usuario?.emailVerified ?? false,
+                },
+            );
             return;
         }
 
         let isActive = true;
+        console.log(
+            "[RevenueCatInit] Inicializando RevenueCat para usuario:",
+            usuario.uid,
+        );
 
         initializeRevenueCat(usuario.uid)
             .then(async () => {
@@ -119,6 +147,10 @@ export default function RootLayout() {
 
                 useAuthStore.getState().setIsPremium(isPro);
                 useAuthStore.getState().setPlan(isPro ? "PRO" : "GRATIS");
+                console.log("[RevenueCatInit] Plan aplicado en store:", {
+                    uid: usuario.uid,
+                    isPro,
+                });
             })
             .catch((error) => {
                 if (!isActive) return;
@@ -130,6 +162,9 @@ export default function RootLayout() {
 
         return () => {
             isActive = false;
+            console.log(
+                "[RevenueCatInit] Cleanup del efecto de inicialización.",
+            );
         };
     }, [usuario?.uid, usuario?.emailVerified]);
 

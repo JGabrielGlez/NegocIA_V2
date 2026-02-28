@@ -3,6 +3,29 @@ import Purchases, { PurchasesOfferings } from "react-native-purchases";
 import { databaseService } from "../firebase/databaseService";
 import { useAuthStore } from "../store/useAuthStore";
 
+let revenueCatConfigured = false;
+let revenueCatLinkedUserId: string | null = null;
+
+async function ensureRevenueCatConfigured(): Promise<boolean> {
+    if (revenueCatConfigured) {
+        return true;
+    }
+
+    const apiKey = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID;
+
+    if (!apiKey) {
+        console.error(
+            "REVENUECAT: API Key no configurada en variables de entorno",
+        );
+        return false;
+    }
+
+    Purchases.configure({ apiKey });
+    revenueCatConfigured = true;
+    console.log("RevenueCat configurado correctamente");
+    return true;
+}
+
 /**
  * Inicializa RevenueCat con el SDK de react-native-purchases.
  *
@@ -26,21 +49,19 @@ import { useAuthStore } from "../store/useAuthStore";
  */
 export async function initializeRevenueCat(userId: string): Promise<void> {
     try {
-        const apiKey = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY_ANDROID;
-
-        if (!apiKey) {
-            console.error(
-                "REVENUECAT: API Key no configurada en variables de entorno",
-            );
+        const isConfigured = await ensureRevenueCatConfigured();
+        if (!isConfigured) {
             return;
         }
 
-        Purchases.configure({
-            apiKey,
-            appUserID: userId,
-        });
+        if (revenueCatLinkedUserId === userId) {
+            return;
+        }
 
-        console.log("RevenueCat inicializado correctamente para:", userId);
+        await Purchases.logIn(userId);
+        revenueCatLinkedUserId = userId;
+
+        console.log("RevenueCat vinculado correctamente para:", userId);
     } catch (error) {
         console.error("Error al inicializar RevenueCat:", error);
         throw error;
@@ -62,7 +83,13 @@ export async function initializeRevenueCat(userId: string): Promise<void> {
  */
 export async function logOutRevenueCat(): Promise<void> {
     try {
+        const isConfigured = await ensureRevenueCatConfigured();
+        if (!isConfigured) {
+            return;
+        }
+
         await Purchases.logOut();
+        revenueCatLinkedUserId = null;
         console.log("✅ RevenueCat: Sesión cerrada correctamente");
     } catch (error) {
         console.error("❌ Error al cerrar sesión de RevenueCat:", error);
