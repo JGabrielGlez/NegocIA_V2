@@ -3,22 +3,57 @@
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { Text, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { Animated, Pressable, Text, View } from "react-native";
 import { IconoPresionable } from "./iconoPresionable";
 
 type props = {
+    id: string;
     nombre: string;
     precio: number;
+    tooltipVisible: boolean;
+    onTooltipToggle: (id: string) => void;
     funcionEditar?: () => void;
     funcionEliminar?: () => void;
 };
 
 export default function ItemProducto({
+    id,
     nombre,
     precio,
+    tooltipVisible,
+    onTooltipToggle,
     funcionEditar,
     funcionEliminar,
 }: props) {
+    const opacidadTooltip = useRef(new Animated.Value(0)).current;
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Animar cuando cambia tooltipVisible
+    useEffect(() => {
+        if (tooltipVisible) {
+            Animated.timing(opacidadTooltip, {
+                toValue: 1,
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
+
+            // Auto-ocultar después de 2.5 segundos
+            timeoutRef.current = setTimeout(() => {
+                onTooltipToggle("");
+            }, 2500);
+        } else {
+            Animated.timing(opacidadTooltip, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
+
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        }
+    }, [tooltipVisible]);
     const IconoCaja = () => {
         return (
             <View className="justify-center rounded-xl bg-gray-300 p-3">
@@ -47,6 +82,19 @@ export default function ItemProducto({
         );
     };
 
+    const mostrarTooltip_func = () => {
+        onTooltipToggle(id);
+    };
+
+    // Limpiar timeout cuando el componente se desmonta
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
+
     return (
         <View className="h-24 w-full">
             <View className="ml-4 mr-4 h-8 flex-1 flex-row border-t-2 border-gray-200">
@@ -58,7 +106,9 @@ export default function ItemProducto({
                 </View>
 
                 {/* Esta va a ser la de los textos */}
-                <View className="ml-2 flex-[6] justify-center">
+                <Pressable
+                    onPress={mostrarTooltip_func}
+                    className="ml-2 flex-[6] justify-center">
                     <Text
                         numberOfLines={1}
                         className="mb-2 text-wrap text-xl font-black">
@@ -69,7 +119,18 @@ export default function ItemProducto({
                         className="text-base font-black text-primary">
                         ${precio}
                     </Text>
-                </View>
+
+                    {/* Tooltip */}
+                    {tooltipVisible && (
+                        <Animated.View
+                            style={{ opacity: opacidadTooltip }}
+                            className="absolute bottom-24 left-0 right-0 mx-2 rounded-lg bg-gray-600 px-3 py-2 shadow-lg">
+                            <Text className="text-center text-xs font-semibold text-white">
+                                {nombre}
+                            </Text>
+                        </Animated.View>
+                    )}
+                </Pressable>
 
                 {/* Esta va a ser la de los iconos */}
                 <View className="flex-[3] flex-row items-center">

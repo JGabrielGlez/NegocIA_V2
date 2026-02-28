@@ -33,6 +33,9 @@ export default function productos() {
         null,
     );
     const [nombreDuplicado, setNombreDuplicado] = useState(false);
+    const [productoConTooltip, setProductoConTooltip] = useState<string | null>(
+        null,
+    );
 
     // Aquí va la logica de la store
     // Traer todos los productos de esta
@@ -241,8 +244,11 @@ export default function productos() {
             <ScrollView className="bg-white">
                 {productosFiltrados.map((item) => (
                     <ItemProducto
+                        id={item.id!}
                         nombre={item.nombre}
                         precio={item.precio}
+                        tooltipVisible={productoConTooltip === item.id}
+                        onTooltipToggle={setProductoConTooltip}
                         key={item.id}
                         funcionEditar={() => {
                             manejarAbrirEdicion(item);
