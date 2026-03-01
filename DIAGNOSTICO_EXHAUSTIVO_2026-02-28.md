@@ -562,17 +562,23 @@ useEffect(() => {
 
 **Análisis:**
 
-- ✅ **Correcto:** Detecta cambios en el estado de suscripción cuando el usuario vuelve
-- ⚠️ **Problema potencial:** Puede generar múltiples llamadas si el usuario hace app switching rápido (abrir/cerrar/abrir la app varias veces)
-- ⚠️ **Impacto en costos:** Cada llamada podría verificar con RevenueCat y actualizar Firestore
-
 **Recomendación:** Implementar debounce o throttle (ej: máximo 1 sincronización cada 5 minutos).
+
+## 6. REGLAS DE FIRESTORE
+
+**Análisis:**
+
+- ✅ **Correcto:** Detecta cambios en el estado de suscripción cuando el usuario vuelve
+- ✅ **Optimizado:** Implementado throttle de 5 minutos para evitar múltiples llamadas en app switching rápido
+- ✅ **Eficiente:** Solo sincroniza si han pasado >= 5 minutos desde la última sincronización exitosa
+
+**Implementación:** Throttle con `lastSyncTime` ref en `app/_layout.tsx` (líneas 26, 172-213).
+
+### ✅ Protección de colección usuarios
 
 ---
 
 ## 6. REGLAS DE FIRESTORE
-
-### ✅ Protección de colección usuarios
 
 **Archivo:** `firestore.rules` (líneas 10-12)
 
@@ -1084,9 +1090,6 @@ Todos los text input, hacer uso de una flatList para acomodar lo que se escriba
 
 #### 3. Sincronización frecuente al volver al foreground
 
-- **Archivo:** `app/_layout.tsx` (líneas 156-176)
-- **Problema:** Llama a `syncSubscriptionWithBackend()` CADA VEZ que la app vuelve al foreground
-- **Código:**
     ```typescript
     const subscription = AppState.addEventListener("change", (state) => {
         if (state === "active") {
@@ -1094,12 +1097,17 @@ Todos los text input, hacer uso de una flatList para acomodar lo que se escriba
         }
     });
     ```
-- **Impacto:**
     - ⚠️ Si el usuario hace app switching rápido (WhatsApp → NegocIA → Fotos → NegocIA), se hacen múltiples sincronizaciones
     - ⚠️ Cada sincronización consulta RevenueCat + actualiza Firestore
     - ⚠️ Posible sobrecarga si el usuario cambia de app frecuentemente
-- **Solución:** Implementar throttle (máximo 1 sincronización cada 5 minutos)
-- **Prioridad:** 🟡 **BAJA** - Solo afecta usuarios que cambian de app muy seguido
+
+#### 3. ✅ Throttle implementado en sincronización al volver al foreground
+
+- **Archivo:** `app/_layout.tsx` (líneas 26, 172-213)
+- **Solución implementada:** Throttle con control de tiempo (`lastSyncTime` ref)
+- **Cómo funciona:** - Primera sincronización: SIEMPRE se ejecuta (lastSyncTime === null) - App switching < 5 min: Omitida (log informativo) - App switching >= 5 min: Se ejecuta normalmente - En error: No actualiza lastSyncTime para reintentar en próximo foreground
+- **Beneficios:** - ✅ Evita múltiples llamadas innecesarias a RevenueCat/Firestore en app switching rápido - ✅ Mantiene sincronización normal si el usuario estuvo alejado >= 5 minutos - ✅ Resiliente a fallos (reintenta automáticamente)
+- **Estado:** ✅ **COMPLETADO** - 28 de febrero de 2026
 
 #### 4. Archivo configuracion.tsx vacío sin especificación
 
@@ -1311,8 +1319,13 @@ USUARIO PRESIONA "GUARDAR"
 | **Archivos analizados**     | 35       | 100%       |
 | **Problemas críticos**      | 1        | 2.9%       |
 | **Problemas importantes**   | 0        | 0%         |
-| **Mejoras menores**         | 4        | 11.4%      |
-| **Verificaciones exitosas** | 30       | 85.7%      |
+| **Mejoras menores**         | 3        | 8.6%       |
+| **Verificaciones exitosas** | 31       | 88.6%      |
+| **Archivos analizados**     | 35       | 100%       |
+| **Problemas críticos**      | 1        | 2.9%       |
+| **Problemas importantes**   | 0        | 0%         |
+| **Mejoras menores**         | 2        | 5.7%       |
+| **Verificaciones exitosas** | 32       | 91.4%      |
 
 ### Desglose por categoría funcional
 
@@ -1320,7 +1333,7 @@ USUARIO PRESIONA "GUARDAR"
 | ---------------------------- | -------------- | -------------------------- |
 | **Esquema de Datos**         | ✅ Correcto    | 0                          |
 | **Autenticación**            | ✅ Correcto    | 0 (doble carga resuelto)   |
-| **Sincronización Firestore** | ✅ Correcto    | 0 (agregarProducto ref.)   |
+| **Sincronización Firestore** | ✅ Correcto    | 0                          |
 | **Sistema de IA**            | ✅ Correcto    | 0 (límites consolidados)   |
 | **RevenueCat**               | ✅ Correcto    | 0                          |
 | **Reglas Firestore**         | ✅ Correcto    | 0 (métricas completado)    |
@@ -1381,8 +1394,14 @@ USUARIO PRESIONA "GUARDAR"
     - Agregar utilidad de throttle
     - Aplicar a `syncSubscriptionWithBackend`
     - Probar comportamiento
+8. ✅ **Implementar throttle para sincronización - COMPLETADO**
+    - Agregado `lastSyncTime` ref en `app/_layout.tsx` (línea 26)
+    - Modificado listener de AppState con lógica de throttle (líneas 172-213)
+    - Throttle de 5 minutos: evita múltiples sincronizaciones en app switching rápido
+    - Primera sincronización garantizada (lastSyncTime === null)
+    - **Fecha de completación:** 28 de febrero de 2026
 
-8. **Decidir sobre configuracion.tsx** ⏱️ 30 minutos
+9. **Decidir sobre configuracion.tsx** ⏱️ 30 minutos
     - Definir si es necesaria
     - Eliminar o implementar según decisión
 
@@ -1409,8 +1428,9 @@ USUARIO PRESIONA "GUARDAR"
 
 - ✅ **Core funcional implementado:** Productos, ventas, autenticación, suscripciones
 - ✅ **IA funcionando:** Function calling con Gemini, límites implementados
-- ⚠️ **2 problemas críticos:** Reglas Firestore y pantalla de configuración inicial
-- ⚠️ **3 problemas importantes:** Optimizaciones necesarias
+- ✅ **Optimizaciones implementadas:** Sincronización automática de agregarProducto, throttle de RevenueCat
+- ⚠️ **1 problema crítico:** Pantalla de configuración inicial pendiente (reglas Firestore completadas)
+- ⚠️ **1 mejora menor pendiente:** Reemplazar uso de `any` por `unknown` en catch blocks
 - ✅ **Arquitectura sólida:** Zustand + Firebase + TypeScript
 
 ### Conclusión

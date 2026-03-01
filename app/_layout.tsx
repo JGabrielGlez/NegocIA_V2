@@ -24,6 +24,7 @@ export default function RootLayout() {
     const usuario = useAuthStore((state) => state.usuario);
     const setAuthData = useAuthStore((state) => state.setAuthData);
     const hasNavigated = useRef(false);
+    const lastSyncTime = useRef<number | null>(null);
 
     // Sincronizar estado de Firebase Auth con Zustand
     useEffect(() => {
@@ -168,7 +169,7 @@ export default function RootLayout() {
         };
     }, [usuario?.uid, usuario?.emailVerified]);
 
-    // Segundo useEffect: Sincronizar suscripción cuando la app vuelve al foreground
+    // Segundo useEffect: Sincronizar suscripción cuando la app vuelve al foreground (con throttle de 5 minutos)
     useEffect(() => {
         if (!usuario?.uid) {
             return;
@@ -176,21 +177,40 @@ export default function RootLayout() {
 
         const subscription = AppState.addEventListener("change", (state) => {
             if (state === "active") {
-                console.log(
-                    "[AppState] App en foreground, sincronizando suscripción...",
-                );
-                syncSubscriptionWithBackend(usuario.uid)
-                    .then(() => {
-                        console.log(
-                            "[AppState] Sincronización de suscripción completada.",
-                        );
-                    })
-                    .catch((error) => {
-                        console.error(
-                            "[AppState] Error sincronizando suscripción:",
-                            error,
-                        );
-                    });
+                const now = Date.now();
+                const timeSinceLastSync = lastSyncTime.current
+                    ? now - lastSyncTime.current
+                    : Infinity;
+
+                const FIVE_MINUTES_MS = 5 * 60 * 1000; // 300,000 ms
+
+                if (
+                    timeSinceLastSync >= FIVE_MINUTES_MS ||
+                    lastSyncTime.current === null
+                ) {
+                    console.log(
+                        "[AppState] App en foreground, sincronizando suscripción...",
+                    );
+                    syncSubscriptionWithBackend(usuario.uid)
+                        .then(() => {
+                            lastSyncTime.current = Date.now();
+                            console.log(
+                                "[AppState] Sincronización de suscripción completada.",
+                            );
+                        })
+                        .catch((error) => {
+                            console.error(
+                                "[AppState] Error sincronizando suscripción:",
+                                error,
+                            );
+                            // No actualizar lastSyncTime en error para reintentar en el próximo foreground
+                        });
+                } else {
+                    const secondsAgo = Math.round(timeSinceLastSync / 1000);
+                    console.log(
+                        `[AppState] ⏭️ Sincronización omitida: hace ${secondsAgo}s (< 5 min)`,
+                    );
+                }
             }
         });
 
