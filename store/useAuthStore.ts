@@ -181,21 +181,6 @@ export const useAuthStore = create<AuthState>()(
                         );
                     }
 
-                    // Cargar productos y ventas desde Firestore
-                    try {
-                        const { useStore } = await import("./useStore");
-                        const store = useStore.getState();
-                        await Promise.all([
-                            store.cargarProductosDesdeFirestore(user.uid),
-                            store.cargarVentasDesdeFirestore(user.uid),
-                        ]);
-                    } catch (loadError: any) {
-                        console.error(
-                            "⚠️ Error cargando datos desde Firestore:",
-                            loadError,
-                        );
-                    }
-
                     get().setIsLoading(false);
                     // Si pasa hasta aquí es porque está todo bien
                     router.replace("/dashboard");

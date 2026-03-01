@@ -930,23 +930,19 @@ Todos los text input, hacer uso de una flatList para acomodar lo que se escriba
 
 ### 🔴 CRÍTICO (Rompe funcionalidad)
 
-#### 1. Reglas Firestore faltantes para métricas
+#### 1. ✅ Reglas Firestore para métricas - COMPLETADO
 
 - **Archivos afectados:** `firestore.rules`, `firebase/databaseService.ts`
-- **Problema:** La subcollection `usuarios/{userId}/metricas/{document}` NO tiene regla de acceso definida
-- **Impacto:**
-    - ❌ Operaciones de lectura/escritura a métricas pueden fallar con "Permission denied"
-    - ❌ El dashboard no puede mostrar ventas del día, semana, mes
-    - ❌ El asistente IA no puede acceder a métricas precalculadas
-    - ❌ `actualizarMetricas()` puede fallar silenciosamente
-- **Solución:**
+- **Problema:** La subcollection `usuarios/{userId}/metricas/{document}` NO tenía regla de acceso definida
+- **Solución Implementada:**
     ```plaintext
-    // Agregar en firestore.rules después de la regla de ai_usage
+    // Agregada en firestore.rules después de la regla de ai_usage
     match /usuarios/{userId}/metricas/{document=**} {
         allow read, write: if estaLogueado() && request.auth.uid == userId;
     }
     ```
-- **Prioridad:** 🔴 **URGENTE** - Debe corregirse antes de producción
+- **Estado:** ✅ **COMPLETADO** - Regla agregada y verificada
+- **Fecha:** 28 de febrero de 2026
 
 #### 2. Funcionalidad core sin implementar: configuracion-inicial-ia.tsx
 
@@ -1127,10 +1123,10 @@ Todos los text input, hacer uso de una flatList para acomodar lo que se escriba
 | Categoría                   | Cantidad | Porcentaje |
 | --------------------------- | -------- | ---------- |
 | **Archivos analizados**     | 35       | 100%       |
-| **Problemas críticos**      | 2        | 5.7%       |
+| **Problemas críticos**      | 1        | 2.9%       |
 | **Problemas importantes**   | 3        | 8.6%       |
 | **Mejoras menores**         | 4        | 11.4%      |
-| **Verificaciones exitosas** | 26       | 74.3%      |
+| **Verificaciones exitosas** | 27       | 77.1%      |
 
 ### Desglose por categoría funcional
 
@@ -1141,7 +1137,7 @@ Todos los text input, hacer uso de una flatList para acomodar lo que se escriba
 | **Sincronización Firestore** | ⚠️ Con mejoras | 1 (agregarProducto)        |
 | **Sistema de IA**            | ✅ Correcto    | 1 (límites duplicados)     |
 | **RevenueCat**               | ✅ Correcto    | 0                          |
-| **Reglas Firestore**         | ❌ Incompleto  | 1 crítico (métricas)       |
+| **Reglas Firestore**         | ✅ Correcto    | 0 (métricas completado)    |
 | **Tipos TypeScript**         | ⚠️ Con mejoras | 1 (uso de any)             |
 | **Seguridad**                | ✅ Correcto    | 0                          |
 | **Archivos pendientes**      | ❌ Incompleto  | 1 crítico (config inicial) |
