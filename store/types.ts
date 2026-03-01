@@ -92,3 +92,15 @@ export interface MetricasNegocio {
     diasSinVentas: number;
     ultimaActualizacion: Date;
 }
+
+// Operaciones pendientes de productos para sincronización offline
+export type TipoOperacionProducto = "create" | "update" | "delete";
+
+export interface OperacionPendienteProducto {
+    id: string; // ID único de la operación (para deduplicar)
+    tipo: TipoOperacionProducto;
+    productoId: string;
+    producto?: Producto; // Solo para create y update
+    datos?: Partial<Producto>; // Solo para update
+    timestamp: Date; // Para ordenar operaciones
+}

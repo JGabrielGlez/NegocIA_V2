@@ -2,7 +2,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { databaseService } from "../firebase/databaseService";
-import { ItemVenta, Producto, Venta } from "./types";
+import {
+    ItemVenta,
+    OperacionPendienteProducto,
+    Producto,
+    Venta,
+} from "./types";
 import { useAuthStore } from "./useAuthStore";
 // En este archivo se define qupe es lo que tiene la store de zustand, no se usa en otro lado
 
@@ -12,6 +17,7 @@ interface AppState {
     productos: Producto[];
     ventas: Venta[];
     ventasPendientes: Venta[];
+    productosPendientes: OperacionPendienteProducto[];
     carrito: ItemVenta[];
 
     obtenerTotalCarrito: () => number;
@@ -38,6 +44,7 @@ interface AppState {
     // Una vez se imprima una venta, y se cobre, esta no se puede modificar por ningún motivo
     agregarVenta: () => void;
     sincronizarVentasLocales: () => Promise<void>;
+    sincronizarProductosLocales: () => Promise<void>;
 
     // ---------------- Utilidades -------------------
     calcularVentasHoy: () => number;
@@ -57,6 +64,9 @@ export const useStore = create<AppState>()(
                 // Estado inicial: vacío
                 productos: [],
                 carrito: [],
+                ventas: [],
+                ventasPendientes: [],
+                productosPendientes: [],
 
                 vaciarCarrito: () =>
                     set(() => ({
@@ -167,9 +177,6 @@ export const useStore = create<AppState>()(
                             acumulador + itemActual.subtotal,
                         0,
                     ),
-                ventas: [],
-                ventasPendientes: [],
-
                 // Estos son todos los métodos
                 agregarProducto: (productoCompleto) => {
                     // 1. Agregar localmente primero (operación síncrona)
@@ -193,6 +200,20 @@ export const useStore = create<AppState>()(
                                     "⚠️ Error al agregar producto a Firestore (agregado local exitoso):",
                                     error,
                                 );
+                                // Agregar a la cola de operaciones pendientes
+                                const operacion: OperacionPendienteProducto = {
+                                    id: `op_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                                    tipo: "create",
+                                    productoId: productoCompleto.id!,
+                                    producto: productoCompleto,
+                                    timestamp: new Date(),
+                                };
+                                set((state) => ({
+                                    productosPendientes: [
+                                        ...state.productosPendientes,
+                                        operacion,
+                                    ],
+                                }));
                             });
                     }
                 },
@@ -219,6 +240,19 @@ export const useStore = create<AppState>()(
                                     "⚠️ Error al eliminar producto de Firestore (eliminado local exitoso):",
                                     error,
                                 );
+                                // Agregar a la cola de operaciones pendientes
+                                const operacion: OperacionPendienteProducto = {
+                                    id: `op_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                                    tipo: "delete",
+                                    productoId: id,
+                                    timestamp: new Date(),
+                                };
+                                set((state) => ({
+                                    productosPendientes: [
+                                        ...state.productosPendientes,
+                                        operacion,
+                                    ],
+                                }));
                             });
                     }
                 },
@@ -252,6 +286,20 @@ export const useStore = create<AppState>()(
                                     "⚠️ Error al actualizar producto en Firestore (actualizado local exitoso):",
                                     error,
                                 );
+                                // Agregar a la cola de operaciones pendientes
+                                const operacion: OperacionPendienteProducto = {
+                                    id: `op_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                                    tipo: "update",
+                                    productoId: id,
+                                    datos,
+                                    timestamp: new Date(),
+                                };
+                                set((state) => ({
+                                    productosPendientes: [
+                                        ...state.productosPendientes,
+                                        operacion,
+                                    ],
+                                }));
                             });
                     }
                 },
@@ -353,6 +401,79 @@ export const useStore = create<AppState>()(
                     }));
                 },
 
+                sincronizarProductosLocales: async () => {
+                    const userId = useAuthStore.getState().usuario?.uid;
+
+                    if (!userId) {
+                        console.warn(
+                            "No se pudo sincronizar productos: usuario no autenticado",
+                        );
+                        return;
+                    }
+
+                    const productosPendientes = get().productosPendientes;
+
+                    if (productosPendientes.length === 0) {
+                        return;
+                    }
+
+                    console.log(
+                        `🔄 Sincronizando ${productosPendientes.length} operaciones de productos pendientes...`,
+                    );
+
+                    // Ordenar por timestamp para ejecutar en orden correcto
+                    const operacionesOrdenadas = [...productosPendientes].sort(
+                        (a, b) =>
+                            new Date(a.timestamp).getTime() -
+                            new Date(b.timestamp).getTime(),
+                    );
+
+                    const resultados = await Promise.allSettled(
+                        operacionesOrdenadas.map(async (operacion) => {
+                            switch (operacion.tipo) {
+                                case "create":
+                                    if (operacion.producto) {
+                                        return databaseService.addProducto(
+                                            operacion.producto,
+                                        );
+                                    }
+                                    break;
+                                case "update":
+                                    if (operacion.datos) {
+                                        return databaseService.updateProducto(
+                                            userId,
+                                            operacion.productoId,
+                                            operacion.datos,
+                                        );
+                                    }
+                                    break;
+                                case "delete":
+                                    return databaseService.deleteProducto(
+                                        userId,
+                                        operacion.productoId,
+                                    );
+                            }
+                        }),
+                    );
+
+                    // Filtrar solo las operaciones que fallaron
+                    const pendientesRestantes = operacionesOrdenadas.filter(
+                        (_operacion, index) =>
+                            resultados[index].status !== "fulfilled",
+                    );
+
+                    const exitosas =
+                        operacionesOrdenadas.length -
+                        pendientesRestantes.length;
+                    console.log(
+                        `✅ ${exitosas}/${operacionesOrdenadas.length} operaciones de productos sincronizadas correctamente`,
+                    );
+
+                    set(() => ({
+                        productosPendientes: pendientesRestantes,
+                    }));
+                },
+
                 calcularVentasHoy: () => {
                     const { ventas } = get();
                     const hoy = new Date().toLocaleDateString();
@@ -378,6 +499,7 @@ export const useStore = create<AppState>()(
                         productos: [],
                         ventas: [],
                         ventasPendientes: [],
+                        productosPendientes: [],
                         carrito: [],
                     });
                 },

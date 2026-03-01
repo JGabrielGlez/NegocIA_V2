@@ -6,6 +6,7 @@ import {
     syncSubscriptionWithBackend,
 } from "@/services/revenueCat";
 import { useAuthStore } from "@/store/useAuthStore";
+import NetInfo from "@react-native-community/netinfo";
 import {
     Stack,
     useRootNavigationState,
@@ -169,6 +170,56 @@ export default function RootLayout() {
         };
     }, [usuario?.uid, usuario?.emailVerified]);
 
+    // Listener de conexión: Sincronizar datos pendientes cuando se recupera internet
+    useEffect(() => {
+        if (!usuario?.uid) {
+            return;
+        }
+
+        const unsubscribe = NetInfo.addEventListener((state) => {
+            if (state.isConnected && state.isInternetReachable) {
+                console.log(
+                    "🌐 [NetInfo] Conexión recuperada, sincronizando datos pendientes...",
+                );
+
+                // Importar el store dinámicamente para evitar ciclos de dependencia
+                import("@/store/useStore")
+                    .then(({ useStore }) => {
+                        const store = useStore.getState();
+                        Promise.all([
+                            store.sincronizarVentasLocales(),
+                            store.sincronizarProductosLocales(),
+                        ])
+                            .then(() => {
+                                console.log(
+                                    "✅ [NetInfo] Sincronización completada correctamente",
+                                );
+                            })
+                            .catch((error) => {
+                                console.error(
+                                    "⚠️ [NetInfo] Error en sincronización:",
+                                    error,
+                                );
+                            });
+                    })
+                    .catch((error) => {
+                        console.error(
+                            "⚠️ [NetInfo] Error importando store:",
+                            error,
+                        );
+                    });
+            } else {
+                console.log(
+                    "📵 [NetInfo] Sin conexión a internet, modo offline activado",
+                );
+            }
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, [usuario?.uid]);
+
     // Segundo useEffect: Sincronizar suscripción cuando la app vuelve al foreground (con throttle de 5 minutos)
     useEffect(() => {
         if (!usuario?.uid) {
@@ -189,18 +240,29 @@ export default function RootLayout() {
                     lastSyncTime.current === null
                 ) {
                     console.log(
-                        "[AppState] App en foreground, sincronizando suscripción...",
+                        "[AppState] App en foreground, sincronizando...",
                     );
-                    syncSubscriptionWithBackend(usuario.uid)
+
+                    // Sincronizar suscripción y datos del negocio
+                    Promise.all([
+                        syncSubscriptionWithBackend(usuario.uid),
+                        import("@/store/useStore").then(({ useStore }) => {
+                            const store = useStore.getState();
+                            return Promise.all([
+                                store.sincronizarVentasLocales(),
+                                store.sincronizarProductosLocales(),
+                            ]);
+                        }),
+                    ])
                         .then(() => {
                             lastSyncTime.current = Date.now();
                             console.log(
-                                "[AppState] Sincronización de suscripción completada.",
+                                "[AppState] Sincronización completada.",
                             );
                         })
                         .catch((error) => {
                             console.error(
-                                "[AppState] Error sincronizando suscripción:",
+                                "[AppState] Error sincronizando:",
                                 error,
                             );
                             // No actualizar lastSyncTime en error para reintentar en el próximo foreground
