@@ -40,6 +40,11 @@ service cloud.firestore {
     match /usuarios/{userId}/ai_usage/{document=**} {
       allow read, write: if estaLogueado() && request.auth.uid == userId;
     }
+
+    // 5. REGLA PARA MÉTRICAS (subcollection de usuarios)
+    match /usuarios/{userId}/metricas/{document=**} {
+      allow read, write: if estaLogueado() && request.auth.uid == userId;
+    }
     
     // BLOQUEO GLOBAL
     match /{document=**} {
