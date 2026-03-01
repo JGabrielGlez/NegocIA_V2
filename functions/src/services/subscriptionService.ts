@@ -1,6 +1,12 @@
 import * as logger from "firebase-functions/logger";
 import admin from "../config/firebaseAdmin";
 
+const CYCLE_DAYS = 30;
+
+function addDays(baseDate: Date, days: number): Date {
+    return new Date(baseDate.getTime() + days * 24 * 60 * 60 * 1000);
+}
+
 type SubscriptionPlan = "PRO" | "GRATIS";
 
 const ACTIVE_STATUSES = new Set([
@@ -8,6 +14,7 @@ const ACTIVE_STATUSES = new Set([
     "trialing",
     "initial_purchase",
     "renewal",
+    "uncancellation",
 ]);
 
 function resolvePlanFromStatus(status: string): SubscriptionPlan {
@@ -103,6 +110,50 @@ export async function revokeSubscription(userId: string): Promise<void> {
         logger.error("subscriptionService.revokeSubscription falló", {
             service: "subscriptionService",
             functionName: "revokeSubscription",
+            userId,
+            error: error instanceof Error ? error.message : String(error),
+            structuredData: true,
+        });
+        throw error;
+    }
+}
+
+export async function reanchorAIUsageCycle(
+    userId: string,
+    cycleAnchorDate: Date = new Date(),
+): Promise<void> {
+    try {
+        const db = admin.firestore();
+        const usageRef = db
+            .collection("usuarios")
+            .doc(userId)
+            .collection("ai_usage")
+            .doc("analytics");
+
+        const nextResetDate = addDays(cycleAnchorDate, CYCLE_DAYS);
+
+        await usageRef.set(
+            {
+                cycleAnchorDate,
+                nextResetDate,
+                queriesUsedThisMonth: 0,
+                updatedAt: new Date(),
+            },
+            { merge: true },
+        );
+
+        logger.info("subscriptionService.reanchorAIUsageCycle success", {
+            service: "subscriptionService",
+            functionName: "reanchorAIUsageCycle",
+            userId,
+            cycleAnchorDate: cycleAnchorDate.toISOString(),
+            nextResetDate: nextResetDate.toISOString(),
+            structuredData: true,
+        });
+    } catch (error) {
+        logger.error("subscriptionService.reanchorAIUsageCycle falló", {
+            service: "subscriptionService",
+            functionName: "reanchorAIUsageCycle",
             userId,
             error: error instanceof Error ? error.message : String(error),
             structuredData: true,

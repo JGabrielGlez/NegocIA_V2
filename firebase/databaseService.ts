@@ -734,11 +734,13 @@ export const databaseService = {
             );
 
             // Calcular nextResetDate (fecha actual + 30 días)
-            const nextResetDate = new Date();
+            const cycleAnchorDate = new Date();
+            const nextResetDate = new Date(cycleAnchorDate);
             nextResetDate.setDate(nextResetDate.getDate() + 30);
 
             await setDoc(docRef, {
                 queriesUsedThisMonth: 0,
+                cycleAnchorDate,
                 nextResetDate: nextResetDate,
                 totalQueriesAllTime: 0,
                 priceUpdatesUsedThisMonth: 0,

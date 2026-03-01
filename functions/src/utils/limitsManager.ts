@@ -2,6 +2,51 @@ import * as logger from "firebase-functions/logger";
 import admin from "../config/firebaseAdmin";
 import { PLAN_LIMITS } from "../constants/aiLimits";
 
+const CYCLE_DAYS = 30;
+const CYCLE_MS = CYCLE_DAYS * 24 * 60 * 60 * 1000;
+
+function addDays(baseDate: Date, days: number): Date {
+    return new Date(baseDate.getTime() + days * 24 * 60 * 60 * 1000);
+}
+
+function toDateOrNull(value: unknown): Date | null {
+    if (!value) {
+        return null;
+    }
+
+    if (value instanceof Date) {
+        return value;
+    }
+
+    if (
+        typeof value === "object" &&
+        value !== null &&
+        "toDate" in value &&
+        typeof (value as { toDate?: unknown }).toDate === "function"
+    ) {
+        return (value as { toDate: () => Date }).toDate();
+    }
+
+    const parsed = new Date(String(value));
+    if (Number.isNaN(parsed.getTime())) {
+        return null;
+    }
+
+    return parsed;
+}
+
+function calculateNextResetDate(cycleAnchorDate: Date, now: Date): Date {
+    const firstReset = addDays(cycleAnchorDate, CYCLE_DAYS);
+
+    if (now < firstReset) {
+        return firstReset;
+    }
+
+    const elapsedMs = now.getTime() - firstReset.getTime();
+    const fullCyclesElapsed = Math.floor(elapsedMs / CYCLE_MS);
+    return new Date(firstReset.getTime() + (fullCyclesElapsed + 1) * CYCLE_MS);
+}
+
 /**
  * Utilidad para gestionar límites de uso de IA
  */
@@ -30,19 +75,40 @@ async function resetCounterIfNeeded(userId: string): Promise<void> {
             return;
         }
 
-        const nextResetDate = usageData.nextResetDate?.toDate();
+        const nextResetDate = toDateOrNull(usageData.nextResetDate);
+        const cycleAnchorDate = toDateOrNull(usageData.cycleAnchorDate);
         const now = new Date();
 
-        // Si ya pasó la fecha de reset, resetear el contador
-        if (nextResetDate && now > nextResetDate) {
-            // Calcular nuevo nextResetDate = nextResetDate anterior + 30 días
-            const newNextResetDate = new Date(nextResetDate);
-            newNextResetDate.setDate(newNextResetDate.getDate() + 30);
+        let inferredCycleAnchorDate = cycleAnchorDate;
+        if (!inferredCycleAnchorDate && nextResetDate) {
+            inferredCycleAnchorDate = addDays(nextResetDate, -CYCLE_DAYS);
+        }
+
+        if (!inferredCycleAnchorDate) {
+            return;
+        }
+
+        const resolvedNextResetDate =
+            nextResetDate ||
+            calculateNextResetDate(inferredCycleAnchorDate, now);
+
+        // Si ya llegó/pasó la fecha de reset, recalcular y resetear el contador
+        if (now >= resolvedNextResetDate) {
+            const newNextResetDate = calculateNextResetDate(
+                inferredCycleAnchorDate,
+                now,
+            );
 
             // Actualizar el documento en Firestore
             await usageDocRef.update({
                 queriesUsedThisMonth: 0,
                 nextResetDate: newNextResetDate,
+                cycleAnchorDate: inferredCycleAnchorDate,
+            });
+        } else if (!cycleAnchorDate || !nextResetDate) {
+            await usageDocRef.update({
+                cycleAnchorDate: inferredCycleAnchorDate,
+                nextResetDate: resolvedNextResetDate,
             });
         }
     } catch (error) {
@@ -87,11 +153,17 @@ export async function checkIfCanQuery(
             return false;
         }
 
-        const nextResetDate = usageData.nextResetDate?.toDate();
+        const nextResetDate = toDateOrNull(usageData.nextResetDate);
+        const cycleAnchorDate = toDateOrNull(usageData.cycleAnchorDate);
         const now = new Date();
 
+        const fallbackNextResetDate =
+            cycleAnchorDate && !nextResetDate
+                ? calculateNextResetDate(cycleAnchorDate, now)
+                : nextResetDate;
+
         // Si ya pasó la fecha de reset, resetear el contador
-        if (nextResetDate && now > nextResetDate) {
+        if (fallbackNextResetDate && now >= fallbackNextResetDate) {
             await resetCounterIfNeeded(userId);
             // Después del reset, el usuario puede hacer consultas
             return true;
@@ -198,11 +270,24 @@ export async function getQueriesRemaining(
             };
         }
 
+        await resetCounterIfNeeded(userId);
+
+        const refreshedUsageDoc = await usageDocRef.get();
+        const refreshedUsageData = refreshedUsageDoc.data() || usageData;
+
         // Obtener límite según el plan
         const limit = PLAN_LIMITS[plan as keyof typeof PLAN_LIMITS] || 0;
-        const queriesUsed = usageData.queriesUsedThisMonth || 0;
+        const queriesUsed = refreshedUsageData.queriesUsedThisMonth || 0;
         const queriesRemaining = Math.max(0, limit - queriesUsed);
-        const nextResetDate = usageData.nextResetDate?.toDate() || new Date();
+        const now = new Date();
+        const cycleAnchorDate = toDateOrNull(
+            refreshedUsageData.cycleAnchorDate,
+        );
+        const nextResetDate =
+            toDateOrNull(refreshedUsageData.nextResetDate) ||
+            (cycleAnchorDate
+                ? calculateNextResetDate(cycleAnchorDate, now)
+                : addDays(now, CYCLE_DAYS));
 
         return {
             queriesRemaining,

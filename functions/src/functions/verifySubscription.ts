@@ -2,6 +2,7 @@ import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import {
+    reanchorAIUsageCycle,
     revokeSubscription,
     updateSubscriptionStatus,
 } from "../services/subscriptionService";
@@ -10,7 +11,8 @@ type RevenueCatEventType =
     | "INITIAL_PURCHASE"
     | "RENEWAL"
     | "CANCELLATION"
-    | "EXPIRATION";
+    | "EXPIRATION"
+    | "UNCANCELLATION";
 
 interface RevenueCatWebhookEvent {
     type?: string;
@@ -158,7 +160,38 @@ export const verifySubscription = onRequest(async (request, response) => {
 
     try {
         switch (eventType) {
-            case "INITIAL_PURCHASE":
+            case "INITIAL_PURCHASE": {
+                const expiresAt = getExpiresAt(event);
+                logger.info(
+                    "verifySubscription: actualizando suscripción por compra inicial",
+                    {
+                        functionName: "verifySubscription",
+                        eventType,
+                        userId,
+                        hasExpiresAt: Boolean(expiresAt),
+                        structuredData: true,
+                    },
+                );
+                await updateSubscriptionStatus(userId, "active", expiresAt);
+                await reanchorAIUsageCycle(userId, new Date());
+                break;
+            }
+            case "UNCANCELLATION": {
+                const expiresAt = getExpiresAt(event);
+                logger.info(
+                    "verifySubscription: reactivación de suscripción (reancla ciclo IA)",
+                    {
+                        functionName: "verifySubscription",
+                        eventType,
+                        userId,
+                        hasExpiresAt: Boolean(expiresAt),
+                        structuredData: true,
+                    },
+                );
+                await updateSubscriptionStatus(userId, "active", expiresAt);
+                await reanchorAIUsageCycle(userId, new Date());
+                break;
+            }
             case "RENEWAL": {
                 const expiresAt = getExpiresAt(event);
                 logger.info(
