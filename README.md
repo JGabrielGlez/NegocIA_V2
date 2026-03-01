@@ -6,15 +6,15 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 1. Install dependencies
 
-   ```bash
-   npm install
-   ```
+    ```bash
+    npm install
+    ```
 
 2. Start the app
 
-   ```bash
-   npx expo start
-   ```
+    ```bash
+    npx expo start
+    ```
 
 In the output, you'll find options to open the app in a
 
@@ -24,6 +24,34 @@ In the output, you'll find options to open the app in a
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## ⚠️ ANTES DE CUALQUIER BUILD EN PRODUCCIÓN
+
+**CRÍTICO:** Antes de hacer cualquier build (EAS Build, Play Store, etc.), debes regenerar TODAS las claves API:
+
+1. **Firebase Console:**
+    - Ir a [Firebase Console](https://console.firebase.google.com/)
+    - Regenerar todas las claves de API (especialmente si `.env` ha sido expuesto)
+
+2. **RevenueCat:**
+    - Ir a [RevenueCat Dashboard](https://app.revenuecat.com/)
+    - Regenerar claves API
+
+3. **Actualizar `.env`:**
+    - Copiar los nuevos valores a `.env`
+    - Verificar que `.env` está en `.gitignore` (nunca debe estar en git)
+
+4. **Hacer commit y push:**
+
+    ```bash
+    git add .
+    git commit -m "chore: update API keys before build"
+    git push
+    ```
+
+5. **Entonces proceder con el build**
+
+**Por qué es importante:** Si el archivo `.env` o cualquiera de tus claves ha sido expuesto en Git history, repositorios públicos, o logs, regenerarlas es la única forma de evitar que alguien las use maliciosamente.
 
 ## Get a fresh project
 
