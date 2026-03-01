@@ -113,30 +113,26 @@ export default function productos() {
         try {
             // Podrías poner un setIsLoading(true) aquí
 
+            // Generar ID único para el producto (será usado tanto localmente como en Firestore)
+            const productoId = `prod_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
             const nuevoProducto: Producto = {
+                id: productoId, // Incluir ID generado
                 nombre: nombreProducto.trim(),
                 precio: precioProductoParsed,
                 usuarioId: usuario.uid,
             };
 
-            // 3. Llamada al servicio (AQUÍ se obtiene el ID)
-            // en esta parte se agrega a firestore
-            const idGenerado = await servicios.addProducto(nuevoProducto);
+            // 3. Agregar el producto al store (que sincroniza automáticamente con Firestore)
+            agregarProducto(nuevoProducto);
 
-            // 4. Guardamos en Zustand
-            // TIP: Es mejor pasar el ID generado para que tu ScrollView tenga su KEY única
-            agregarProducto({
-                ...nuevoProducto, // Trae nombre, precio y uid
-                id: idGenerado, // Le agregamos el ID de Firebase
-            });
-
-            // 5. Solo si todo lo anterior salió BIEN, limpiamos los campos
+            // 4. Solo si todo lo anterior salió BIEN, limpiamos los campos
             setModalVisible(false);
             setPrecioProducto("");
             setNombreProducto("");
             setNombreDuplicado(false);
         } catch (error) {
-            // Si Firebase falla, el código salta aquí y NO se limpian los campos
+            // Si el store falla, el código salta aquí y NO se limpian los campos
             // permitiendo al usuario intentar de nuevo sin borrar lo que escribió.
             console.error("Error al guardar:", error);
             alert("No se pudo guardar el producto. Revisa tu conexión.");

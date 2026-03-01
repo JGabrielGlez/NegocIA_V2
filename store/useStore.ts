@@ -172,11 +172,29 @@ export const useStore = create<AppState>()(
 
                 // Estos son todos los métodos
                 agregarProducto: (productoCompleto) => {
-                    // Solo agregar localmente al store
-                    // La sincronización con Firestore se hace manualmente desde la pantalla
+                    // 1. Agregar localmente primero (operación síncrona)
                     set((state) => ({
                         productos: [...state.productos, productoCompleto],
                     }));
+
+                    // 2. Intentar sincronizar con Firestore (asíncrono, no bloquea)
+                    // Solo sincronizar si el producto tiene ID (fue generado en frontend)
+                    if (productoCompleto.id) {
+                        databaseService
+                            .addProducto(productoCompleto)
+                            .then(() => {
+                                console.log(
+                                    "✅ Producto agregado a Firestore:",
+                                    productoCompleto.id,
+                                );
+                            })
+                            .catch((error) => {
+                                console.error(
+                                    "⚠️ Error al agregar producto a Firestore (agregado local exitoso):",
+                                    error,
+                                );
+                            });
+                    }
                 },
 
                 eliminarProducto: (id) => {
