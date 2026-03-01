@@ -69,3 +69,26 @@ export const COLLECTIONS = {
     USUARIOS: "usuarios",
     VENTAS: "ventas",
 } as const;
+
+export interface ProductoMetrica {
+    nombre: string;
+    unidades: number;
+    total: number;
+    porcentaje: number;
+    tieneCeroVentas: boolean;
+    diasSinVentas: number;
+}
+
+export interface MetricasNegocio {
+    ventasHoy: number;
+    transaccionesHoy: number;
+    ventasSemanaActual: number;
+    ventasSemanaPasada: number;
+    ventasMesActual: number;
+    ventasMesAnterior: number;
+    ticketPromedio: number;
+    topProductos: ProductoMetrica[];
+    bottomProductos: ProductoMetrica[];
+    diasSinVentas: number;
+    ultimaActualizacion: Date;
+}

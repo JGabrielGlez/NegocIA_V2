@@ -6,10 +6,10 @@ import {
 } from "firebase-functions/v2/https";
 import { getSystemPrompt } from "../config/systemPrompt";
 import { getUserData } from "../services/firestoreService";
-import { callGemini } from "../services/geminiService";
+import { callGemini, getGeminiTools } from "../services/geminiService";
 import { AIRequest } from "../types/AIRequest";
 import { AIResponse } from "../types/AIResponse";
-import { buildBusinessContext } from "../utils/contextBuilder";
+import { buildContext } from "../utils/contextBuilder";
 import {
     checkIfCanQuery,
     getQueriesRemaining,
@@ -109,48 +109,54 @@ export const askAssistant = onCall<AIRequest>(
             );
         }
 
-        // PASO 4: Construir contexto de negocio (productos, ventas, métricas)
-        let businessContext = "";
+        // PASO 4: Construir contexto enriquecido del negocio
+        const nombreNegocio =
+            userData.negocio || userData.nombre || "tu negocio";
+        const planUsuario = userData.plan || "GRATIS";
+
+        let contextoPrevio = "";
         try {
-            logger.info(
-                `Construyendo contexto de negocio para usuario: ${userId}`,
+            contextoPrevio = await buildContext(
+                userId,
+                nombreNegocio,
+                planUsuario,
             );
-            businessContext = await buildBusinessContext(userId);
         } catch (error) {
             logger.error(
-                "askAssistant: fallo al construir contexto de negocio",
+                "askAssistant: fallo al construir contexto enriquecido",
                 {
                     userId,
                     step: "construir-contexto",
-                    error: getErrorMessage(error),
+                    error:
+                        error instanceof Error ? error.message : String(error),
                     structuredData: true,
                 },
             );
             throw new HttpsError(
                 "internal",
-                "No fue posible construir el contexto del negocio para responder",
+                "No fue posible obtener los datos del negocio para responder la pregunta",
             );
         }
 
-        // PASO 5: Llamar a Gemini con system prompt + contexto + pregunta del usuario
-        const nombreNegocio =
-            userData.negocio || userData.nombre || "tu negocio";
+        logger.info("askAssistant: contexto enriquecido construido", {
+            userId,
+            contextoLength: contextoPrevio.length,
+            structuredData: true,
+        });
+
+        // PASO 5: Llamar a Gemini con function calling
         const systemPrompt = getSystemPrompt(nombreNegocio);
-        const MAX_BUSINESS_CONTEXT_CHARS = 24000;
-        const safeBusinessContext =
-            businessContext.length > MAX_BUSINESS_CONTEXT_CHARS
-                ? `${businessContext.slice(0, MAX_BUSINESS_CONTEXT_CHARS)}\n\n[Contexto recortado automáticamente para procesar la consulta]`
-                : businessContext;
-        const prompt = `${systemPrompt}\n\n${safeBusinessContext}\n\n=== PREGUNTA DEL USUARIO ===\n${question}`;
+        const tools = getGeminiTools();
+        const prompt = `${contextoPrevio}\n\nPREGUNTA: ${question}`;
+
         let answer = "";
         try {
-            logger.info("askAssistant: iniciando llamada a Gemini", {
+            logger.info("askAssistant: iniciando llamada a Gemini con tools", {
                 userId,
-                businessContextLength: businessContext.length,
-                safeBusinessContextLength: safeBusinessContext.length,
+                toolsCount: tools.length,
                 structuredData: true,
             });
-            answer = await callGemini(prompt);
+            answer = await callGemini(prompt, systemPrompt, userId, tools);
         } catch (error) {
             const geminiError = getErrorMessage(error);
             logger.error("askAssistant: fallo en llamada a Gemini", {

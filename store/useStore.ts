@@ -281,6 +281,19 @@ export const useStore = create<AppState>()(
                                         venta.idVenta !== ventaNueva.idVenta,
                                 ),
                             }));
+
+                            databaseService
+                                .actualizarMetricas(
+                                    userId,
+                                    ventaNueva,
+                                    get().productos,
+                                )
+                                .catch((error) =>
+                                    console.error(
+                                        "⚠️ Error actualizando métricas:",
+                                        error,
+                                    ),
+                                );
                         })
                         .catch((error) => {
                             console.log(
