@@ -1,4 +1,5 @@
 import CabeceraNavegacion from "@/components/cabeceraNavegacion";
+import { PLAN_LIMITS } from "@/constants/aiLimits";
 import { databaseService } from "@/firebase/databaseService";
 import { functions } from "@/firebase/firebaseConfig";
 import { AIMessage } from "@/store/types";
@@ -37,11 +38,6 @@ const DEV_SAMPLE_MESSAGES: AIMessage[] = [
         timestamp: new Date(),
     },
 ];
-
-const PLAN_LIMITS = {
-    GRATIS: 3,
-    PRO: 30,
-} as const;
 
 export default function AsistenteIA() {
     const router = useRouter();

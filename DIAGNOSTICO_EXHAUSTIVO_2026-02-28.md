@@ -968,20 +968,16 @@ Todos los text input, hacer uso de una flatList para acomodar lo que se escriba
 
 ### 🟠 IMPORTANTE (Puede causar bugs en edge cases)
 
-#### 1. Doble carga de datos al iniciar sesión
+#### 1. ✅ Doble carga de datos al iniciar sesión - COMPLETADO
 
 - **Archivos afectados:** `app/_layout.tsx`, `store/useAuthStore.ts`
-- **Problema:** Productos y ventas se cargan DOS VECES en paralelo al iniciar sesión
-- **Ubicaciones:**
-    - `_layout.tsx` (líneas 46-58): Carga productos/ventas desde Firestore
-    - `useAuthStore.ts` (líneas 151-160): TAMBIÉN carga productos/ventas desde Firestore
-- **Impacto:**
-    - ❌ **Costos:** Lecturas duplicadas de Firestore (2x el costo)
-    - ❌ **Rendimiento:** Mayor tiempo de carga inicial
-    - ❌ **Race conditions:** Posible inconsistencia si una carga termina antes que la otra
-    - ⚠️ **Sobrecarga:** Si un usuario tiene 100 productos y 200 ventas, se leen 600 documentos en lugar de 300
-- **Solución:** Eliminar carga de `useAuthStore.ts` (líneas 151-160), mantener solo en `_layout.tsx`
-- **Prioridad:** 🟠 **ALTA** - Afecta costos y experiencia de usuario
+- **Problema anterior:** Productos y ventas se cargaban DOS VECES en paralelo al iniciar sesión
+- **Ubicaciones (ya corregidas):**
+    - `_layout.tsx` (líneas 46-58): ✅ Única carga de productos/ventas desde Firestore
+    - `useAuthStore.ts`: ✅ Carga eliminada (removidas líneas 183-191)
+- **Solución Implementada:** Eliminar carga de `useAuthStore.ts`, mantener solo en `_layout.tsx`
+- **Estado:** ✅ **COMPLETADO** - 28 de febrero de 2026
+- **Ahorro:** -50% de lecturas a Firestore al iniciar sesión
 
 #### 2. Límites de IA duplicados entre frontend y backend
 
@@ -1124,16 +1120,16 @@ Todos los text input, hacer uso de una flatList para acomodar lo que se escriba
 | --------------------------- | -------- | ---------- |
 | **Archivos analizados**     | 35       | 100%       |
 | **Problemas críticos**      | 1        | 2.9%       |
-| **Problemas importantes**   | 3        | 8.6%       |
+| **Problemas importantes**   | 2        | 5.7%       |
 | **Mejoras menores**         | 4        | 11.4%      |
-| **Verificaciones exitosas** | 27       | 77.1%      |
+| **Verificaciones exitosas** | 28       | 80%        |
 
 ### Desglose por categoría funcional
 
 | Área                         | Estado         | Problemas                  |
 | ---------------------------- | -------------- | -------------------------- |
 | **Esquema de Datos**         | ✅ Correcto    | 0                          |
-| **Autenticación**            | ⚠️ Con mejoras | 1 (doble carga)            |
+| **Autenticación**            | ✅ Correcto    | 0 (doble carga resuelto)   |
 | **Sincronización Firestore** | ⚠️ Con mejoras | 1 (agregarProducto)        |
 | **Sistema de IA**            | ✅ Correcto    | 1 (límites duplicados)     |
 | **RevenueCat**               | ✅ Correcto    | 0                          |

@@ -1,15 +1,10 @@
-import admin from "../config/firebaseAdmin";
 import * as logger from "firebase-functions/logger";
+import admin from "../config/firebaseAdmin";
+import { PLAN_LIMITS } from "../constants/aiLimits";
 
 /**
  * Utilidad para gestionar límites de uso de IA
  */
-
-// Límites de consultas por plan
-const QUERY_LIMITS = {
-    GRATIS: 3, // 3 consultas por mes
-    PRO: 30, // 30 consultas por mes
-};
 
 /**
  * Resetear contador si ya pasó la fecha de reset
@@ -103,7 +98,7 @@ export async function checkIfCanQuery(
         }
 
         // Obtener límite según el plan
-        const limit = QUERY_LIMITS[plan as keyof typeof QUERY_LIMITS] || 0;
+        const limit = PLAN_LIMITS[plan as keyof typeof PLAN_LIMITS] || 0;
         const queriesUsed = usageData.queriesUsedThisMonth || 0;
 
         // Verificar si aún tiene consultas disponibles
@@ -146,7 +141,8 @@ export async function incrementQueryCount(userId: string): Promise<void> {
         }
 
         // Sumar 1 a queriesUsedThisMonth y a totalQueriesAllTime
-        const newQueriesUsedThisMonth = (usageData.queriesUsedThisMonth || 0) + 1;
+        const newQueriesUsedThisMonth =
+            (usageData.queriesUsedThisMonth || 0) + 1;
         const newTotalQueriesAllTime = (usageData.totalQueriesAllTime || 0) + 1;
 
         // Actualizar el documento en Firestore
@@ -203,7 +199,7 @@ export async function getQueriesRemaining(
         }
 
         // Obtener límite según el plan
-        const limit = QUERY_LIMITS[plan as keyof typeof QUERY_LIMITS] || 0;
+        const limit = PLAN_LIMITS[plan as keyof typeof PLAN_LIMITS] || 0;
         const queriesUsed = usageData.queriesUsedThisMonth || 0;
         const queriesRemaining = Math.max(0, limit - queriesUsed);
         const nextResetDate = usageData.nextResetDate?.toDate() || new Date();
