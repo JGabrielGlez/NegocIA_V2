@@ -26,14 +26,28 @@ npm-debug.*
 yarn-debug.*
 yarn-error.*
 
+# Firebase logs y datos temporales
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+pubsub-debug.log
+database-debug.log
+functions-debug.log
+.firebase/
+firebase-export-*/
+temp_data/
+mi_backup/
+emulator-data/
+
 # macOS
 .DS_Store
 *.pem
 
 # local env files
 .env*.local
-
-# typescript
+.env
+functions/.env
+functions/.env.local
 *.tsbuildinfo
 
 app-example
@@ -41,4 +55,4 @@ app-example
 # generated native folders
 /ios
 /android
-.env
+
