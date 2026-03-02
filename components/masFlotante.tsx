@@ -1,6 +1,6 @@
 import { estilos } from "@/constantes/estilos";
 import { Lock, Plus } from "lucide-react-native";
-import { TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
 
 type props = {
     accion?: () => void;
@@ -17,8 +17,17 @@ export default function BotonMasFlotante({ accion, disabled = false }: props) {
             }`}
             style={estilos.sombraNormal}
             // Este debe de abrir la ventana modal para añadir los productos
-            onPress={disabled ? undefined : accion}
-            disabled={disabled}>
+            onPress={() => {
+                if (disabled) {
+                    Alert.alert(
+                        "Límite alcanzado",
+                        "Actualiza a la versión PRO para guardar más productos",
+                    );
+                    return;
+                }
+
+                accion?.();
+            }}>
             {disabled ? (
                 <Lock size={24} color="#94a3b8" />
             ) : (
