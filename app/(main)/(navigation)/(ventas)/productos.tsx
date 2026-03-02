@@ -46,6 +46,7 @@ export default function productos() {
     const servicios = databaseService;
     // Esto es para insertar el id del usuario dentro de cada producto
     const usuario = useAuthStore((state) => state.usuario);
+    const plan = useAuthStore((state) => state.plan);
 
     // Filtrar productos basándose en el texto de búsqueda
     const productosFiltrados = productosDeStore.filter((producto) =>
@@ -106,6 +107,14 @@ export default function productos() {
         const precioProductoParsed = parseFloat(precioProducto);
         if (isNaN(precioProductoParsed)) {
             alert("El precio debe ser un número válido");
+            return;
+        }
+
+        // Validar límite de 30 productos para plan GRATIS
+        if (plan === "GRATIS" && productosDeStore.length >= 30) {
+            alert(
+                "Límite alcanzado ⚠️\n\nHas llegado al máximo de 30 productos en el plan gratuito.\n\nUpgradea a PRO para productos ilimitados.",
+            );
             return;
         }
 
@@ -256,7 +265,10 @@ export default function productos() {
                     ))}
                 </ScrollView>
 
-                <BotonMasFlotante accion={() => setModalVisible(true)} />
+                <BotonMasFlotante
+                    accion={() => setModalVisible(true)}
+                    disabled={plan === "GRATIS" && productosDeStore.length >= 30}
+                />
 
                 <Modal
                     visible={modalVisible}
@@ -277,6 +289,31 @@ export default function productos() {
                                 <Text className="mb-6 text-2xl font-bold text-gray-800">
                                     Agregar Producto
                                 </Text>
+
+                                {/* Mostrar límite de productos para plan GRATIS */}
+                                {plan === "GRATIS" && (
+                                    <View
+                                        className={`mb-4 rounded-lg px-4 py-3 ${
+                                            productosDeStore.length >= 30
+                                                ? "bg-red-50"
+                                                : "bg-blue-50"
+                                        }`}>
+                                        <Text
+                                            className={`text-sm font-semibold ${
+                                                productosDeStore.length >= 30
+                                                    ? "text-red-700"
+                                                    : "text-blue-700"
+                                            }`}>
+                                            {productosDeStore.length}/30 productos
+                                        </Text>
+                                        {productosDeStore.length >= 30 && (
+                                            <Text className="mt-1 text-xs text-red-600">
+                                                Límite alcanzado. Upgradeá a PRO para productos
+                                                ilimitados.
+                                            </Text>
+                                        )}
+                                    </View>
+                                )}
 
                                 <View className="mb-8 gap-y-4">
                                     <View>
@@ -322,6 +359,10 @@ export default function productos() {
                                         <Boton
                                             onPress={manejarGuardado}
                                             texto="Guardar"
+                                            disabled={
+                                                plan === "GRATIS" &&
+                                                productosDeStore.length >= 30
+                                            }
                                         />
                                     </View>
                                 </View>

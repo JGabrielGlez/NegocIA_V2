@@ -4,16 +4,20 @@ import { TouchableOpacity } from "react-native";
 
 type props = {
     accion?: () => void;
+    disabled?: boolean;
 };
 
-export default function BotonMasFlotante({ accion }: props) {
+export default function BotonMasFlotante({ accion, disabled = false }: props) {
     return (
         <TouchableOpacity
-            className="absolute bottom-16 right-6 h-16 w-16 items-center justify-center rounded-full bg-primary"
+            className={`absolute bottom-16 right-6 h-16 w-16 items-center justify-center rounded-full ${
+                disabled ? "bg-gray-400" : "bg-primary"
+            }`}
             style={estilos.sombraNormal}
             // Este debe de abrir la ventana modal para añadir los productos
-            onPress={accion}>
-            <Plus size={28} color="white" />
+            onPress={disabled ? undefined : accion}
+            disabled={disabled}>
+            <Plus size={28} color={disabled ? "#999" : "white"} />
         </TouchableOpacity>
     );
 }
