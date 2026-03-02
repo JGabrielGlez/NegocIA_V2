@@ -1,0 +1,54 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Función para verificar autenticación
+    function estaLogueado() {
+      return request.auth != null;
+    }
+
+    // 1. REGLA PARA USUARIOS
+    match /usuarios/{userId} {
+      allow read, write: if estaLogueado() && request.auth.uid == userId;
+    }
+
+    // 2. REGLA PARA PRODUCTOS
+    match /productos/{productoId} {
+      // Para leer o borrar, el dueño debe ser el usuario actual
+      allow read, delete: if estaLogueado() && resource.data.usuarioId == request.auth.uid;
+      
+      // Para crear, el nuevo documento DEBE tener tu UID
+      allow create: if estaLogueado() && request.resource.data.usuarioId == request.auth.uid;
+      
+      // Para actualizar, debes ser el dueño Y no puedes cambiar el usuarioId a otra persona
+      allow update: if estaLogueado() && 
+                    resource.data.usuarioId == request.auth.uid && 
+                    request.resource.data.usuarioId == request.auth.uid;
+    }
+
+    // 3. REGLA PARA VENTAS
+    match /ventas/{ventaId} {
+      allow read, delete: if estaLogueado() && resource.data.usuarioId == request.auth.uid;
+      allow create: if estaLogueado() && request.resource.data.usuarioId == request.auth.uid;
+      allow update: if estaLogueado() && 
+                    resource.data.usuarioId == request.auth.uid && 
+                    request.resource.data.usuarioId == request.auth.uid;
+    }
+
+    // 4. REGLA PARA AI USAGE (subcollection de usuarios)
+    match /usuarios/{userId}/ai_usage/{document=**} {
+      allow read, write: if estaLogueado() && request.auth.uid == userId;
+    }
+
+    // 5. REGLA PARA MÉTRICAS (subcollection de usuarios)
+    match /usuarios/{userId}/metricas/{document=**} {
+      allow read, write: if estaLogueado() && request.auth.uid == userId;
+    }
+    
+    // BLOQUEO GLOBAL
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

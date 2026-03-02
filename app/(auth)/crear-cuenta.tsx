@@ -1,9 +1,10 @@
 import { Boton } from "@/components/Button";
 import Login from "@/components/loginForm";
-import { useRouter } from "expo-router";
+import { useRootNavigationState, useRouter } from "expo-router";
 import {
     createUserWithEmailAndPassword,
     sendEmailVerification,
+    signOut,
 } from "firebase/auth";
 import { useState } from "react";
 import {
@@ -33,13 +34,14 @@ export default function crearCuenta() {
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
+    const router = useRouter();
+    const rootNavigationState = useRootNavigationState();
+
     const manejarSetCorreo = (texto: string) => {
-        setCorreo(texto);
+        setCorreo(texto.trim());
         console.log(correo);
         console.log(password);
     };
-
-    const router = useRouter();
 
     function cuentaRegistradaExitosamente() {
         Alert.alert(
@@ -50,11 +52,14 @@ export default function crearCuenta() {
                     text: "Aceptar",
                     onPress: () => {
                         setIsLoading(false);
-                        router.replace("/(auth)/iniciar-sesion");
+                        // Guard: solo navegar si la navegación raíz está lista
+                        if (rootNavigationState?.key) {
+                            router.replace("/(auth)/iniciar-sesion");
+                        }
                     },
                 },
             ],
-            { cancelable: false }, //evita evitar que al tocar fuera se cierre
+            { cancelable: false },
         );
     }
 
@@ -71,6 +76,8 @@ export default function crearCuenta() {
             const user = userCredential.user;
             //obtengo el usuario para enviarle el correo, como antes estaba vacío, no envíaba correo pq no habia a dónde enviarlo
             await sendEmailVerification(user);
+
+            await signOut(auth);
 
             // Redirigir a lo que es el inicio de sesión
             cuentaRegistradaExitosamente();

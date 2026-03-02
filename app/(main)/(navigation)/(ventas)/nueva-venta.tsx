@@ -5,10 +5,13 @@ import CampoTexto from "@/components/campoTexto";
 import TarjetaInfo from "@/components/tarjetaInfo";
 import { estilos } from "@/constantes/estilos";
 import { useStore } from "@/store/useStore";
-import { Plus } from "lucide-react-native";
+import { Minus, Plus, ShoppingCart, Trash2, X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
+    Alert,
+    FlatList,
     KeyboardAvoidingView,
+    Modal,
     Platform,
     ScrollView,
     Text,
@@ -53,6 +56,29 @@ export default function nuevaVenta() {
     const vaciarCarritoStore = useStore((state) => state.vaciarCarrito);
     const totalAPagarStore = useStore((state) => state.obtenerTotalCarrito());
     const agregarAlCarrito = useStore((state) => state.agregarAlCarrito);
+    const eliminarDelCarrito = useStore((state) => state.eliminarDelCarrito);
+    const eliminarItemCompleto = useStore(
+        (state) => state.eliminarItemCompleto,
+    );
+    const carrito = useStore((state) => state.carrito);
+
+    // Estado para el modal del carrito
+    const [modalCarritoVisible, setModalCarritoVisible] = useState(false);
+    // Estado para el modal de confirmación de venta
+    const [modalConfirmarVisible, setModalConfirmarVisible] = useState(false);
+    // Estado para el modal de confirmación de cancelación
+    const [modalCancelarVisible, setModalCancelarVisible] = useState(false);
+    // Estado para el modal de confirmación final de la venta
+    const [
+        modalConfirmarVentaFinalVisible,
+        setModalConfirmarVentaFinalVisible,
+    ] = useState(false);
+
+    // Función helper para obtener la cantidad de un producto en el carrito
+    const obtenerCantidadEnCarrito = (idProducto: string): number => {
+        const item = carrito.find((item) => item.producto.id === idProducto);
+        return item ? item.cantidad : 0;
+    };
 
     const [montoRecibido, setMontoRecibido] = useState("");
 
@@ -85,6 +111,30 @@ export default function nuevaVenta() {
 
     const montoNumerico = parseFloat(limpiarPrecio(montoRecibido)) || 0;
     const cambioActualizado = montoNumerico - totalAPagarStore;
+
+    const keyboardVerticalOffset = Platform.OS === "ios" ? 80 : 0;
+    const keyboardBehavior = Platform.OS === "ios" ? "padding" : undefined;
+    const keyboardEnabled = Platform.OS === "ios";
+
+    // Función para confirmar eliminación de item completo
+    const confirmarEliminarItem = (
+        idProducto: string,
+        nombreProducto: string,
+    ) => {
+        Alert.alert(
+            "Eliminar producto",
+            `¿Eliminar "${nombreProducto}" del carrito?`,
+            [
+                { text: "Cancelar", style: "cancel" },
+                {
+                    text: "Eliminar",
+                    style: "destructive",
+                    onPress: () => eliminarItemCompleto(idProducto),
+                },
+            ],
+        );
+    };
+
     //------------ Constantes para la venta-------------------
 
     // El método de cada boton de agregar debe hacer lo siguiente:
@@ -95,7 +145,9 @@ export default function nuevaVenta() {
             <CabeceraNavegacion nombrePagina="Nueva Venta" />
             <Buscador filtrar={true} placeholder="Buscar producto" />
             <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                behavior={keyboardBehavior}
+                keyboardVerticalOffset={keyboardVerticalOffset}
+                enabled={keyboardEnabled}
                 style={{ flex: 1 }}>
                 <ScrollView
                     contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
@@ -103,37 +155,71 @@ export default function nuevaVenta() {
                     {/* Tengo que crear cada tarjeta, que recibirán un 
             titulo, icono y las estadisticas quedarán pendientes */}
                     <View className="flex-1 flex-row flex-wrap justify-evenly">
-                        {productosDeStore.map((item) => (
-                            <View
-                                key={"Venta-" + item.id}
-                                style={{
-                                    width: "45%",
-                                    height: 120,
-                                    marginBottom: 10,
-                                }}>
-                                <TarjetaInfo
-                                    adaptable={true}
-                                    key={item.id}
-                                    esVenta={true}
-                                    titulo={item.nombre}
-                                    cuerpo={"$" + item.precio.toString()}>
-                                    {
-                                        // TODO boton o algo para cancelar la venta por completo, creo que podría dividir la botonera para hacer eso
-                                        <TouchableOpacity
-                                            className="absolute bottom-12 h-14 w-14 items-center justify-center rounded-full bg-primary"
-                                            style={estilos.sombraNormal}
-                                            onPress={() => {
-                                                // En este debo agregar lo de agregar prod al carrito
-                                                {
-                                                    agregarAlCarrito(item.id);
-                                                }
-                                            }}>
-                                            <Plus size={28} color="white" />
-                                        </TouchableOpacity>
-                                    }
-                                </TarjetaInfo>
-                            </View>
-                        ))}
+                        {productosDeStore.map((item) => {
+                            const cantidadEnCarrito = obtenerCantidadEnCarrito(
+                                item.id || "",
+                            );
+
+                            return (
+                                <View
+                                    key={"Venta-" + item.id}
+                                    style={{
+                                        width: "45%",
+                                        height: 120,
+                                        marginBottom: 10,
+                                    }}>
+                                    <TarjetaInfo
+                                        adaptable={true}
+                                        key={item.id}
+                                        esVenta={true}
+                                        titulo={item.nombre}
+                                        cuerpo={"$" + item.precio.toString()}>
+                                        {/* Badge circular rojo en esquina superior derecha */}
+                                        {cantidadEnCarrito > 0 && (
+                                            <View
+                                                className="absolute -right-1 -top-20 h-8 w-8 items-center justify-center rounded-full bg-red-500"
+                                                style={estilos.sombraNormal}>
+                                                <Text className="text-sm font-bold text-white">
+                                                    {cantidadEnCarrito}
+                                                </Text>
+                                            </View>
+                                        )}
+
+                                        {/* Botones + y - */}
+                                        <View className="absolute bottom-12 flex-row items-center gap-2">
+                                            {/* Botón [-] - solo visible si hay items en carrito */}
+                                            {cantidadEnCarrito > 0 && (
+                                                <TouchableOpacity
+                                                    className="h-10 w-10 items-center justify-center rounded-full bg-gray-500"
+                                                    style={estilos.sombraNormal}
+                                                    onPress={() => {
+                                                        eliminarDelCarrito(
+                                                            item.id || "",
+                                                        );
+                                                    }}>
+                                                    <Minus
+                                                        size={24}
+                                                        color="white"
+                                                    />
+                                                </TouchableOpacity>
+                                            )}
+
+                                            {/* Botón [+] - siempre visible */}
+                                            <TouchableOpacity
+                                                className="h-10 w-10 items-center justify-center rounded-full bg-primary"
+                                                style={estilos.sombraNormal}
+                                                onPress={() => {
+                                                    agregarAlCarrito(
+                                                        item.id || "",
+                                                    );
+                                                }}>
+                                                <Plus size={24} color="white" />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </TarjetaInfo>
+                                </View>
+                            );
+                        })}
                     </View>
 
                     {/* Este será el recuadro para dar el cambio y poner el boton de completar la venta
@@ -143,76 +229,363 @@ export default function nuevaVenta() {
                     {/* Por ahora solo haré lo que es el diseño básico, de solo agregar */}
                 </ScrollView>
 
-                <View className="flex-1 justify-between bg-white pl-4 pr-4 pt-4">
-                    <Text className="pl-2 text-base font-normal text-gray-600">
-                        {" "}
-                        {cantidadDeProductosStore} productos
-                    </Text>
-                    <View className="flex-row justify-between">
-                        <Text className="pl-2 text-lg font-normal text-gray-600">
-                            Subtotal:
-                        </Text>
-                        <Text className="pl-2 text-lg font-normal text-gray-600">
-                            ${totalAPagarStore.toFixed(2)}
+                {/* Botón flotante para abrir modal de confirmación */}
+                {carrito.length > 0 && (
+                    <View className="bg-white p-4">
+                        <Boton
+                            onPress={() => setModalConfirmarVisible(true)}
+                            texto={`Confirmar venta (${cantidadDeProductosStore} productos)`}
+                        />
+                    </View>
+                )}
+            </KeyboardAvoidingView>
+
+            {/* Botón flotante de carrito */}
+            {carrito.length > 0 && (
+                <TouchableOpacity
+                    className="absolute right-6 top-16 h-16 w-16 items-center justify-center rounded-full bg-primary"
+                    style={estilos.sombraNormal}
+                    onPress={() => setModalCarritoVisible(true)}>
+                    <ShoppingCart size={28} color="white" />
+                    {/* Badge con cantidad de items */}
+                    <View className="absolute -right-2 -top-2 h-8 w-8 items-center justify-center rounded-full bg-red-500">
+                        <Text className="text-sm font-bold text-white">
+                            {cantidadDeProductosStore}
                         </Text>
                     </View>
-                    <CampoTexto
-                        esNumero={true}
-                        etiqueta="Monto recibido"
-                        valueCampo={montoRecibido}
-                        // Ese método debe de hacer la resta, si es menor, poner en color rojo, del contrario en verde
-                        onChangeText={(texto) => setMontoRecibido(texto)}
-                        sugerencia=""
-                    />
-                    <View className="flex-row justify-between">
-                        <Text className="pl-2 text-lg font-normal text-gray-600">
-                            Cambio:
-                        </Text>
-                        <Text className="pl-2 text-lg font-extrabold text-primary">
-                            {cambioActualizado.toFixed(2)}
-                        </Text>
-                    </View>
-                    <View className="flex-row flex-wrap justify-between">
-                        <View style={{ width: "30%" }}>
-                            {/* TODO   cambiar el boton de cancelar para que tenga otro color, en caso de verlo necesario.*/}
-                            <Boton
-                                onPress={() => {
-                                    vaciarCarritoStore();
-                                    setMontoRecibido("");
-                                    valoresStore();
-                                    // Pondré esto unicamente para checar todas las variables de la store, para ver si persisten
-                                }}
-                                texto="Cancelar"
-                                colorDeFondo={true}
-                            />
+                </TouchableOpacity>
+            )}
+
+            {/* Modal del Carrito (Bottom Sheet) */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalCarritoVisible}
+                onRequestClose={() => setModalCarritoVisible(false)}>
+                <View className="flex-1 justify-end bg-black/50">
+                    <View className="h-4/5 rounded-t-3xl bg-white">
+                        {/* Header del Modal */}
+                        <View className="flex-row items-center justify-between border-b border-gray-200 p-4">
+                            <Text className="text-2xl font-bold">
+                                Mi Carrito
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => setModalCarritoVisible(false)}>
+                                <X size={28} color="#666" />
+                            </TouchableOpacity>
                         </View>
-                        <View style={{ width: "65%" }}>
-                            <Boton
-                                onPress={() => {
-                                    // FIXME   AGREGAR VALIDACION PARA QUE SOLO SE EJECUTE ESTO SI EL MONTO RECIBIDO ES MAYOR O IGUAL QUE EL TOTAL
-                                    {
-                                        console.log(montoNumerico);
-                                        console.log(totalAPagarStore);
+
+                        {/* Contenido del Modal */}
+                        {carrito.length === 0 ? (
+                            // Estado vacío
+                            <View className="flex-1 items-center justify-center px-6">
+                                <ShoppingCart size={64} color="#ccc" />
+                                <Text className="mt-4 text-center text-xl font-semibold text-gray-500">
+                                    Tu carrito está vacío
+                                </Text>
+                                <Text className="mt-2 text-center text-base text-gray-400">
+                                    Agrega productos para comenzar una venta
+                                </Text>
+                            </View>
+                        ) : (
+                            // Lista de items
+                            <>
+                                <FlatList
+                                    data={carrito}
+                                    keyExtractor={(item, index) =>
+                                        `${item.producto.id}-${index}`
                                     }
+                                    contentContainerStyle={{ padding: 16 }}
+                                    ItemSeparatorComponent={() => (
+                                        <View className="h-3" />
+                                    )}
+                                    renderItem={({ item }) => (
+                                        <View
+                                            className="flex-row items-center justify-between rounded-2xl bg-gray-50 p-4"
+                                            style={estilos.sombraNormal}>
+                                            {/* Info del producto */}
+                                            <View className="flex-1">
+                                                <Text className="text-lg font-semibold">
+                                                    {item.producto.nombre}
+                                                </Text>
+                                                <Text className="text-base text-gray-600">
+                                                    $
+                                                    {item.producto.precio.toFixed(
+                                                        2,
+                                                    )}{" "}
+                                                    x {item.cantidad}
+                                                </Text>
+                                            </View>
+
+                                            {/* Subtotal y botón eliminar */}
+                                            <View className="items-end">
+                                                <Text className="mb-2 text-lg font-bold text-primary">
+                                                    ${item.subtotal.toFixed(2)}
+                                                </Text>
+                                                <TouchableOpacity
+                                                    onPress={() =>
+                                                        confirmarEliminarItem(
+                                                            item.producto.id ||
+                                                                "",
+                                                            item.producto
+                                                                .nombre,
+                                                        )
+                                                    }
+                                                    className="rounded-lg bg-red-500 p-2">
+                                                    <Trash2
+                                                        size={20}
+                                                        color="white"
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    )}
+                                />
+
+                                {/* Footer con Total y Botón */}
+                                <View className="border-t border-gray-200 p-4">
+                                    <View className="mb-4 flex-row items-center justify-between">
+                                        <Text className="text-xl font-semibold text-gray-700">
+                                            Total:
+                                        </Text>
+                                        <Text className="text-2xl font-bold text-primary">
+                                            ${totalAPagarStore.toFixed(2)}
+                                        </Text>
+                                    </View>
+                                    <Boton
+                                        onPress={() => {
+                                            setModalCarritoVisible(false);
+                                            setModalConfirmarVisible(true);
+                                        }}
+                                        texto="Completar Venta"
+                                    />
+                                </View>
+                            </>
+                        )}
+                    </View>
+                </View>
+            </Modal>
+
+            {/* Modal de Confirmación de Venta */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalConfirmarVisible}
+                onRequestClose={() => setModalConfirmarVisible(false)}>
+                <View className="flex-1 justify-end bg-black/50">
+                    <View className="rounded-t-3xl bg-white p-6">
+                        {/* Header del Modal */}
+                        <View className="mb-6 flex-row items-center justify-between">
+                            <Text className="text-2xl font-bold">
+                                Confirmar Venta
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => setModalConfirmarVisible(false)}>
+                                <X size={28} color="#666" />
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* Contenido del Modal */}
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            contentContainerStyle={{ flexGrow: 1 }}>
+                            {/* Cantidad de productos */}
+                            <View className="mb-4 flex-row justify-between">
+                                <Text className="text-lg font-normal text-gray-600">
+                                    Cantidad de productos:
+                                </Text>
+                                <Text className="text-lg font-semibold text-gray-900">
+                                    {cantidadDeProductosStore}
+                                </Text>
+                            </View>
+
+                            {/* Subtotal */}
+                            <View className="mb-6 flex-row justify-between border-b border-gray-200 pb-4">
+                                <Text className="text-lg font-normal text-gray-600">
+                                    Subtotal:
+                                </Text>
+                                <Text className="text-lg font-semibold text-gray-900">
+                                    ${totalAPagarStore.toFixed(2)}
+                                </Text>
+                            </View>
+
+                            {/* Monto Recibido */}
+                            <View className="mb-6">
+                                <CampoTexto
+                                    esNumero={true}
+                                    etiqueta="Monto recibido"
+                                    valueCampo={montoRecibido}
+                                    onChangeText={(texto) =>
+                                        setMontoRecibido(texto)
+                                    }
+                                    sugerencia=""
+                                />
+                            </View>
+
+                            {/* Cambio */}
+                            <View className="mb-8 flex-row justify-between rounded-lg bg-blue-50 p-4">
+                                <Text className="text-lg font-semibold text-gray-700">
+                                    Cambio:
+                                </Text>
+                                <Text
+                                    className={`text-2xl font-bold ${
+                                        cambioActualizado >= 0
+                                            ? "text-green-600"
+                                            : "text-red-600"
+                                    }`}>
+                                    ${cambioActualizado.toFixed(2)}
+                                </Text>
+                            </View>
+                        </ScrollView>
+
+                        {/* Botones */}
+                        <View className="flex-row gap-3">
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setModalCancelarVisible(true);
+                                }}
+                                className="flex-1 items-center justify-center rounded-lg border-2 border-red-300 py-4">
+                                <Text className="text-lg font-semibold text-red-600">
+                                    Cancelar
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => {
                                     if (
                                         montoNumerico >= totalAPagarStore &&
                                         totalAPagarStore > 0
                                     ) {
-                                        (agregarVenta(),
-                                            vaciarCarritoStore(),
-                                            setMontoRecibido(""));
+                                        setModalConfirmarVentaFinalVisible(
+                                            true,
+                                        );
                                     } else {
-                                        alert(
-                                            "El monto recibido es menor al total a pagar",
+                                        Alert.alert(
+                                            "Error",
+                                            "El monto recibido debe ser mayor o igual al total a pagar",
                                         );
                                     }
                                 }}
-                                texto="Confirmar venta"
-                            />
+                                disabled={
+                                    montoNumerico < totalAPagarStore ||
+                                    totalAPagarStore === 0
+                                }
+                                className={`flex-1 items-center justify-center rounded-lg py-4 ${
+                                    montoNumerico >= totalAPagarStore &&
+                                    totalAPagarStore > 0
+                                        ? "bg-primary"
+                                        : "bg-gray-300"
+                                }`}>
+                                <Text className="text-lg font-semibold text-white">
+                                    Confirmar Venta
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-            </KeyboardAvoidingView>
+            </Modal>
+
+            {/* Modal de Confirmación de Cancelación */}
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalCancelarVisible}
+                onRequestClose={() => setModalCancelarVisible(false)}>
+                <View className="flex-1 items-center justify-center bg-black/50">
+                    <View className="mx-6 rounded-3xl bg-white p-6">
+                        <Text className="mb-4 text-center text-xl font-bold">
+                            ¿Cancelar venta?
+                        </Text>
+                        <Text className="mb-6 text-center text-gray-600">
+                            Se borrarán todos los productos del carrito. ¿Estás
+                            seguro?
+                        </Text>
+
+                        {/* Botones */}
+                        <View className="flex-row gap-3">
+                            <View className="flex-1">
+                                <Boton
+                                    onPress={() =>
+                                        setModalCancelarVisible(false)
+                                    }
+                                    texto="No, volver"
+                                    colorDeFondo={true}
+                                />
+                            </View>
+                            <View className="flex-1">
+                                <Boton
+                                    onPress={() => {
+                                        vaciarCarritoStore();
+                                        setMontoRecibido("");
+                                        setModalCancelarVisible(false);
+                                        setModalConfirmarVisible(false);
+                                    }}
+                                    texto="Sí, cancelar venta"
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            {/* Modal de Confirmación Final de Venta */}
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalConfirmarVentaFinalVisible}
+                onRequestClose={() =>
+                    setModalConfirmarVentaFinalVisible(false)
+                }>
+                <View className="flex-1 items-center justify-center bg-black/50">
+                    <View className="mx-6 rounded-3xl bg-white p-6">
+                        <Text className="mb-4 text-center text-xl font-bold">
+                            Confirmar venta
+                        </Text>
+                        <Text className="mb-2 text-center text-base text-gray-600">
+                            Cantidad de productos: {cantidadDeProductosStore}
+                        </Text>
+                        <Text className="mb-6 text-center text-lg font-semibold text-primary">
+                            Total: ${totalAPagarStore.toFixed(2)}
+                        </Text>
+                        <Text className="mb-6 text-center text-base text-gray-600">
+                            ¿Deseas completar esta venta?
+                        </Text>
+
+                        {/* Botones */}
+                        <View className="flex-row gap-3">
+                            <View className="flex-1">
+                                <Boton
+                                    onPress={() =>
+                                        setModalConfirmarVentaFinalVisible(
+                                            false,
+                                        )
+                                    }
+                                    texto="No, volver"
+                                    colorDeFondo={true}
+                                />
+                            </View>
+                            <View className="flex-1">
+                                <Boton
+                                    onPress={() => {
+                                        agregarVenta();
+                                        vaciarCarritoStore();
+                                        setMontoRecibido("");
+                                        setModalConfirmarVentaFinalVisible(
+                                            false,
+                                        );
+                                        setModalConfirmarVisible(false);
+                                        Alert.alert(
+                                            "Éxito",
+                                            "Venta registrada correctamente",
+                                        );
+                                    }}
+                                    texto="Sí, confirmar venta"
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 }
