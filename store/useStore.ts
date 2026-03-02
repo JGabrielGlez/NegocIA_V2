@@ -187,8 +187,15 @@ export const useStore = create<AppState>()(
                     // 2. Intentar sincronizar con Firestore (asíncrono, no bloquea)
                     // Solo sincronizar si el producto tiene ID (fue generado en frontend)
                     if (productoCompleto.id) {
+                        // Asegurar que el usuarioId esté presente desde el store de autenticación
+                        const usuario = useAuthStore.getState().usuario;
+                        const productoParaGuardar = {
+                            ...productoCompleto,
+                            usuarioId: productoCompleto.usuarioId || usuario?.uid,
+                        };
+
                         databaseService
-                            .addProducto(productoCompleto)
+                            .addProducto(productoParaGuardar)
                             .then(() => {
                                 console.log(
                                     "✅ Producto agregado a Firestore:",
@@ -205,7 +212,7 @@ export const useStore = create<AppState>()(
                                     id: `op_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                                     tipo: "create",
                                     productoId: productoCompleto.id!,
-                                    producto: productoCompleto,
+                                    producto: productoParaGuardar,
                                     timestamp: new Date(),
                                 };
                                 set((state) => ({
@@ -215,6 +222,11 @@ export const useStore = create<AppState>()(
                                     ],
                                 }));
                             });
+                    } else {
+                        console.warn(
+                            "⚠️ Producto sin ID no puede sincronizar:",
+                            productoCompleto,
+                        );
                     }
                 },
 

@@ -287,6 +287,13 @@ export const databaseService = {
     // Añadir un producto a la colección, cabe mencionar que el producto ya debe de venir completo desde el momento en el que se manda para agregarlo a la colección.
     addProducto: async (prod: Producto) => {
         try {
+            // Validar que el producto tenga usuarioId
+            if (!prod.usuarioId) {
+                throw new Error(
+                    "No se puede guardar producto sin usuarioId. Asegúrate de pasar el ID del usuario.",
+                );
+            }
+
             // Si el producto ya tiene un ID (generado en frontend), usarlo directamente
             if (prod.id) {
                 const docRef = doc(db, COLLECTIONS.PRODUCTOS, prod.id);
@@ -294,6 +301,10 @@ export const databaseService = {
                     ...prod,
                     createdAt: serverTimestamp(),
                 });
+                console.log(
+                    "✅ Producto guardado en Firestore con usuarioId:",
+                    prod.usuarioId,
+                );
                 return prod.id;
             } else {
                 // Si no tiene ID, dejar que Firestore lo genere (para backward compatibility)
@@ -310,10 +321,14 @@ export const databaseService = {
                     id: docRef.id,
                 });
 
+                console.log(
+                    "✅ Producto creado en Firestore con usuarioId:",
+                    prod.usuarioId,
+                );
                 return docRef.id;
             }
         } catch (error: any) {
-            console.log("Error en databaseService.addProducto", error);
+            console.error("Error en databaseService.addProducto", error);
             throw error;
         }
     },

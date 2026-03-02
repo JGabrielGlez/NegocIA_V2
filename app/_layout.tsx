@@ -61,7 +61,30 @@ export default function RootLayout() {
                     store.setProductos(productos);
                     store.setVentas(ventas);
 
-                    console.log("✅ Datos cargados correctamente en _layout");
+                    console.log(
+                        "✅ Datos cargados correctamente en _layout:",
+                        {
+                            productosCount: productos.length,
+                            ventasCount: ventas.length,
+                        },
+                    );
+
+                    // Sincronizar datos pendientes después de cargar (para offline-first)
+                    try {
+                        console.log(
+                            "🔄 Sincronizando datos pendientes después de login...",
+                        );
+                        await Promise.all([
+                            store.sincronizarProductosLocales(),
+                            store.sincronizarVentasLocales(),
+                        ]);
+                        console.log("✅ Sincronización de datos pendientes completada");
+                    } catch (syncError) {
+                        console.error(
+                            "⚠️ Error al sincronizar datos pendientes:",
+                            syncError,
+                        );
+                    }
                 } catch (error) {
                     console.error("⚠️ Error cargando datos en _layout:", error);
                 }
