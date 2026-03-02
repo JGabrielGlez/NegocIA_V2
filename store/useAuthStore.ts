@@ -1,3 +1,4 @@
+import { databaseService } from "@/firebase/databaseService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Router } from "expo-router";
 import {
@@ -14,6 +15,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 interface AuthState {
     isLoading?: boolean;
     usuario: User | null;
+    isPremium: boolean;
+    plan: "PRO" | "GRATIS";
     mensajeError: Record<string, string>;
 
     // Funciones
@@ -21,6 +24,8 @@ interface AuthState {
     // Este es para setear cualquier dato de la interfaz, sin necesidad de crear una funcion para cada propiedad
     setAuthData: (data: Partial<AuthState>) => void;
     setIsLoading: (loading: boolean) => void;
+    setIsPremium: (isPro: boolean) => void;
+    setPlan: (plan: "PRO" | "GRATIS") => void;
     iniciarSesion: (
         correo: string,
         password: string,
@@ -36,15 +41,36 @@ export const useAuthStore = create<AuthState>()(
                 "auth/too-many-requests":
                     "Se ha bloqueado la cuenta temporalmente por inicios de sesión fallidos, intente más tarde",
                 "auth/invalid-email": "El correo no es válido.",
-                "auth/invalid-credential": "Correo o contraseña inválidos",
+                "auth/invalid-credential":
+                    "Correo o contraseña incorrectos. Verifica tus datos e intenta de nuevo.",
+                "auth/user-not-found":
+                    "No existe una cuenta con ese correo. Revisa el email o crea una cuenta nueva.",
+                "auth/wrong-password":
+                    "La contraseña es incorrecta. Intenta de nuevo.",
+                "auth/network-request-failed":
+                    "No hay conexión a internet. Verifica tu red e intenta de nuevo.",
+                "auth/user-disabled":
+                    "Esta cuenta está deshabilitada. Contacta a soporte.",
             },
 
             usuario: null,
 
             isLoading: false,
 
+            isPremium: false,
+
+            plan: "GRATIS",
+
             setIsLoading: (loading) => {
                 get().setAuthData({ isLoading: loading });
+            },
+
+            setIsPremium: (isPro) => {
+                get().setAuthData({ isPremium: isPro });
+            },
+
+            setPlan: (plan) => {
+                get().setAuthData({ plan });
             },
 
             setAuthData: (datos) => set(datos),
@@ -85,9 +111,16 @@ export const useAuthStore = create<AuthState>()(
                     const user = userCredential.user;
                     // Se actualiza la info del usuario, esto es para verificar el estado del correo que esté validado
                     await user.reload();
-                    set({ usuario: userCredential.user });
+                    set({
+                        usuario: userCredential.user,
+                        isPremium: false,
+                        plan: "GRATIS",
+                    }); // Reset al login
 
                     if (!user.emailVerified) {
+                        await signOut(auth);
+                        get().setAuthData({ usuario: null });
+
                         Alert.alert(
                             "Acción necesaria",
                             "Es necesario verificar la dirección de correo electrónico",
@@ -115,6 +148,39 @@ export const useAuthStore = create<AuthState>()(
 
                         return;
                     }
+
+                    try {
+                        const usuarioFirestore =
+                            await databaseService.getUsuario(user.uid);
+
+                        if (!usuarioFirestore) {
+                            await databaseService.crearUsuario(
+                                user.uid,
+                                user.email ?? correo,
+                            );
+                            console.log(
+                                "✅ Usuario creado en Firestore tras verificación:",
+                                user.uid,
+                            );
+                        }
+
+                        const aiUsage = await databaseService.getAIUsageDoc(
+                            user.uid,
+                        );
+                        if (!aiUsage) {
+                            await databaseService.crearAIUsageDoc(user.uid);
+                            console.log(
+                                "✅ Documento AI usage creado tras verificación:",
+                                user.uid,
+                            );
+                        }
+                    } catch (firestoreError: any) {
+                        console.error(
+                            "⚠️ Error sincronizando usuario verificado en Firestore:",
+                            firestoreError,
+                        );
+                    }
+
                     get().setIsLoading(false);
                     // Si pasa hasta aquí es porque está todo bien
                     router.replace("/dashboard");
@@ -134,13 +200,43 @@ export const useAuthStore = create<AuthState>()(
             },
 
             cerrarSesion: async (router: Router) => {
+                console.log("Cerrando sesión");
                 const auth = getAuth();
                 try {
-                    await signOut(auth); //cierra sesión en el servidor
-                    get().setAuthData({ usuario: null }); //cierra sesión localmente
+                    // 1. Cerrar sesión de RevenueCat
+                    try {
+                        const { logOutRevenueCat } =
+                            await import("@/services/revenueCat");
+                        await logOutRevenueCat();
+                    } catch (rcError) {
+                        console.error(
+                            "Error al cerrar sesión de RevenueCat:",
+                            rcError,
+                        );
+                    }
+
+                    // 2. Limpiar el store local
+                    const { useStore } = await import("./useStore");
+                    useStore.getState().limpiarStore();
+
+                    // 2b. Resetear el AI store
+                    const { useAIStore } = await import("./useAIStore");
+                    useAIStore.getState().resetAI();
+
+                    // 3. Resetear el estado de auth en Zustand
+                    get().setAuthData({
+                        usuario: null,
+                        isPremium: false,
+                        plan: "GRATIS",
+                    });
+
+                    // 4. Finalmente cerrar sesión en Firebase (esto dispara onAuthStateChanged)
+                    await signOut(auth);
+
+                    // 5. Navegar al login
                     router.replace("/(auth)/iniciar-sesion");
                 } catch (error: any) {
-                    console.log(error.code);
+                    console.log("Error al cerrar sesión:", error.code);
                 }
             },
         }),

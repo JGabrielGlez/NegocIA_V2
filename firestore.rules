@@ -35,6 +35,16 @@ service cloud.firestore {
                     resource.data.usuarioId == request.auth.uid && 
                     request.resource.data.usuarioId == request.auth.uid;
     }
+
+    // 4. REGLA PARA AI USAGE (subcollection de usuarios)
+    match /usuarios/{userId}/ai_usage/{document=**} {
+      allow read, write: if estaLogueado() && request.auth.uid == userId;
+    }
+
+    // 5. REGLA PARA MÉTRICAS (subcollection de usuarios)
+    match /usuarios/{userId}/metricas/{document=**} {
+      allow read, write: if estaLogueado() && request.auth.uid == userId;
+    }
     
     // BLOQUEO GLOBAL
     match /{document=**} {

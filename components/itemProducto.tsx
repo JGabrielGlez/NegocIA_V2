@@ -1,12 +1,14 @@
 // Este componente será cada item individual que se estará mostrando en la pantalla de productos
 // Los elementos que debe de tener será un ícono a la izquierda, su nombre y su precio, y hasta la derecha botones para editar y eliminar
+import { useTooltip } from "@/context/TooltipContext";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { IconoPresionable } from "./iconoPresionable";
 
 type props = {
+    id: string;
     nombre: string;
     precio: number;
     funcionEditar?: () => void;
@@ -14,11 +16,18 @@ type props = {
 };
 
 export default function ItemProducto({
+    id,
     nombre,
     precio,
     funcionEditar,
     funcionEliminar,
 }: props) {
+    const { mostrarTooltip } = useTooltip();
+
+    const mostrarTooltip_func = () => {
+        mostrarTooltip(id, nombre);
+    };
+
     const IconoCaja = () => {
         return (
             <View className="justify-center rounded-xl bg-gray-300 p-3">
@@ -59,11 +68,13 @@ export default function ItemProducto({
 
                 {/* Esta va a ser la de los textos */}
                 <View className="ml-2 flex-[6] justify-center">
-                    <Text
-                        numberOfLines={1}
-                        className="mb-2 text-wrap text-xl font-black">
-                        {nombre}
-                    </Text>
+                    <Pressable onPress={mostrarTooltip_func}>
+                        <Text
+                            numberOfLines={1}
+                            className="mb-2 text-wrap text-xl font-black">
+                            {nombre}
+                        </Text>
+                    </Pressable>
                     <Text
                         numberOfLines={1}
                         className="text-base font-black text-primary">

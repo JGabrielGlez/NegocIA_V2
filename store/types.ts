@@ -2,8 +2,8 @@
 
 // Lo que hace es definir como son los productos, se usa en la lista de productos, agregar producto, y buscar producto
 export interface Producto {
-    id?: string;
-    uid?: string; //se genera en automático por firestore
+    id?: string; // ID del documento en Firestore
+    usuarioId?: string; // UID del usuario propietario
     nombre: string; //este debe de ser único
     precio: number;
     categoria?: string; //será una función de la que me preocuparé más delante
@@ -38,6 +38,23 @@ export interface Usuario {
     creditos: number;
 }
 
+// Define las estadísticas de uso del asistente IA
+export interface AIUsageStats {
+    queriesUsedThisMonth: number;
+    nextResetDate: Date;
+    totalQueriesAllTime: number;
+    priceUpdatesUsedThisMonth: number;
+    lastQueryAt: Date | null;
+}
+
+// Mensajes del chat IA
+export interface AIMessage {
+    id: string;
+    role: "user" | "ai";
+    content: string;
+    timestamp: Date;
+}
+
 // Esto creo no lo usaré
 export interface ProductoFirestore extends Producto {
     fechaAgregado?: any;
@@ -52,3 +69,38 @@ export const COLLECTIONS = {
     USUARIOS: "usuarios",
     VENTAS: "ventas",
 } as const;
+
+export interface ProductoMetrica {
+    nombre: string;
+    unidades: number;
+    total: number;
+    porcentaje: number;
+    tieneCeroVentas: boolean;
+    diasSinVentas: number;
+}
+
+export interface MetricasNegocio {
+    ventasHoy: number;
+    transaccionesHoy: number;
+    ventasSemanaActual: number;
+    ventasSemanaPasada: number;
+    ventasMesActual: number;
+    ventasMesAnterior: number;
+    ticketPromedio: number;
+    topProductos: ProductoMetrica[];
+    bottomProductos: ProductoMetrica[];
+    diasSinVentas: number;
+    ultimaActualizacion: Date;
+}
+
+// Operaciones pendientes de productos para sincronización offline
+export type TipoOperacionProducto = "create" | "update" | "delete";
+
+export interface OperacionPendienteProducto {
+    id: string; // ID único de la operación (para deduplicar)
+    tipo: TipoOperacionProducto;
+    productoId: string;
+    producto?: Producto; // Solo para create y update
+    datos?: Partial<Producto>; // Solo para update
+    timestamp: Date; // Para ordenar operaciones
+}

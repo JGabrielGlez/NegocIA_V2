@@ -9,12 +9,16 @@ export default function Cabecera() {
     const iconSize: number = 24;
     const cerrarSesion = useAuthStore().cerrarSesion;
 
-    const onPress = async (): Promise<void> => {
-        // De momento será para cerrar la sesión
+    const irAPerfil = (): void => {
+        router.push("/(main)/perfil");
+    };
+
+    const onPressLogout = async (): Promise<void> => {
+        // Cerrar la sesión
         await cerrarSesion(router);
         console.log("Cerrando sesión");
 
-        // 
+        //
         console.log(useAuthStore.getState().usuario?.email);
     };
     const onPressProductos = (): void => {
@@ -35,11 +39,11 @@ export default function Cabecera() {
             </View>
 
             <View className="flex-1 flex-row items-center justify-end">
-                <IconoPresionable onPress={onPress}>
+                <IconoPresionable onPress={irAPerfil}>
                     <Feather name="user" size={iconSize} color="black" />
                 </IconoPresionable>
 
-                <IconoPresionable onPress={onPress}>
+                <IconoPresionable onPress={() => {}}>
                     <Feather
                         name="message-square"
                         size={iconSize}
@@ -51,8 +55,12 @@ export default function Cabecera() {
                     <Feather name="box" size={iconSize} color="black" />
                 </IconoPresionable>
 
-                <IconoPresionable onPress={onPress}>
+                <IconoPresionable onPress={() => {}}>
                     <Octicons name="gear" size={iconSize} color="black" />
+                </IconoPresionable>
+
+                <IconoPresionable onPress={onPressLogout}>
+                    <Feather name="log-out" size={iconSize} color="#ef4444" />
                 </IconoPresionable>
             </View>
         </View>
