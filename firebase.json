@@ -30,8 +30,7 @@
         },
         "firestore": {
             "port": 1214,
-            "host": "0.0.0.0",
-            "import": "./emulator-data"
+            "host": "0.0.0.0"
         },
         "hosting": {
             "port": 1215,
