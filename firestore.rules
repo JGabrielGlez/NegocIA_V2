@@ -37,8 +37,10 @@ service cloud.firestore {
     }
 
     // 4. REGLA PARA AI USAGE (subcollection de usuarios)
+    // Solo lectura desde el cliente - Cloud Functions escriben con privilegios admin
     match /usuarios/{userId}/ai_usage/{document=**} {
-      allow read, write: if estaLogueado() && request.auth.uid == userId;
+      allow read: if estaLogueado() && request.auth.uid == userId;
+      allow write: if false; // Solo Cloud Functions pueden escribir
     }
 
     // 5. REGLA PARA MÉTRICAS (subcollection de usuarios)

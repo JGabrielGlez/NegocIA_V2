@@ -4,7 +4,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { ReactNode } from "react";
 import { View, Text } from "react-native";
 import { IconoPresionable } from "./iconoPresionable";
-import { useRouter } from "expo-router";
+import { useRouter } from "expo-router";    
 
 type props = {
     nombrePagina: string;

@@ -5,11 +5,15 @@ import Feather from "@expo/vector-icons/Feather";
 import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { doc } from "firebase/firestore";
 // Iconos a usar Feather: message-... download user
 // EvilIcons gear
 
 export default function dashboard() {
     const router = useRouter();
+
+
+   
 
     const Icono = () => {
         return (
