@@ -53,7 +53,7 @@ export default function iniciarSesion() {
                         <Boton
                             onPress={() => {
                                 if (isLoading) return;
-                                funcionBoton(correo, password, router);
+                                funcionBoton(correo.trim(), password, router);
                             }}
                             texto="Iniciar Sesión"
                             disabled={isLoading}

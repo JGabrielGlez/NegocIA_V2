@@ -118,9 +118,10 @@ export const useAuthStore = create<AuthState>()(
 
                 // Aquí se empieza con la validación de todos los errores y con las funciones asíncronas
                 try {
+                    const correoLimpio = correo.trim();
                     const userCredential = await signInWithEmailAndPassword(
                         auth,
-                        correo,
+                        correoLimpio,
                         password,
                     );
 

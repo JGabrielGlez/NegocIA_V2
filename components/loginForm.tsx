@@ -31,7 +31,7 @@ export default function Login({
                 sugerencia="tu@correo.com"
                 etiqueta="Correo"
                 valueCampo={correo}
-                onChangeText={setCorreo}
+                onChangeText={(texto) => setCorreo(texto.trim())}
             />
             <CampoTexto
                 sugerencia="******"

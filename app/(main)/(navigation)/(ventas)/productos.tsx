@@ -71,9 +71,9 @@ export default function productos() {
 
     // Manejar cambio de nombre con validación de duplicado
     const manejarCambioNombre = (texto: string) => {
-        const textoNormalizado = normalizarEspacios(texto);
+        const textoNormalizado = normalizarEspacios(texto).trim();
         setNombreProducto(textoNormalizado);
-        if (textoNormalizado.trim() === "") {
+        if (textoNormalizado === "") {
             setNombreDuplicado(false);
         } else {
             // Al agregar: verificar contra todos

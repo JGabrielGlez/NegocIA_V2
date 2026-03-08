@@ -85,7 +85,7 @@ export default function crearCuenta() {
         try {
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
-                email,
+                email.trim(),
                 password,
             );
 
