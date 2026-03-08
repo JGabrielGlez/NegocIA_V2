@@ -160,7 +160,7 @@ export default function AsistenteIA() {
         }
 
         if (!usuario?.uid) {
-            Alert.alert("Error", "No hay usuario autenticado");
+            Alert.alert("Sesión requerida", "Inicia sesión para usar el asistente de IA.");
             return;
         }
 
@@ -191,7 +191,7 @@ export default function AsistenteIA() {
             const message =
                 error?.message ||
                 "Ocurrió un error al consultar el asistente IA. Intenta de nuevo.";
-            Alert.alert("Error", message);
+            Alert.alert("Error del asistente", message);
         } finally {
             setIsLoading(false);
         }

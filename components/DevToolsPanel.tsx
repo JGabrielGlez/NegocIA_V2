@@ -48,7 +48,10 @@ export function DevToolsPanel() {
             await databaseService.updateUsuario(uid, { plan: "PRO" });
             Alert.alert("✅ Éxito", "Simulado plan PRO con 30 consultas IA");
         } catch (error) {
-            Alert.alert("❌ Error", "No se pudo simular PRO");
+            Alert.alert(
+                "❌ Error de desarrollo",
+                "No se pudo actualizar el plan en Firestore. Verifica la conexión con el emulador."
+            );
             console.error(error);
         }
     };
@@ -62,7 +65,10 @@ export function DevToolsPanel() {
             await databaseService.updateUsuario(uid, { plan: "GRATIS" });
             Alert.alert("✅ Éxito", "Simulado plan GRATIS con 3 consultas IA");
         } catch (error) {
-            Alert.alert("❌ Error", "No se pudo simular GRATIS");
+            Alert.alert(
+                "❌ Error de desarrollo",
+                "No se pudo actualizar el plan en Firestore. Verifica la conexión con el emulador."
+            );
             console.error(error);
         }
     };

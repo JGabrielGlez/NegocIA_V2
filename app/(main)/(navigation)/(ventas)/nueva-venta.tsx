@@ -461,8 +461,8 @@ export default function nuevaVenta() {
                                         );
                                     } else {
                                         Alert.alert(
-                                            "Error",
-                                            "El monto recibido debe ser mayor o igual al total a pagar",
+                                            "Monto insuficiente",
+                                            "El monto recibido debe ser mayor o igual al total a pagar.",
                                         );
                                     }
                                 }}

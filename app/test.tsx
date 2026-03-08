@@ -41,8 +41,8 @@ export default function TestScreen() {
             const myUid = auth.currentUser?.uid;
             if (!myUid)
                 return Alert.alert(
-                    "Error",
-                    "Debes estar logueado en el emulador.",
+                    "Sesión requerida",
+                    "Necesitas iniciar sesión en el emulador para ejecutar esta prueba de seguridad.",
                 );
 
             const aiRef = doc(db, "usuarios", myUid, "ai_usage", "analytics");

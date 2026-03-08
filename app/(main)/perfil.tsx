@@ -55,7 +55,10 @@ export default function PerfilScreen() {
                         try {
                             await cerrarSesion(router);
                         } catch (error) {
-                            Alert.alert("Error", "No se pudo cerrar sesión");
+                            Alert.alert(
+                                "Error al cerrar sesión",
+                                "Hubo un problema al cerrar tu sesión. Intenta reiniciar la aplicación."
+                            );
                         }
                     },
                     style: "destructive",

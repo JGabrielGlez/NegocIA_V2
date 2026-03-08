@@ -93,8 +93,8 @@ export default function PlanesScreen() {
     const handlePurchasePRO = async () => {
         if (!usuario?.uid || !proPackage) {
             Alert.alert(
-                "Error",
-                "No se pudo iniciar la compra. Intenta de nuevo.",
+                "No se puede comprar",
+                "No se pudo cargar la información necesaria. Por favor, cierra sesión y vuelve a entrar, o verifica tu conexión a internet.",
             );
             return;
         }
@@ -137,8 +137,8 @@ export default function PlanesScreen() {
         } catch (error: any) {
             console.error("Error inesperado durante la compra:", error);
             Alert.alert(
-                "Error",
-                "Ocurrió un error inesperado. Intenta de nuevo.",
+                "Error al procesar la compra",
+                "Hubo un problema al activar tu suscripción. Si se realizó el cobro, no te preocupes, se activará automáticamente. Si el problema persiste, contacta a soporte.",
             );
         } finally {
             setIsPurchasing(false);

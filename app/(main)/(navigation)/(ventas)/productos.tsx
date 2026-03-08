@@ -18,6 +18,7 @@ import {
     ScrollView,
     Text,
     View,
+    Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -90,30 +91,31 @@ export default function productos() {
     const manejarGuardado = async () => {
         // 1. Validaciones iniciales
         if (!usuario) {
-            alert("Sesión no válida");
+            Alert.alert("Sesión no válida", "Inicia sesión para poder guardar productos.");
             return;
         }
 
         if (nombreProducto.trim() === "" || precioProducto === "") {
-            alert("Rellena todos los campos");
+            Alert.alert("Campos incompletos", "Ingresa el nombre y precio del producto.");
             return;
         }
 
         if (nombreDuplicado) {
-            alert("Este producto ya existe");
+            Alert.alert("Producto duplicado", "Ya existe un producto con este nombre. Elige otro nombre.");
             return;
         }
 
         const precioProductoParsed = parseFloat(precioProducto);
         if (isNaN(precioProductoParsed)) {
-            alert("El precio debe ser un número válido");
+            Alert.alert("Precio inválido", "Ingresa un precio numérico válido (por ejemplo: 25.50).");
             return;
         }
 
         // Validar límite de 30 productos para plan GRATIS
         if (plan === "GRATIS" && productosDeStore.length >= 30) {
-            alert(
-                "Límite alcanzado ⚠️\n\nHas llegado al máximo de 30 productos en el plan gratuito.\n\nUpgradea a PRO para productos ilimitados.",
+            Alert.alert(
+                "Límite alcanzado",
+                "Has llegado al máximo de 30 productos en el plan gratuito. Mejora a PRO para agregar productos ilimitados.",
             );
             return;
         }
@@ -144,7 +146,7 @@ export default function productos() {
             // Si el store falla, el código salta aquí y NO se limpian los campos
             // permitiendo al usuario intentar de nuevo sin borrar lo que escribió.
             console.error("Error al guardar:", error);
-            alert("No se pudo guardar el producto. Revisa tu conexión.");
+            Alert.alert("No se pudo guardar", "No se pudo guardar el producto. Verifica tu conexión a internet e intenta de nuevo.");
         } finally {
             // Podrías poner un setIsLoading(false) aquí
         }
@@ -168,23 +170,23 @@ export default function productos() {
 
     const manejarGuardarEdicion = async () => {
         if (!productoEnEdicion?.id) {
-            alert("Error: no se encontró el ID del producto");
+            Alert.alert("Error interno", "No se encontró el ID del producto. Cierra y vuelve a abrir el editor.");
             return;
         }
 
         if (nombreProducto.trim() === "" || precioProducto === "") {
-            alert("Rellena todos los campos");
+            Alert.alert("Campos incompletos", "Ingresa el nombre y precio del producto.");
             return;
         }
 
         if (nombreDuplicado) {
-            alert("Este producto ya existe");
+            Alert.alert("Producto duplicado", "Ya existe un producto con este nombre. Elige otro nombre.");
             return;
         }
 
         const precioProductoParsed = parseFloat(precioProducto);
         if (isNaN(precioProductoParsed)) {
-            alert("El precio debe ser un número válido");
+            Alert.alert("Precio inválido", "Ingresa un precio numérico válido (por ejemplo: 25.50).");
             return;
         }
 
@@ -201,7 +203,7 @@ export default function productos() {
             setNombreDuplicado(false);
         } catch (error) {
             console.error("Error al guardar edición:", error);
-            alert("No se pudo guardar los cambios. Revisa tu conexión.");
+            Alert.alert("No se pudo actualizar", "No se pudieron guardar los cambios. Verifica tu conexión a internet e intenta de nuevo.");
         }
     };
 
