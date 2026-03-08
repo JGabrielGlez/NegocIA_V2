@@ -48,7 +48,23 @@ export const useAuthStore = create<AuthState>()(
                 "auth/wrong-password":
                     "La contraseña es incorrecta. Intenta de nuevo.",
                 "auth/network-request-failed":
-                    "No hay conexión a internet. Verifica tu red e intenta de nuevo.",
+                    "No se pudo conectar con el servidor. Verifica tu internet, que el emulador/backend esté activo, e intenta de nuevo.",
+                "auth/timeout":
+                    "La solicitud tardó demasiado. Revisa tu conexión e intenta nuevamente.",
+                "auth/internal-error":
+                    "Ocurrió un error interno de autenticación. Intenta nuevamente en unos minutos.",
+                "auth/app-deleted":
+                    "La app de autenticación no está configurada correctamente en este dispositivo.",
+                "auth/operation-not-allowed":
+                    "Este método de autenticación no está habilitado en Firebase.",
+                "auth/missing-email": "Debes ingresar un correo electrónico.",
+                "auth/missing-password": "Debes ingresar una contraseña.",
+                "auth/user-token-expired":
+                    "Tu sesión expiró. Inicia sesión nuevamente.",
+                "auth/invalid-api-key":
+                    "La configuración de Firebase no es válida (API Key).",
+                "auth/unauthorized-domain":
+                    "Este dominio no está autorizado para autenticación.",
                 "auth/user-disabled":
                     "Esta cuenta está deshabilitada. Contacta a soporte.",
             },

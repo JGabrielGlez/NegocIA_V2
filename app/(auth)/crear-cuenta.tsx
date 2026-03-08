@@ -28,6 +28,22 @@ export default function crearCuenta() {
         "auth/too-many-requests":
             "Se ha bloqueado la cuenta temporalmente por actividad sospechosa, intente más tarde",
         "auth/user-not-found": "Esta cuenta no existe",
+        "auth/network-request-failed":
+            "No se pudo conectar con el servidor. Verifica tu internet, que el emulador/backend esté activo, e intenta de nuevo.",
+        "auth/timeout":
+            "La solicitud tardó demasiado. Revisa tu conexión e intenta nuevamente.",
+        "auth/internal-error":
+            "Ocurrió un error interno de autenticación. Intenta nuevamente en unos minutos.",
+        "auth/app-deleted":
+            "La app de autenticación no está configurada correctamente en este dispositivo.",
+        "auth/operation-not-allowed":
+            "El registro con correo/contraseña no está habilitado en Firebase.",
+        "auth/missing-email": "Debes ingresar un correo electrónico.",
+        "auth/missing-password": "Debes ingresar una contraseña.",
+        "auth/invalid-api-key":
+            "La configuración de Firebase no es válida (API Key).",
+        "auth/unauthorized-domain":
+            "Este dominio no está autorizado para autenticación.",
     };
 
     const [correo, setCorreo] = useState("");
