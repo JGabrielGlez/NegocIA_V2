@@ -107,21 +107,45 @@ export default function AsistenteIA() {
         return `Se restablece el ${nextResetDate.toLocaleDateString("es-MX")}`;
     }, [nextResetDate]);
 
-    const dotAnim = useRef(new Animated.Value(0)).current;
+    const dot1Anim = useRef(new Animated.Value(0)).current;
+    const dot2Anim = useRef(new Animated.Value(0)).current;
+    const dot3Anim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-        const loop = Animated.loop(
-            Animated.timing(dotAnim, {
-                toValue: 1,
-                duration: 900,
-                easing: Easing.linear,
-                useNativeDriver: true,
-            }),
-        );
+        const makeDot = (anim: Animated.Value, delay: number) =>
+            Animated.loop(
+                Animated.sequence([
+                    Animated.delay(delay),
+                    Animated.timing(anim, {
+                        toValue: 1,
+                        duration: 300,
+                        easing: Easing.ease,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(anim, {
+                        toValue: 0,
+                        duration: 300,
+                        easing: Easing.ease,
+                        useNativeDriver: true,
+                    }),
+                    Animated.delay(600 - delay),
+                ]),
+            );
 
-        loop.start();
-        return () => loop.stop();
-    }, [dotAnim]);
+        const anim1 = makeDot(dot1Anim, 0);
+        const anim2 = makeDot(dot2Anim, 200);
+        const anim3 = makeDot(dot3Anim, 400);
+
+        anim1.start();
+        anim2.start();
+        anim3.start();
+
+        return () => {
+            anim1.stop();
+            anim2.stop();
+            anim3.stop();
+        };
+    }, [dot1Anim, dot2Anim, dot3Anim]);
 
     const askAI = async (question: string): Promise<string> => {
         if (!usuario?.uid) {
@@ -304,28 +328,19 @@ export default function AsistenteIA() {
                                     </Text>
                                 </View>
                                 <View className="rounded-2xl bg-slate-200 px-4 py-3">
-                                    <View className="flex-row items-center">
-                                        {[0, 1, 2].map((index) => {
-                                            const opacity = dotAnim.interpolate(
-                                                {
-                                                    inputRange: [0, 1],
-                                                    outputRange: [0.3, 1],
-                                                },
-                                            );
-
-                                            return (
-                                                <Animated.Text
-                                                    key={`dot-${index}`}
-                                                    style={{
-                                                        opacity,
-                                                        marginRight:
-                                                            index < 2 ? 4 : 0,
-                                                    }}
-                                                    className="text-lg text-slate-700">
-                                                    ·
-                                                </Animated.Text>
-                                            );
-                                        })}
+                                    <View className="flex-row items-center gap-1">
+                                        {[dot1Anim, dot2Anim, dot3Anim].map((anim, index) => (
+                                            <Animated.View
+                                                key={`dot-${index}`}
+                                                style={{
+                                                    opacity: anim,
+                                                    width: 8,
+                                                    height: 8,
+                                                    borderRadius: 4,
+                                                    backgroundColor: "#64748B",
+                                                }}
+                                            />
+                                        ))}
                                     </View>
                                 </View>
                             </View>
