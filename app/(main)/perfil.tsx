@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { LogOut, Settings } from "lucide-react-native";
-import { Alert, Pressable, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import BadgePRO from "@/components/BadgePRO";
 import CabeceraNavegacion from "@/components/cabeceraNavegacion";
@@ -17,6 +17,7 @@ export default function PerfilScreen() {
 
     const [userProfile, setUserProfile] = useState<Usuario | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     // Cargar datos del usuario
     useEffect(() => {
@@ -53,8 +54,10 @@ export default function PerfilScreen() {
                     text: "Cerrar sesión",
                     onPress: async () => {
                         try {
+                            setIsLoggingOut(true);
                             await cerrarSesion(router);
                         } catch (error) {
+                            setIsLoggingOut(false);
                             Alert.alert(
                                 "Error al cerrar sesión",
                                 "Hubo un problema al cerrar tu sesión. Intenta reiniciar la aplicación."
@@ -70,7 +73,8 @@ export default function PerfilScreen() {
     if (isLoading) {
         return (
             <View className="flex-1 items-center justify-center bg-white">
-                <Text className="text-gray-600">Cargando perfil...</Text>
+                <ActivityIndicator size="large" color="#16A34A" />
+                <Text className="mt-4 text-gray-500">Cargando perfil...</Text>
             </View>
         );
     }
@@ -100,7 +104,7 @@ export default function PerfilScreen() {
                         {usuario?.email}
                     </Text>
 
-                    {userProfile?.negocio && (
+                    {userProfile?.negocio ? (
                         <View className="mt-4 rounded-lg bg-white p-4">
                             <Text className="text-xs font-semibold text-gray-500">
                                 NEGOCIO
@@ -109,7 +113,7 @@ export default function PerfilScreen() {
                                 {userProfile.negocio}
                             </Text>
                         </View>
-                    )}
+                    ) : null}
                 </View>
 
                 {/* Plan actual */}
@@ -184,6 +188,27 @@ export default function PerfilScreen() {
                 {/* DevTools Panel (solo en desarrollo) */}
                 <DevToolsPanel />
             </ScrollView>
+
+            {/* Overlay de cierre de sesión — cubre toda la pantalla mientras dura el proceso */}
+            {isLoggingOut ? (
+                <View style={[StyleSheet.absoluteFill, estilosCarga.contenedor]}>
+                    <ActivityIndicator size="large" color="#16A34A" />
+                    <Text style={estilosCarga.texto}>Cerrando sesión...</Text>
+                </View>
+            ) : null}
         </View>
     );
 }
+
+const estilosCarga = StyleSheet.create({
+    contenedor: {
+        backgroundColor: "rgba(255, 255, 255, 0.92)",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 16,
+    },
+    texto: {
+        fontSize: 16,
+        color: "#6B7280",
+    },
+});

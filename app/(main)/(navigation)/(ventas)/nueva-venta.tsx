@@ -73,6 +73,8 @@ export default function nuevaVenta() {
         modalConfirmarVentaFinalVisible,
         setModalConfirmarVentaFinalVisible,
     ] = useState(false);
+    // Estado de carga al registrar la venta
+    const [isSaving, setIsSaving] = useState(false);
 
     // Función helper para obtener la cantidad de un producto en el carrito
     const obtenerCantidadEnCarrito = (idProducto: string): number => {
@@ -533,9 +535,9 @@ export default function nuevaVenta() {
                 animationType="fade"
                 transparent={true}
                 visible={modalConfirmarVentaFinalVisible}
-                onRequestClose={() =>
-                    setModalConfirmarVentaFinalVisible(false)
-                }>
+                onRequestClose={() => {
+                    if (!isSaving) setModalConfirmarVentaFinalVisible(false);
+                }}>
                 <View className="flex-1 items-center justify-center bg-black/50">
                     <View className="mx-6 rounded-3xl bg-white p-6">
                         <Text className="mb-4 text-center text-xl font-bold">
@@ -560,25 +562,35 @@ export default function nuevaVenta() {
                                             false,
                                         )
                                     }
+                                    disabled={isSaving}
                                     texto="No, volver"
                                     colorDeFondo={true}
                                 />
                             </View>
                             <View className="flex-1">
                                 <Boton
-                                    onPress={() => {
-                                        agregarVenta();
-                                        vaciarCarritoStore();
-                                        setMontoRecibido("");
-                                        setModalConfirmarVentaFinalVisible(
-                                            false,
-                                        );
-                                        setModalConfirmarVisible(false);
-                                        Alert.alert(
-                                            "Éxito",
-                                            "Venta registrada correctamente",
-                                        );
+                                    onPress={async () => {
+                                        try {
+                                            setIsSaving(true);
+                                            await agregarVenta();
+                                            vaciarCarritoStore();
+                                            setMontoRecibido("");
+                                            setModalConfirmarVentaFinalVisible(false);
+                                            setModalConfirmarVisible(false);
+                                            Alert.alert(
+                                                "Éxito",
+                                                "Venta registrada correctamente",
+                                            );
+                                        } catch (error) {
+                                            Alert.alert(
+                                                "Error",
+                                                "No se pudo registrar la venta. Intenta de nuevo.",
+                                            );
+                                        } finally {
+                                            setIsSaving(false);
+                                        }
                                     }}
+                                    isLoading={isSaving}
                                     texto="Sí, confirmar venta"
                                 />
                             </View>
