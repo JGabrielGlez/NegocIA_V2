@@ -14,8 +14,8 @@ import {
     useSegments,
 } from "expo-router";
 import { onAuthStateChanged } from "firebase/auth";
-import { useEffect, useRef } from "react";
-import { AppState } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, AppState, StyleSheet, Text, View } from "react-native";
 import "./global.css";
 
 export default function RootLayout() {
@@ -26,6 +26,11 @@ export default function RootLayout() {
     const setAuthData = useAuthStore((state) => state.setAuthData);
     const hasNavigated = useRef(false);
     const lastSyncTime = useRef<number | null>(null);
+
+    // true una vez que onAuthStateChanged dispara por primera vez
+    const [isAuthChecked, setIsAuthChecked] = useState(false);
+    // true una vez que los datos de Firestore (productos + ventas) terminaron de cargar
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
 
     // Sincronizar estado de Firebase Auth con Zustand
     useEffect(() => {
@@ -87,6 +92,10 @@ export default function RootLayout() {
                     }
                 } catch (error) {
                     console.error("⚠️ Error cargando datos en _layout:", error);
+                } finally {
+                    // Datos listos (o fallaron): quitar pantalla de carga
+                    setIsDataLoaded(true);
+                    setIsAuthChecked(true);
                 }
             } else {
                 // Usuario NO autenticado o no verificado
@@ -106,6 +115,10 @@ export default function RootLayout() {
                     isPremium: false,
                     plan: "GRATIS",
                 });
+
+                // Sin usuario: resetear datos y marcar auth como verificada
+                setIsDataLoaded(false);
+                setIsAuthChecked(true);
             }
         });
 
@@ -304,5 +317,49 @@ export default function RootLayout() {
         };
     }, [usuario?.uid]);
 
-    return <Stack screenOptions={{ headerShown: false }} />;
+    // Mostrar overlay cuando: aún no sabemos el estado de auth,
+    // o el usuario está autenticado pero sus datos aún no terminaron de cargar.
+    // Se usa ternario para evitar falsy render (regla 1.1 del skill react-native).
+    const mostrarCarga = !isAuthChecked || (isAuthChecked && !!usuario?.emailVerified && !isDataLoaded);
+
+    return (
+        <>
+            <Stack screenOptions={{ headerShown: false }} />
+            {mostrarCarga ? (
+                <View style={[StyleSheet.absoluteFill, estilosCarga.contenedor]}>
+                    <Text style={estilosCarga.logo}>N</Text>
+                    <ActivityIndicator size="large" color="#16A34A" style={estilosCarga.spinner} />
+                    <Text style={estilosCarga.texto}>
+                        {isAuthChecked ? "Cargando tu negocio..." : "Iniciando..."}
+                    </Text>
+                </View>
+            ) : null}
+        </>
+    );
 }
+
+const estilosCarga = StyleSheet.create({
+    contenedor: {
+        backgroundColor: "#ffffff",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    logo: {
+        fontSize: 72,
+        fontWeight: "800",
+        color: "#ffffff",
+        backgroundColor: "#16A34A",
+        width: 120,
+        textAlign: "center",
+        borderRadius: 24,
+        overflow: "hidden",
+        marginBottom: 32,
+    },
+    spinner: {
+        marginBottom: 16,
+    },
+    texto: {
+        fontSize: 16,
+        color: "#6B7280",
+    },
+});
