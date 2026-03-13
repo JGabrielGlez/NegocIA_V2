@@ -317,10 +317,9 @@ export default function RootLayout() {
         };
     }, [usuario?.uid]);
 
-    // Mostrar overlay cuando: aún no sabemos el estado de auth,
-    // o el usuario está autenticado pero sus datos aún no terminaron de cargar.
-    // Se usa ternario para evitar falsy render (regla 1.1 del skill react-native).
-    const mostrarCarga = !isAuthChecked || (isAuthChecked && !!usuario?.emailVerified && !isDataLoaded);
+    // Mostrar overlay SOLO en arranque en frio (sesion guardada del arranque anterior).
+    // Durante un login activo, el boton ya muestra el spinner — no duplicar feedback.
+    const mostrarCarga = !isAuthChecked;
 
     return (
         <>
@@ -329,9 +328,7 @@ export default function RootLayout() {
                 <View style={[StyleSheet.absoluteFill, estilosCarga.contenedor]}>
                     <Text style={estilosCarga.logo}>N</Text>
                     <ActivityIndicator size="large" color="#16A34A" style={estilosCarga.spinner} />
-                    <Text style={estilosCarga.texto}>
-                        {isAuthChecked ? "Cargando tu negocio..." : "Iniciando..."}
-                    </Text>
+                    <Text style={estilosCarga.texto}>Iniciando...</Text>
                 </View>
             ) : null}
         </>
