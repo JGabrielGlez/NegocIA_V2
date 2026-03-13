@@ -36,6 +36,7 @@ export default function productos() {
         null,
     );
     const [nombreDuplicado, setNombreDuplicado] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     // Aquí va la logica de la store
     // Traer todos los productos de esta
@@ -122,7 +123,7 @@ export default function productos() {
 
         // 2. Iniciamos el proceso con seguridad
         try {
-            // Podrías poner un setIsLoading(true) aquí
+            setIsSaving(true);
 
             // Generar ID único para el producto (será usado tanto localmente como en Firestore)
             const productoId = `prod_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -148,7 +149,7 @@ export default function productos() {
             console.error("Error al guardar:", error);
             Alert.alert("No se pudo guardar", "No se pudo guardar el producto. Verifica tu conexión a internet e intenta de nuevo.");
         } finally {
-            // Podrías poner un setIsLoading(false) aquí
+            setIsSaving(false);
         }
     };
 
@@ -191,6 +192,7 @@ export default function productos() {
         }
 
         try {
+            setIsSaving(true);
             actualizarProducto(productoEnEdicion.id, {
                 nombre: nombreProducto.trim(),
                 precio: precioProductoParsed,
@@ -204,6 +206,8 @@ export default function productos() {
         } catch (error) {
             console.error("Error al guardar edición:", error);
             Alert.alert("No se pudo actualizar", "No se pudieron guardar los cambios. Verifica tu conexión a internet e intenta de nuevo.");
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -361,6 +365,7 @@ export default function productos() {
                                         <Boton
                                             onPress={manejarGuardado}
                                             texto="Guardar"
+                                            isLoading={isSaving}
                                             disabled={
                                                 plan === "GRATIS" &&
                                                 productosDeStore.length >= 30
@@ -434,6 +439,7 @@ export default function productos() {
                                         <Boton
                                             onPress={manejarGuardarEdicion}
                                             texto="Guardar"
+                                            isLoading={isSaving}
                                         />
                                     </View>
                                 </View>
