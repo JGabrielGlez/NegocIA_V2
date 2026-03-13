@@ -143,9 +143,8 @@ export default function crearCuenta() {
                             crearCuenta={true}>
                             <Boton
                                 disabled={isLoading}
+                                isLoading={isLoading}
                                 onPress={() => {
-                                    // Debe mandar toda la información de los botones que están dentro de login para mandarlos al método que manda los datos a Firebase
-
                                     signUp(correo, password);
                                 }}
                                 texto="Crear cuenta"

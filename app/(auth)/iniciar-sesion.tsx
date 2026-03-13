@@ -56,6 +56,7 @@ export default function iniciarSesion() {
                                 funcionBoton(correo.trim(), password, router);
                             }}
                             texto="Iniciar Sesión"
+                            isLoading={isLoading}
                             disabled={isLoading}
                         />
                         <Divisor />
