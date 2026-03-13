@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Alert, ScrollView, Text, View } from "react-native";
 import { PurchasesPackage } from "react-native-purchases";
 
 import CabeceraNavegacion from "@/components/cabeceraNavegacion";
@@ -148,7 +148,8 @@ export default function PlanesScreen() {
     if (isLoading) {
         return (
             <View className="flex-1 items-center justify-center bg-white">
-                <Text className="text-gray-600">Cargando planes...</Text>
+                <ActivityIndicator size="large" color="#16A34A" />
+                <Text className="mt-4 text-gray-500">Cargando planes...</Text>
             </View>
         );
     }

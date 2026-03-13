@@ -73,7 +73,8 @@ export default function PerfilScreen() {
     if (isLoading) {
         return (
             <View className="flex-1 items-center justify-center bg-white">
-                <Text className="text-gray-600">Cargando perfil...</Text>
+                <ActivityIndicator size="large" color="#16A34A" />
+                <Text className="mt-4 text-gray-500">Cargando perfil...</Text>
             </View>
         );
     }
