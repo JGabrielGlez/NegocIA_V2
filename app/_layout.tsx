@@ -125,6 +125,11 @@ export default function RootLayout() {
         return () => unsubscribe();
     }, []);
 
+    // Resetear el flag de navegación cuando el usuario cambia (para permitir re-navegar al cambiar de cuenta)
+    useEffect(() => {
+        hasNavigated.current = false;
+    }, [usuario?.uid]);
+
     useEffect(() => {
         if (!rootNavigationState?.key) {
             return;
