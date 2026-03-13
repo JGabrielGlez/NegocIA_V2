@@ -199,8 +199,7 @@ export const useAuthStore = create<AuthState>()(
                     }
 
                     get().setIsLoading(false);
-                    // Si pasa hasta aquí es porque está todo bien
-                    router.replace("/dashboard");
+                    // La navegación se maneja automáticamente en _layout.tsx
                 } catch (error: any) {
                     const mensaje =
                         get().mensajeError[error.code] ||
